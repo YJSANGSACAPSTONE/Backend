@@ -1,7 +1,6 @@
 package com.planner.godsaeng.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +12,10 @@ import com.planner.godsaeng.repository.UserRepository;
 @Service
 public class UserService {
    
-   User user = null;
    @Autowired
    UserRepository userRepository;
+   
+   User user = null;
    
    //유저 회원가입(INSERT)
    public boolean InsertUser(UserDTO u) {
@@ -40,11 +40,29 @@ public class UserService {
    }
    
    //유저 정보 목록
-   public List<User> ReadUser(){
-      List<User> list = new ArrayList<User>();
-      list = userRepository.findAll();
-      return list;
+   public UserDTO ReadUser(String u_id){
+	  
+      UserDTO userinfo = null;
+      Optional<User> result = userRepository.findById(u_id);
+    	
+      if(result.isPresent()) {
+    	  	userinfo = UserDTO.builder()
+    	  	.u_id(result.get().getU_id())
+			.u_nickname(result.get().getU_nickname())
+			.u_zepetoid(result.get().getU_zepetoid())
+			.u_img(result.get().getU_img())
+			.u_deposit(result.get().getU_deposit())
+			.u_grade(result.get().getU_grade())
+			.u_email(result.get().getU_email())
+			.u_successedchallenge(result.get().getU_successedchallenge())
+			.build();
+    	  	return userinfo;
+      } else {
+    	  return null;
+      }
+	     
    }
+
    
    //유저 정보 수정
    public boolean UpdateUser(UserDTO u) {
