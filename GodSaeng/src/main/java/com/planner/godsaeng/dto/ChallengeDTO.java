@@ -11,6 +11,7 @@ import lombok.Setter;
 @Builder
 public class ChallengeDTO {
 	
+
 	private long c_id;
 	private String c_name;
 	private String c_content;
@@ -26,5 +27,6 @@ public class ChallengeDTO {
 	private int c_typeoffrequency;
 	private int c_frequency;
 	private int c_score;
-
 }
+
+
