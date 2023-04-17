@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/plan")
-@RequiredArgsConstructor
+
 public class PlanController {
 	
 	@Autowired

@@ -19,13 +19,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PlanService {	
-	@Autowired 
+	
 	private final PlanRepository planRepository;
+	
 	
 	Plan plan = null;
 	
 	//플랜 CREATE(INSERT)
 	public boolean InsertPlan(PlanDTO d) {
+		//dto to entity
 		plan = Plan.builder()
 				.p_id(d.getP_id())
 				.u_id(d.getU_id())
@@ -56,6 +58,7 @@ public class PlanService {
 		try {
 			List<Plan>planList = planRepository.findByUidAndPStartDateOrderByPStartTimeAsc(u_id, realtodaystime);
 			List<PlanDTO>userDailyPlanList = new ArrayList<>();
+			//entity to dto
 			for(Plan p: planList) {
 				userDailyPlanList.add(
 						PlanDTO.builder()
