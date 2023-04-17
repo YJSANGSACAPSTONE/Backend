@@ -1,5 +1,8 @@
 package com.planner.godsaeng.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +47,63 @@ public class ChallengeService {
 			e.printStackTrace();
 			return false;
 		}
-	public List<ChallengeDTO>ReadPopularChallenge(St)
-			
-		
 	}
+	//insert문 끝
+	public List<ChallengeDTO>ReadPopularChallenge(){
+		List<Challenge>popularListEntity=challengeRepository.findAllByOrderByStartdateDesc();
+		List<ChallengeDTO>popularList=new ArrayList<>();
+		
+		for(Challenge e : popularListEntity) {
+			popularList.add(
+					ChallengeDTO.builder()
+					.c_id(e.getC_id())
+					.c_name(e.getC_name())
+					.c_content(e.getC_content())
+					.c_startdate(e.getC_startdate())
+					.c_enddate(e.getC_enddate())
+					.c_numberofparticipants(e.getC_numberofparticipants())
+					.c_category(e.getC_category())
+					.c_thumbnails(e.getC_thumbnails())
+					.c_introduction(e.getC_introduction())
+					.c_fee(e.getC_fee())
+					.c_numberofphoto(e.getC_numberofphoto())
+					.c_typeofverify(e.getC_typeofverify())
+					.c_typeoffrequency(e.getC_typeoffrequency())
+					.c_frequency(e.getC_frequency())
+					.c_score(e.getC_score())
+					.build()
+			);
+		}
+		return popularList;
+	}
+	public List<ChallengeDTO>ReadRecentChallenge(){
+		List<Challenge>recentListEntity = challengeRepository.findAllByOrderByNumberofparticipantsDesc();
+		List<ChallengeDTO>recentList = new ArrayList<>();
+		for(Challenge e : recentListEntity) {
+			recentList.add(
+					ChallengeDTO.builder()
+					.c_id(e.getC_id())
+					.c_name(e.getC_name())
+					.c_content(e.getC_content())
+					.c_startdate(e.getC_startdate())
+					.c_enddate(e.getC_enddate())
+					.c_numberofparticipants(e.getC_numberofparticipants())
+					.c_category(e.getC_category())
+					.c_thumbnails(e.getC_thumbnails())
+					.c_introduction(e.getC_introduction())
+					.c_fee(e.getC_fee())
+					.c_numberofphoto(e.getC_numberofphoto())
+					.c_typeofverify(e.getC_typeofverify())
+					.c_typeoffrequency(e.getC_typeoffrequency())
+					.c_frequency(e.getC_frequency())
+					.c_score(e.getC_score())
+					.build()
+			);
+		}
+		return recentList;
+	}
+//	public List<ChallengeDTO>ReadMyChallenge(String u_id){
+//		List<Challenge>myList = challengeRepository.findAll();
+//	}
 
 }
