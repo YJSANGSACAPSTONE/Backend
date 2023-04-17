@@ -38,7 +38,7 @@ public class User {
    @Column(length=20, columnDefinition = "int default 0")
    private int u_deposit;
    
-   @Column(length=20, columnDefinition = "int default 5")
+   @Column(length=20, nullable=false)
    private String u_grade;
    
    @Column(length=20, nullable=false)
