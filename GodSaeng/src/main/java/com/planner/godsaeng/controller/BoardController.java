@@ -18,27 +18,27 @@ public class BoardController {
 	BoardService service = new BoardService();
 
 	@PostMapping("/addboard")
-	public String addUser(BoardDTO b) {
+	public String addBoard(BoardDTO b) {
 		service.InsertBoard(b);
 		return null;
 	}
 
 	@GetMapping("/listboard")
-	public String listUser(Model m) {
+	public String listBoard(Model m) {
 		List<Board> list = service.ReadBoard();
 		m.addAttribute("list", list);
-		return null;
+		return "publishing/pages/board/list";
 	}
 
-	@PostMapping("/updateuser")
-	public String updateUser(BoardDTO b) {
+	@PostMapping("/updateboard")
+	public String updateBoard(BoardDTO b) {
 		service.UpdateBoard(b);
 		return null;
 	}
 
-	@GetMapping("/deleteplan")
-	public String deletePlan(BoardDTO b) {
-		service.DeleteBoard(b.getU_id());
+	@GetMapping("/deleteboard")
+	public String deleteBoard(BoardDTO b) {
+		service.DeleteBoard(b.getB_id());
 
 		return null;
 	}

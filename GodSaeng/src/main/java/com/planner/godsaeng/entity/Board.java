@@ -22,11 +22,13 @@ import lombok.ToString;
 public class Board {
 	
 	@Id
+	private long b_id;				// 계시판 ID
+	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long b_id;
+	private int b_number; 			// 계시판 순서
 	
 	@Column(length=20, nullable=false)
-	private String u_id;
+	private String u_id;			// 유저 ID
 	
 	@Column(length=30, nullable=false)
 	private LocalDateTime b_date;	// 작성시간

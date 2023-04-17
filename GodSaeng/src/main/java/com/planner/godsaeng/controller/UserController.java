@@ -29,7 +29,7 @@ public class UserController {
    public String listUser(Model m) {
       List<User> list = service.ReadUser();
       m.addAttribute("list", list);
-      return null;
+      return "publishing/pages/board/list";
    }
    
    @PostMapping("/updateuser")

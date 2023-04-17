@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planner.godsaeng.entity.Board;
 
-public interface BoardRepository extends JpaRepository<Board, String> {
+public interface BoardRepository extends JpaRepository<Board, Long> {
 
 }
