@@ -16,14 +16,20 @@ import com.planner.godsaeng.service.BoardService;
 @RequestMapping("/board")
 public class BoardController {
 	BoardService service = new BoardService();
-
-	@PostMapping("/addboard")
+	
+	@GetMapping("/write")
+	public String Mainpage() {
+		return "publishing/pages/board/write";
+	}
+	
+	
+	@PostMapping("/add")
 	public String addBoard(BoardDTO b) {
 		service.InsertBoard(b);
 		return null;
 	}
 
-	@GetMapping("/listboard")
+	@GetMapping("/list")
 	public String listBoard(Model m) {
 		List<Board> list = service.ReadBoard();
 		m.addAttribute("list", list);
