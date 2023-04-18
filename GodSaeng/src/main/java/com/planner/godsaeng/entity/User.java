@@ -41,6 +41,9 @@ public class User {
    @Column(length=20, nullable=false)
    private String u_grade;
    
+   @Column(length=20, columnDefinition = "int default 0")
+   private int u_level;
+   
    @Column(length=20, nullable=false)
    private String u_email;
    

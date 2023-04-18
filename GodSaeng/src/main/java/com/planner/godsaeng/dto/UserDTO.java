@@ -16,6 +16,7 @@ public class UserDTO {
    private String u_img;
    private int u_deposit;
    private String u_grade;
+   private int u_level;
    private String u_email;
    private String u_successedchallenge;
 }

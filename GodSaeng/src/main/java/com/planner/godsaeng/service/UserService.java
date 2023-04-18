@@ -26,6 +26,7 @@ public class UserService {
             .u_img(u.getU_img())
             .u_deposit(u.getU_deposit())
             .u_grade(u.getU_grade())
+            .u_level(u.getU_level())
             .u_email(u.getU_email())
             .u_successedchallenge(u.getU_successedchallenge())
             .build();
@@ -53,6 +54,7 @@ public class UserService {
 			.u_img(result.get().getU_img())
 			.u_deposit(result.get().getU_deposit())
 			.u_grade(result.get().getU_grade())
+			.u_level(result.get().getU_level())
 			.u_email(result.get().getU_email())
 			.u_successedchallenge(result.get().getU_successedchallenge())
 			.build();
@@ -73,6 +75,7 @@ public class UserService {
             .u_img(u.getU_img())
             .u_deposit(u.getU_deposit())
             .u_grade(u.getU_grade())
+            .u_level(u.getU_level())
             .u_email(u.getU_email())
             .u_successedchallenge(u.getU_successedchallenge())
             .build();
