@@ -1,5 +1,6 @@
 package com.planner.godsaeng.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,29 +16,29 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ChallengeService {
-	@Autowired
+	
 	private final ChallengeRepository challengeRepository;
 	
 	Challenge challenge = null;
-	//챌린지 CREATE
+	//여기서부터 CRUD-C 챌린지 CREATE
 	
 	public boolean InsertChallenge(ChallengeDTO d) {
 		challenge = Challenge.builder()
-			.c_id(d.getC_id())
-			.c_name(d.getC_name())
-			.c_content(d.getC_content())
-			.c_startdate(d.getC_startdate())
-			.c_enddate(d.getC_enddate())
-			.c_numberofparticipants(d.getC_numberofparticipants())
-			.c_category(d.getC_category())
-			.c_thumbnails(d.getC_thumbnails())
-			.c_introduction(d.getC_introduction())
-			.c_fee(d.getC_fee())
-			.c_numberofphoto(d.getC_numberofphoto())
-			.c_typeofverify(d.getC_typeofverify())
-			.c_typeoffrequency(d.getC_typeoffrequency())
-			.c_frequency(d.getC_frequency())
-			.c_score(d.getC_score())
+			.cid(d.getC_id())
+			.cname(d.getC_name())
+			.ccontent(d.getC_content())
+			.cstartdate(d.getC_startdate())
+			.cenddate(d.getC_enddate())
+			.cnumberofparticipants(d.getC_numberofparticipants())
+			.ccategory(d.getC_category())
+			.cthumbnails(d.getC_thumbnails())
+			.cintroduction(d.getC_introduction())
+			.cfee(d.getC_fee())
+			.cnumberofphoto(d.getC_numberofphoto())
+			.ctypeofverify(d.getC_typeofverify())
+			.ctypeoffrequency(d.getC_typeoffrequency())
+			.cfrequency(d.getC_frequency())
+			.cscore(d.getC_score())
 			.build();
 		
 		try {
@@ -49,61 +50,128 @@ public class ChallengeService {
 		}
 	}
 	//insert문 끝
+	//여기서부터 CRUD - Read
+	//인기챌린지 (Read)조회 - querytest완료
+	//종료된 챌린지는 제외시켜야함 --> 미완성(2023.04.18) 
+	//--> 현재 날짜가 종료 날짜를 초과한 시점이면 안될 듯. 혹은 종료된 챌린지인지 아닌지 알 수 있는 attribute가 필요.
 	public List<ChallengeDTO>ReadPopularChallenge(){
-		List<Challenge>popularListEntity=challengeRepository.findAllByOrderByStartdateDesc();
+		List<Challenge>popularListEntity=challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
 		List<ChallengeDTO>popularList=new ArrayList<>();
 		
 		for(Challenge e : popularListEntity) {
 			popularList.add(
 					ChallengeDTO.builder()
-					.c_id(e.getC_id())
-					.c_name(e.getC_name())
-					.c_content(e.getC_content())
-					.c_startdate(e.getC_startdate())
-					.c_enddate(e.getC_enddate())
-					.c_numberofparticipants(e.getC_numberofparticipants())
-					.c_category(e.getC_category())
-					.c_thumbnails(e.getC_thumbnails())
-					.c_introduction(e.getC_introduction())
-					.c_fee(e.getC_fee())
-					.c_numberofphoto(e.getC_numberofphoto())
-					.c_typeofverify(e.getC_typeofverify())
-					.c_typeoffrequency(e.getC_typeoffrequency())
-					.c_frequency(e.getC_frequency())
-					.c_score(e.getC_score())
+					.c_id(e.getCid())
+					.c_name(e.getCname())
+					.c_content(e.getCcontent())
+					.c_startdate(e.getCstartdate())
+					.c_enddate(e.getCenddate())
+					.c_numberofparticipants(e.getCnumberofparticipants())
+					.c_category(e.getCcategory())
+					.c_thumbnails(e.getCthumbnails())
+					.c_introduction(e.getCintroduction())
+					.c_fee(e.getCfee())
+					.c_numberofphoto(e.getCnumberofphoto())
+					.c_typeofverify(e.getCtypeofverify())
+					.c_typeoffrequency(e.getCtypeoffrequency())
+					.c_frequency(e.getCfrequency())
+					.c_score(e.getCscore())
 					.build()
 			);
 		}
 		return popularList;
 	}
+	//최신챌린지 조회R2 - querytest 완료
 	public List<ChallengeDTO>ReadRecentChallenge(){
-		List<Challenge>recentListEntity = challengeRepository.findAllByOrderByNumberofparticipantsDesc();
+		List<Challenge>recentListEntity = challengeRepository.findAllByOrderByCstartdateDesc();
 		List<ChallengeDTO>recentList = new ArrayList<>();
 		for(Challenge e : recentListEntity) {
 			recentList.add(
 					ChallengeDTO.builder()
-					.c_id(e.getC_id())
-					.c_name(e.getC_name())
-					.c_content(e.getC_content())
-					.c_startdate(e.getC_startdate())
-					.c_enddate(e.getC_enddate())
-					.c_numberofparticipants(e.getC_numberofparticipants())
-					.c_category(e.getC_category())
-					.c_thumbnails(e.getC_thumbnails())
-					.c_introduction(e.getC_introduction())
-					.c_fee(e.getC_fee())
-					.c_numberofphoto(e.getC_numberofphoto())
-					.c_typeofverify(e.getC_typeofverify())
-					.c_typeoffrequency(e.getC_typeoffrequency())
-					.c_frequency(e.getC_frequency())
-					.c_score(e.getC_score())
+					.c_id(e.getCid())
+					.c_name(e.getCname())
+					.c_content(e.getCcontent())
+					.c_startdate(e.getCstartdate())
+					.c_enddate(e.getCenddate())
+					.c_numberofparticipants(e.getCnumberofparticipants())
+					.c_category(e.getCcategory())
+					.c_thumbnails(e.getCthumbnails())
+					.c_introduction(e.getCintroduction())
+					.c_fee(e.getCfee())
+					.c_numberofphoto(e.getCnumberofphoto())
+					.c_typeofverify(e.getCtypeofverify())
+					.c_typeoffrequency(e.getCtypeoffrequency())
+					.c_frequency(e.getCfrequency())
+					.c_score(e.getCscore())
 					.build()
 			);
 		}
 		return recentList;
 	}
-//	public List<ChallengeDTO>ReadMyChallenge(String u_id){
-//		List<Challenge>myList = challengeRepository.findAll();
-//	}
+	
+	String uid = "hwangjoo";
+	//내가 참가중인 챌린지 조회R3
+	public List<ChallengeDTO>ReadMyChallenge(String uid){
+		List<Challenge>myListEntity = challengeRepository.findAll();
+		List<ChallengeDTO>myList = new ArrayList<>();
+		for(Challenge e : myListEntity) {
+			myList.add(
+					ChallengeDTO.builder()
+					.c_id(e.getCid())
+					.c_name(e.getCname())
+					.c_content(e.getCcontent())
+					.c_startdate(e.getCstartdate())
+					.c_enddate(e.getCenddate())
+					.c_numberofparticipants(e.getCnumberofparticipants())
+					.c_category(e.getCcategory())
+					.c_thumbnails(e.getCthumbnails())
+					.c_introduction(e.getCintroduction())
+					.c_fee(e.getCfee())
+					.c_numberofphoto(e.getCnumberofphoto())
+					.c_typeofverify(e.getCtypeofverify())
+					.c_typeoffrequency(e.getCtypeoffrequency())
+					.c_frequency(e.getCfrequency())
+					.c_score(e.getCscore())
+					.build()
+			);
+		}
+		return myList;
+	}
+	//여기까지 챌린지 R
+	//여기부터 CRUD-U 챌린지 UPDATE
+	public boolean UpdateChallenge(ChallengeDTO d) {
+		challenge = Challenge.builder()
+				.cid(d.getC_id())
+				.cname(d.getC_name())
+				.ccontent(d.getC_content())
+				.cstartdate(d.getC_startdate())
+				.cenddate(d.getC_enddate())
+				.cnumberofparticipants(d.getC_numberofparticipants())
+				.ccategory(d.getC_category())
+				.cthumbnails(d.getC_thumbnails())
+				.cintroduction(d.getC_introduction())
+				.cfee(d.getC_fee())
+				.cnumberofphoto(d.getC_numberofphoto())
+				.ctypeofverify(d.getC_typeofverify())
+				.ctypeoffrequency(d.getC_typeoffrequency())
+				.cfrequency(d.getC_frequency())
+				.cscore(d.getC_score())
+				.build();
+				
+		return true;
+	}
+	
+	
+	//여기부터 CRUD-D 챌린지 DELETE
+	public boolean DeleteChallenge(int cid) {
+		try {
+			challengeRepository.deleteById(null);
+			return true;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}	
+	}
 
 }

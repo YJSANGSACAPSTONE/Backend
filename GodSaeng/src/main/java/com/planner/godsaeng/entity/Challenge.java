@@ -27,47 +27,47 @@ public class Challenge {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long c_id;
+	private long cid;
 	
 	@Column(length=30, nullable = false)
-	private String c_name;
+	private String cname;
 	
 	@Column(length=500, nullable = false)
-	private String c_content;
+	private String ccontent;
 	
 	@Column(length=30, nullable = false)
-	private Date c_startdate;
+	private Date cstartdate;
 	
 	@Column(length=30, nullable = false)
-	private Date c_enddate;
+	private Date cenddate;
+
+	@Column(nullable = false)
+	private int cnumberofparticipants;
 	
 	@Column(nullable = false)
-	private int c_numberofparticipants;
-	
-	@Column(nullable = false)
-	private int c_category;
+	private int ccategory;
 	
 	@Column(length = 100, nullable = false)
-	private String c_thumbnails;
+	private String cthumbnails;
 	
 	@Column(length = 50, nullable = false)
-	private String c_introduction;
+	private String cintroduction;
 	
 	@Column(nullable = true)
-	private int c_fee;
+	private int cfee;
 	
 	@Column(nullable = false)
-	private int c_numberofphoto;
+	private int cnumberofphoto;
 	
 	@Column(nullable = false)
-	private int c_typeofverify;
+	private int ctypeofverify;
 	
 	@Column(nullable = false)
-	private int c_typeoffrequency;
+	private int ctypeoffrequency;
 	
 	@Column(nullable= false)
-	private int c_frequency;
+	private int cfrequency;
 	
 	@Column(nullable = false)
-	private int c_score;
+	private int cscore;
 }
