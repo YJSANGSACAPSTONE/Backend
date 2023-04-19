@@ -20,15 +20,15 @@ public class UserService {
    //유저 회원가입(INSERT)
    public boolean InsertUser(UserDTO u) {
       user = User.builder()
-            .u_id(u.getU_id())
-            .u_nickname(u.getU_nickname())
-            .u_zepetoid(u.getU_zepetoid())
-            .u_img(u.getU_img())
-            .u_deposit(u.getU_deposit())
-            .u_grade(u.getU_grade())
-            .u_level(u.getU_level())
-            .u_email(u.getU_email())
-            .u_successedchallenge(u.getU_successedchallenge())
+            .uid(u.getU_id())
+            .unickname(u.getU_nickname())
+            .uzepetoid(u.getU_zepetoid())
+            .uimg(u.getU_img())
+            .udeposit(u.getU_deposit())
+            .ugrade(u.getU_grade())
+            .ulevel(u.getU_level())
+            .uemail(u.getU_email())
+            .usuccessedchallenge(u.getU_successedchallenge())
             .build();
       
       try {
@@ -41,22 +41,22 @@ public class UserService {
    }
    
    //유저 정보 목록
-   public UserDTO ReadUser(String u_id){
+   public UserDTO ReadUser(String uid){
 	  
       UserDTO userinfo = null;
-      Optional<User> result = userRepository.findById(u_id);
+      Optional<User> result = userRepository.findById(uid);
     	
       if(result.isPresent()) {
     	  	userinfo = UserDTO.builder()
-    	  	.u_id(result.get().getU_id())
-			.u_nickname(result.get().getU_nickname())
-			.u_zepetoid(result.get().getU_zepetoid())
-			.u_img(result.get().getU_img())
-			.u_deposit(result.get().getU_deposit())
-			.u_grade(result.get().getU_grade())
-			.u_level(result.get().getU_level())
-			.u_email(result.get().getU_email())
-			.u_successedchallenge(result.get().getU_successedchallenge())
+    	  	.u_id(result.get().getUid())
+			.u_nickname(result.get().getUnickname())
+			.u_zepetoid(result.get().getUzepetoid())
+			.u_img(result.get().getUimg())
+			.u_deposit(result.get().getUdeposit())
+			.u_grade(result.get().getUgrade())
+			.u_level(result.get().getUlevel())
+			.u_email(result.get().getUemail())
+			.u_successedchallenge(result.get().getUsuccessedchallenge())
 			.build();
     	  	return userinfo;
       } else {
@@ -69,15 +69,15 @@ public class UserService {
    //유저 정보 수정
    public boolean UpdateUser(UserDTO u) {
       user = User.builder()
-            .u_id(u.getU_id())
-            .u_nickname(u.getU_nickname())
-            .u_zepetoid(u.getU_zepetoid())
-            .u_img(u.getU_img())
-            .u_deposit(u.getU_deposit())
-            .u_grade(u.getU_grade())
-            .u_level(u.getU_level())
-            .u_email(u.getU_email())
-            .u_successedchallenge(u.getU_successedchallenge())
+            .uid(u.getU_id())
+            .unickname(u.getU_nickname())
+            .uzepetoid(u.getU_zepetoid())
+            .uimg(u.getU_img())
+            .udeposit(u.getU_deposit())
+            .ugrade(u.getU_grade())
+            .ulevel(u.getU_level())
+            .uemail(u.getU_email())
+            .usuccessedchallenge(u.getU_successedchallenge())
             .build();
       try {
          userRepository.save(user);
