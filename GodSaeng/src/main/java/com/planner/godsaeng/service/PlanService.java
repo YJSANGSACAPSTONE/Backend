@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PlanService {	
-	
 	private final PlanRepository planRepository;
 	
 	

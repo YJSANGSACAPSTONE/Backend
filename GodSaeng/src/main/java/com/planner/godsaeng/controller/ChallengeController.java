@@ -1,6 +1,7 @@
 package com.planner.godsaeng.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,8 +21,14 @@ public class ChallengeController {
 	ChallengeService service;
 	
 	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean>addChallenge(@ModelAttribute ChallengeDTO d){
-		boolean isAddSuccessed =true;
+	public ResponseEntity<Boolean>AddChallenge(@ModelAttribute ChallengeDTO d){
+		boolean isAddSuccessed = service.InsertChallenge(d);
+		if(isAddSuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	
 	}
 	
 	
