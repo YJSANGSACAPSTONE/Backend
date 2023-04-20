@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tomcat.util.net.jsse.PEMFile;
+import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,31 +57,39 @@ public class ChallengeService {
 	//종료된 챌린지는 제외시켜야함 --> 미완성(2023.04.18) 
 	//--> 현재 날짜가 종료 날짜를 초과한 시점이면 안될 듯. 혹은 종료된 챌린지인지 아닌지 알 수 있는 attribute가 필요.
 	public List<ChallengeDTO>ReadPopularChallenge(){
-		List<Challenge>popularListEntity=challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
-		List<ChallengeDTO>popularList=new ArrayList<>();
 		
-		for(Challenge e : popularListEntity) {
-			popularList.add(
-					ChallengeDTO.builder()
-					.c_id(e.getCid())
-					.c_name(e.getCname())
-					.c_content(e.getCcontent())
-					.c_startdate(e.getCstartdate())
-					.c_enddate(e.getCenddate())
-					.c_numberofparticipants(e.getCnumberofparticipants())
-					.c_category(e.getCcategory())
-					.c_thumbnails(e.getCthumbnails())
-					.c_introduction(e.getCintroduction())
-					.c_fee(e.getCfee())
-					.c_numberofphoto(e.getCnumberofphoto())
-					.c_typeofverify(e.getCtypeofverify())
-					.c_typeoffrequency(e.getCtypeoffrequency())
-					.c_frequency(e.getCfrequency())
-					.c_score(e.getCscore())
-					.build()
-			);
+		try {
+			List<Challenge>popularListEntity=challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
+			List<ChallengeDTO>popularList=new ArrayList<>();
+			
+			for(Challenge e : popularListEntity) {
+				popularList.add(
+						ChallengeDTO.builder()
+						.c_id(e.getCid())
+						.c_name(e.getCname())
+						.c_content(e.getCcontent())
+						.c_startdate(e.getCstartdate())
+						.c_enddate(e.getCenddate())
+						.c_numberofparticipants(e.getCnumberofparticipants())
+						.c_category(e.getCcategory())
+						.c_thumbnails(e.getCthumbnails())
+						.c_introduction(e.getCintroduction())
+						.c_fee(e.getCfee())
+						.c_numberofphoto(e.getCnumberofphoto())
+						.c_typeofverify(e.getCtypeofverify())
+						.c_typeoffrequency(e.getCtypeoffrequency())
+						.c_frequency(e.getCfrequency())
+						.c_score(e.getCscore())
+						.build()
+				);
+			}
+			return popularList;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
 		}
-		return popularList;
+		
+		
 	}
 	//최신챌린지 조회R2 - querytest 완료
 	public List<ChallengeDTO>ReadRecentChallenge(){
@@ -157,15 +167,20 @@ public class ChallengeService {
 				.cfrequency(d.getC_frequency())
 				.cscore(d.getC_score())
 				.build();
-				
-		return true;
+		try {
+			challengeRepository.save(challenge);
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	
 	//여기부터 CRUD-D 챌린지 DELETE
-	public boolean DeleteChallenge(int cid) {
+	public boolean DeleteChallenge(long cid) {
 		try {
-			challengeRepository.deleteById(null);
+			challengeRepository.deleteById(cid);
 			return true;
 			
 		}catch(Exception e){
@@ -173,5 +188,4 @@ public class ChallengeService {
 			return false;
 		}	
 	}
-
 }

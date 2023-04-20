@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,9 +23,7 @@ import lombok.ToString;
 @Table(name = "godsaeng_challengeverify")
 @ToString
 @Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 
 //cv - challengeverify의 약자
 public class ChallengeVerify {
@@ -32,12 +31,12 @@ public class ChallengeVerify {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long cvid;
 	
-	@ManyToOne
-	@JoinColumn(name = "c_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "cid", nullable = false)
 	private Challenge challenge;
 	
-	@ManyToOne
-	@JoinColumn(name = "u_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "uid", nullable = false)
 	private User user;
 	
 	@Column(length=200, nullable=true)
@@ -48,5 +47,12 @@ public class ChallengeVerify {
 
 	@Column(nullable = false)
 	private int cvsuccessornot;
+	
+	public ChallengeVerify() {}
+	
+	public ChallengeVerify(Challenge challenge, User user) {
+		this.challenge=challenge;
+		this.user = user;
+	}
 
 }

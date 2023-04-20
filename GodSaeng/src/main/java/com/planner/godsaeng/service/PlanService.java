@@ -28,16 +28,16 @@ public class PlanService {
 	public boolean InsertPlan(PlanDTO d) {
 		//dto to entity
 		plan = Plan.builder()
-				.p_id(d.getP_id())
-				.u_id(d.getU_id())
-				.p_startdate(d.getP_startdate())
-				.p_enddate(d.getP_enddate())
-				.p_starttime(d.getP_starttime())
-				.p_endtime(d.getP_endtime())
-				.p_title(d.getP_title())
-				.p_content(d.getP_content())
-				.p_category(d.getP_category())
-				.p_remindornot(d.getP_remindornot())
+				.pid(d.getP_id())
+				.uid(d.getU_id())
+				.pstartdate(d.getP_startdate())
+				.penddate(d.getP_enddate())
+				.pstarttime(d.getP_starttime())
+				.pendtime(d.getP_endtime())
+				.ptitle(d.getP_title())
+				.pcontent(d.getP_content())
+				.pcategory(d.getP_category())
+				.premindornot(d.getP_remindornot())
 				.build();
 		
 		try {
@@ -61,16 +61,16 @@ public class PlanService {
 			for(Plan p: planList) {
 				userDailyPlanList.add(
 						PlanDTO.builder()
-							.p_id(p.getP_id())
-							.u_id(p.getU_id())
-							.p_startdate(p.getP_startdate())
-							.p_enddate(p.getP_enddate())
-							.p_starttime(p.getP_starttime())
-							.p_endtime(p.getP_endtime())
-							.p_title(p.getP_title())
-							.p_content(p.getP_content())
-							.p_category(p.getP_category())
-							.p_remindornot(p.getP_remindornot())
+							.p_id(p.getPid())
+							.u_id(p.getUid())
+							.p_startdate(p.getPstartdate())
+							.p_enddate(p.getPenddate())
+							.p_starttime(p.getPstarttime())
+							.p_endtime(p.getPendtime())
+							.p_title(p.getPtitle())
+							.p_content(p.getPcontent())
+							.p_category(p.getPcategory())
+							.p_remindornot(p.getPremindornot())
 							.build()
 						);
 			}
@@ -84,16 +84,16 @@ public class PlanService {
 	
 	public boolean UpdatePlan(PlanDTO d) {
 		plan = Plan.builder()
-				.p_id(d.getP_id())
-				.u_id(d.getU_id())
-				.p_startdate(d.getP_startdate())
-				.p_enddate(d.getP_enddate())
-				.p_starttime(d.getP_starttime())
-				.p_endtime(d.getP_endtime())
-				.p_title(d.getP_title())
-				.p_content(d.getP_content())
-				.p_category(d.getP_category())
-				.p_remindornot(d.getP_remindornot())
+				.pid(d.getP_id())
+				.uid(d.getU_id())
+				.pstartdate(d.getP_startdate())
+				.penddate(d.getP_enddate())
+				.pstarttime(d.getP_starttime())
+				.pendtime(d.getP_endtime())
+				.ptitle(d.getP_title())
+				.pcontent(d.getP_content())
+				.pcategory(d.getP_category())
+				.premindornot(d.getP_remindornot())
 				.build();
 		try {
 			planRepository.save(plan);
