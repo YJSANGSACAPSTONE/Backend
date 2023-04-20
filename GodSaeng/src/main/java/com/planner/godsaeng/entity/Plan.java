@@ -23,34 +23,34 @@ public class Plan {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long p_id;
+	private long pid;
 	
 	@Column(length=20, nullable=false)
-	private String u_id;
+	private String uid;
 	
 	@Column(length=30, nullable=false)
-	private Date p_startdate;
+	private Date pstartdate;
 	
 	@Column(length=30, nullable=false)
-	private Date p_enddate;
+	private Date penddate;
 	
 	@Column(length=30, nullable=false)
-	private LocalDateTime p_starttime;
+	private LocalDateTime pstarttime;
 	
 	@Column(length=30, nullable=false)
-	private LocalDateTime p_endtime;
+	private LocalDateTime pendtime;
 	
 	@Column(length=30, nullable=false)
-	private String p_title;
+	private String ptitle;
 	
 	@Column(length=500, nullable=true)
-	private String p_content;
+	private String pcontent;
 	
 	@Column(length=30, nullable=true)
-	private String p_category;
+	private String pcategory;
 	
 	@Column(length=30, columnDefinition = "int default 1")
-	private int p_remindornot;
+	private int premindornot;
 	
 	
 	

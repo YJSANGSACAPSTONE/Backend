@@ -19,7 +19,7 @@ public class QueryTest {
 	@Test
 	void contextLoads() {
 		
-		List<ChallengeDTO> challenge = ReadRecentChallenge();
+		List<ChallengeDTO> challenge = ReadPopularChallenge();
 		
 		for(ChallengeDTO c : challenge) {
 			System.out.println(c.getC_name());
