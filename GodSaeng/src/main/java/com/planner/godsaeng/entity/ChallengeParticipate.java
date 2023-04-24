@@ -18,7 +18,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name="godsaeng_challengeparticipate")
-@ToString
+@ToString(exclude="challenge")
 @Getter
 
 
