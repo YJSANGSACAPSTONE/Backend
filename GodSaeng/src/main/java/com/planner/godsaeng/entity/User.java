@@ -17,13 +17,12 @@ import lombok.ToString;
 @ToString
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
    
    @Id
-   @Column(length=20, nullable=false)
+   @Column(length=30, nullable=false)
    private String uid;
    
    @Column(length=20, nullable=false)
