@@ -1,9 +1,12 @@
 package com.planner.godsaeng.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,26 +21,26 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
+@DynamicInsert
 public class Plan {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long pid;
+	private Long pid;
 	
 	@Column(length=20, nullable=false)
 	private String uid;
 	
 	@Column(length=30, nullable=false)
-	private Date pstartdate;
+	private LocalDate pstartdate;
 	
-	@Column(length=30, nullable=false)
-	private Date penddate;
+	@Column(length=30, nullable=true)
+	private LocalDate penddate;
 	
 	@Column(length=30, nullable=false)
 	private LocalDateTime pstarttime;
 	
-	@Column(length=30, nullable=false)
+	@Column(length=30, nullable=true)
 	private LocalDateTime pendtime;
 	
 	@Column(length=30, nullable=false)
@@ -49,8 +52,8 @@ public class Plan {
 	@Column(length=30, nullable=true)
 	private String pcategory;
 	
-	@Column(length=30, columnDefinition = "int default 1")
-	private int premindornot;
+	@Column(length=30, nullable=true)
+	private Integer premindornot;
 	
 	
 	

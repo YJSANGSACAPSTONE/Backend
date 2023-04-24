@@ -14,6 +14,7 @@ import com.planner.godsaeng.dto.PlanDTO;
 import com.planner.godsaeng.entity.Plan;
 import com.planner.godsaeng.repository.PlanRepository;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,7 +29,6 @@ public class PlanService {
 	public boolean InsertPlan(PlanDTO d) {
 		//dto to entity
 		plan = Plan.builder()
-				.pid(d.getP_id())
 				.uid(d.getU_id())
 				.pstartdate(d.getP_startdate())
 				.penddate(d.getP_enddate())
@@ -105,7 +105,7 @@ public class PlanService {
 	}
 	
 	
-	public boolean DeletePlan(long p_id) {
+	public boolean DeletePlan(Long p_id) {
 		try {
 			planRepository.deleteById(p_id);
 			return true;

@@ -37,7 +37,7 @@ public class Challenge {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long cid;
+	private Long cid;
 	
 	@Column(length=30, nullable = false)
 	private String cname;
@@ -52,10 +52,10 @@ public class Challenge {
 	private Date cenddate;
 
 	@Column(nullable = false)
-	private int cnumberofparticipants;
+	private Integer cnumberofparticipants;
 	
 	@Column(nullable = false)
-	private int ccategory;
+	private Integer ccategory;
 	
 	@Column(length = 100, nullable = false)
 	private String cthumbnails;
@@ -64,22 +64,22 @@ public class Challenge {
 	private String cintroduction;
 	
 	@Column(nullable = true)
-	private int cfee;
+	private Integer cfee;
 	
 	@Column(nullable = false)
-	private int cnumberofphoto;
+	private Integer cnumberofphoto;
 	
 	@Column(nullable = false)
-	private int ctypeofverify;
+	private Integer ctypeofverify;
 	
 	@Column(nullable = false)
-	private int ctypeoffrequency;
+	private Integer ctypeoffrequency;
 	
 	@Column(nullable= false)
-	private int cfrequency;
+	private Integer cfrequency;
 	
 	@Column(nullable = false)
-	private int cscore;
+	private Integer cscore;
 	
 //	@OneToMany(mappedBy="challengeparticipate")
 //	private List<ChallengeParticipate>partitcipates = new ArrayList<>();
