@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>오늘 일정</title>
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+	<!-- subHeader Start -->
+	<div id="subHeader" class="container">
+		<div class="container_inner">
+			<div>
+				<ul>
+					<li class="sub_logo">
+						<p>갓생플래너</p>
+						<img src="/img/logo.png" alt="logo">
+					</li>
+					<li class="sub_burger">
+						<span></span>
+						<span></span>
+						<span></span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div><!-- subHeader End -->
+	<!-- planner_content Start -->
+	<div id="planner_content" class="container">
+		<div class="container_inner">
+			<div>
+				<ul>
+					<li class="planner_profile">
+						<div class="pl_pro_img">
+							<img src="/img/profile.png" alt="profile">
+							<p>@sinsung test</p>
+						</div>
+						<div class="pl_pro_text">
+							<p>영진상사</p>
+							<p>lv. 10</p>
+
+						</div>
+					</li>
+					<li class="planner_calendar">
+						<div id="datepickerDiv" style="cursor: pointer; margin-bottom:10px; padding: 10px 0; width:120px; text-align: center; border: 1px solid #ccc; display: inline-block;">
+							달력 보기
+						</div>
+						<input type="text" id="selected-date-input">
+						<div id="datepickerUI"></div>
+					</li>
+					<li class="planner_inputArea">
+						<div>
+							<ul>
+
+								<li th:each="plan: ${list}"class="list_no_12">[[${plan.p_starttime}]] : [[${plan.p_title}]]</li>
+								<div class="btn_li">
+									<button id="addTaskBtn">할 일 추가 <span>+</span> </button>
+								</div>
+								<div class="modal" id="listModal">
+									<div class="modal-content">
+										<h2>아침 8시에 기상하기</h2>
+										<div class="btn_area">
+											<button class="editBtn"><img src="/img/edit.png" alt="edit">시간수정</button>
+											<button><img src="/img/bin.png" alt="bin">삭제하기</button>
+										</div>
+										<div class="text_area">
+											<textarea name="" id="" >9시 수영 수업들으러 가야함!!</textarea>
+										</div>
+										<div class="editReminder">
+											<div class="confirmBtn">
+												<button>확인</button>
+											</div>
+											<div class="reminder_btn">
+												<label for="chk_reminder"><img src="/img/reminders.png" alt="reminders">리마인더 설정</label>
+												<input type="checkbox" id="chk_reminder" name="chk_reminder" >
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="editModal" class="modal">
+									<div class="modal-content">
+										<h2>시간 설정</h2>
+										<!-- <div class="btn_area">
+											<button>오전</button>
+											<button>오후</button>
+										</div> -->
+										<div id="alarm-wrapper">
+									        <div id="alarm-time-display">00 : 00</div>
+									    </div>
+									    <audio id="alarm-sound">
+									        <source src="/audio/alarm.mp3" type="audio/mpeg">
+									        Your browser does not support the audio element.
+									    </audio>
+
+									    <button class="alarmChkBtn">확인</button>
+									</div>
+								</div>
+								<div id="addTaskModal" class="modal">
+									<div class="modal-content">
+										<label for="plan_title">제목</label>
+										<input id="plan_title" type="text" />
+
+										<div class="btn_area">
+											<button class="editBtn"><img src="/img/edit.png" alt="edit">시간수정</button>
+											<button><img src="/img/bin.png" alt="bin">삭제하기</button>
+										</div>
+										<div class="text_area">
+											<textarea name="" id="" ></textarea>
+										</div>
+										<div class="editReminder">
+											<div class="confirmBtn">
+												<button>확인</button>
+											</div>
+											<div class="reminder_btn">
+												<label for="chk_reminder_w"><img src="/img/reminders.png" alt="reminders">리마인더 설정</label>
+												<input type="checkbox" id="chk_reminder_w" name="chk_reminder" >
+											</div>
+										</div>
+									</div>
+								</div>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div><!-- planner_content End -->
+	<!-- subFooter Start -->
+	<!-- subFooter end -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+	$(function() {
+
+	  // div 요소에 datepicker 설정
+	  $("#datepickerDiv").click(function() {
+		// Datepicker가 표시되어 있는지 체크
+		if ($(".ui-datepicker").is(":visible")) {
+		  // 표시되어 있다면 숨김
+		  $("#datepickerDiv").text("달력 보기");
+		  $("#datepickerUI").hide();
+		} else {
+		  // 표시되어 있지 않다면 표시
+		  $("#datepickerDiv").text("달력 숨기기");
+		  $("#datepickerUI").show();
+		}
+
+		$("#datepickerUI").datepicker({
+			onSelect: function(dateText, inst) {
+			  // 선택한 날짜를 input 요소에 설정
+			  $("#selected-date-input").val(dateText);
+			},
+			dateFormat: "yy-mm-dd" // 날짜 형식 설정
+		});
+	  });
+
+		// "할일 추가" 버튼 클릭 시, 모달 창 보이기
+		$('#addTaskBtn').click(function() {
+			$('#addTaskModal').css('display', 'flex');
+		});
+
+		// "닫기" 버튼 클릭 시, 모달 창 숨기기
+		$('#closeModalBtn').click(function() {
+			$('#addTaskModal').css('display', 'none');
+		});
+
+		// 할일 추가 폼 제출 시, 모달 창 숨기기
+		$('#addTaskForm').submit(function(event) {
+			event.preventDefault();
+			$('#addTaskModal').css('display', 'none');
+			// 추가할일 처리 로직 작성
+		});
+
+		$(".planner_inputArea > div > ul > li").click(function (){
+			let id = $(this).attr("class");
+			id = id.substr(8,id.length-1);
+
+			let title = $(this).text();
+
+			$("#listModal").css('display','flex');
+			$("#listModal h2").text(title);
+		});
+
+		$("#listModal .confirmBtn button").click( () => {
+			$("#listModal").css('display','none');
+		});
+
+		$("#listModal .editBtn").click( () => {
+			$("#listModal").css('display','none');
+			$("#editModal").css('display','flex');
+		});
+
+		$("#addTaskModal .editBtn").click( () => {
+			$("#addTaskModal").css('display','none');
+			$("#editModal").css('display','flex');
+		});
+		$("#addTaskModal .confirmBtn button").click(()=>{
+			$("#addTaskModal").css('display','none');
+		});
+
+		$(".alarmChkBtn").click( () => {
+			$("#editModal").css("display","none");
+		});
+
+		// 알람기능 -----------------------------------------------------------------
+		var alarmSound = document.getElementById("alarm-sound");
+	    var alarmInterval;
+	    var isAlarmSet = false;
+
+	    $("#alarm-time-display").on("click", function() {
+	        if (isAlarmSet) return;
+
+	        var alarmTime = prompt("알람 시간을 설정해주세요 (HH:mm)", "00 : 00");
+
+	        if (alarmTime !== null && alarmTime !== "") {
+	            $("#alarm-time-display").text(alarmTime);
+
+	            if (alarmTime === "00:00" || alarmTime === "00 : 00" ) {
+		            alert("알람 시간을 설정해주세요.");
+		            return;
+		        }
+
+		        $("#set-alarm").prop("disabled", true);
+		        $("#stop-alarm").prop("disabled", false);
+		        isAlarmSet = true;
+
+		        alarmInterval = setInterval(function() {
+		            var currentTime = new Date();
+		            var currentHour = currentTime.getHours();
+		            var currentMinute = currentTime.getMinutes();
+		            var alarmHour = parseInt(alarmTime.split(":")[0]);
+		            var alarmMinute = parseInt(alarmTime.split(":")[1]);
+
+		            if (currentHour === alarmHour && currentMinute === alarmMinute) {
+		                alarmSound.play();
+		                clearInterval(alarmInterval);
+		                $("#set-alarm").prop("disabled", false);
+		                $("#stop-alarm").prop("disabled", true);
+		                isAlarmSet = false;
+		            }
+		        }, 1000);
+	        }
+	    });
+
+		// 알람기능 -----------------------------------------------------------------
+	    
+
+	});
+  </script>
+</body>
+</html>

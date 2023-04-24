@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.planner.godsaeng.dto.PlanDTO;
@@ -33,7 +34,8 @@ public class PlanController {
 	PlanService service;
 	
 	@PostMapping("/addplan")
-	public ResponseEntity<Boolean> addPlan(@ModelAttribute PlanDTO d) {
+	public ResponseEntity<Boolean> addPlan(@RequestBody PlanDTO d) {
+		System.out.println(d.getU_id() + "자 엔드데이터임.");
 		boolean isAddSuccessed = service.InsertPlan(d);
 		if(isAddSuccessed) {
 			return ResponseEntity.ok(true);
@@ -64,7 +66,7 @@ public class PlanController {
 	
 	//업데이트 시 실시간으로 업데이트된 데이터를 출력할 수 있도록 하는 메서드
 	@PostMapping("/updateplan")
-	public ResponseEntity<PlanDTO> updatePlan(@ModelAttribute PlanDTO d) {
+	public ResponseEntity<PlanDTO> updatePlan(@RequestBody PlanDTO d) {
 		boolean isSuccess = service.UpdatePlan(d);
 		//업데이트 서비스메서드를 실행한 결과를 isSuccess 변수에 담아줌.
 		if(isSuccess) {
@@ -87,6 +89,12 @@ public class PlanController {
 					.body(false);
 		}
 	}
-	
+//  다른 방법 고민중.	
+//	@RequestMapping(value = "/deleteplan/{p_id}", method = RequestMethod.DELETE)
+//	public Boolean deletePlan(@PathVariable Long p_id) {
+//		return service.DeletePlan(p_id);
+//		
+//	}
+//	
 
 }

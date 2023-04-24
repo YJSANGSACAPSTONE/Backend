@@ -1,12 +1,15 @@
 package com.planner.godsaeng.entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -19,55 +22,65 @@ import lombok.ToString;
 @Table(name = "godsaeng_challenge")
 @ToString
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class Challenge {
+	
+	@Builder.Default
+	@OneToMany(mappedBy = "challenge")
+	private List<ChallengeParticipate>challengeParticipate = new ArrayList<>();
+	
+	@Builder.Default
+	@OneToMany(mappedBy = "challenge")
+	private List<ChallengeVerify>challengeVerify = new ArrayList<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long c_id;
+	private Long cid;
 	
 	@Column(length=30, nullable = false)
-	private String c_name;
+	private String cname;
 	
 	@Column(length=500, nullable = false)
-	private String c_content;
+	private String ccontent;
 	
 	@Column(length=30, nullable = false)
-	private Date c_startdate;
+	private Date cstartdate;
 	
 	@Column(length=30, nullable = false)
-	private Date c_enddate;
+	private Date cenddate;
+
+	@Column(nullable = false)
+	private Integer cnumberofparticipants;
 	
 	@Column(nullable = false)
-	private int c_numberofparticipants;
-	
-	@Column(nullable = false)
-	private int c_category;
+	private Integer ccategory;
 	
 	@Column(length = 100, nullable = false)
-	private String c_thumbnails;
+	private String cthumbnails;
 	
 	@Column(length = 50, nullable = false)
-	private String c_introduction;
+	private String cintroduction;
 	
 	@Column(nullable = true)
-	private int c_fee;
+	private Integer cfee;
 	
 	@Column(nullable = false)
-	private int c_numberofphoto;
+	private Integer cnumberofphoto;
 	
 	@Column(nullable = false)
-	private int c_typeofverify;
+	private Integer ctypeofverify;
 	
 	@Column(nullable = false)
-	private int c_typeoffrequency;
+	private Integer ctypeoffrequency;
 	
 	@Column(nullable= false)
-	private int c_frequency;
+	private Integer cfrequency;
 	
 	@Column(nullable = false)
-	private int c_score;
+	private Integer cscore;
+	
+//	@OneToMany(mappedBy="challengeparticipate")
+//	private List<ChallengeParticipate>partitcipates = new ArrayList<>();
 }
