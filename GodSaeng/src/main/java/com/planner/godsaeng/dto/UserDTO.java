@@ -1,7 +1,9 @@
 package com.planner.godsaeng.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -9,6 +11,8 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
    private String u_id;
    private String u_nickname;
@@ -16,6 +20,7 @@ public class UserDTO {
    private String u_img;
    private int u_deposit;
    private String u_grade;
+   private int u_level;
    private String u_email;
    private String u_successedchallenge;
 }
