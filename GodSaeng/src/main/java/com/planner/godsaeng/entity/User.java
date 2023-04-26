@@ -17,34 +17,36 @@ import lombok.ToString;
 @ToString
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
    
    @Id
-   @Column(length=20, nullable=false)
-   private String u_id;
+   @Column(length=30, nullable=false)
+   private String uid;
    
    @Column(length=20, nullable=false)
-   private String u_nickname;
+   private String unickname;
    
    @Column(length=20, nullable=false)
-   private String u_zepetoid;
+   private String uzepetoid;
    
    @Column(length=20, nullable=false)
-   private String u_img;
+   private String uimg;
    
    @Column(length=20, columnDefinition = "int default 0")
-   private int u_deposit;
+   private int udeposit;
    
    @Column(length=20, nullable=false)
-   private String u_grade;
+   private String ugrade;
+   
+   @Column(length=20, columnDefinition = "int default 0")
+   private int ulevel;
    
    @Column(length=20, nullable=false)
-   private String u_email;
+   private String uemail;
    
    @Column(length=20, nullable=false)
-   private String u_successedchallenge;
+   private String usuccessedchallenge;
    
 }
