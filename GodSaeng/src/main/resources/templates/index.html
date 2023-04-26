@@ -12,9 +12,12 @@
 		</a>
 	</span>
 	<span th:if="${userId!=null}">
-		<form name="logout" action="http://localhost:8070/logout">
+		<!-- <form name="logout" action="https://kauth.kakao.com/oauth/logout?client_id=87c054c34eca4ca3541ab083e086cd12&logout_redirect_uri=http://localhost:8070">
 			<input type="submit" value="로그아웃">
-		</form>
+		</form> -->
+		<a href="https://kauth.kakao.com/oauth/logout?client_id=87c054c34eca4ca3541ab083e086cd12&logout_redirect_uri=http://localhost:8070">
+			<button>테스트</button>
+		</a>
 	</span>
 </body>
 </html>

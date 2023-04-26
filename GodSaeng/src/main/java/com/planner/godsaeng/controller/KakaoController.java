@@ -44,39 +44,39 @@ public class KakaoController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/logout")
-	public ModelAndView logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView mav = new ModelAndView();
-		
-		kakaoApi.kakaoLogout((String)session.getAttribute("accessToken"));
-		session.removeAttribute("accessToken");
+//	@RequestMapping(value="/logout")
+//	public ModelAndView logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+//		ModelAndView mav = new ModelAndView();
+//		
+//		kakaoApi.kakaoLogout((String)session.getAttribute("accessToken"));
+//		session.removeAttribute("accessToken");
 //		session.removeAttribute("userId");
 		
 		
 //		 // 세션 무효화
 //	    session.invalidate();
 	    
-	    // 캐시 제어 헤더 추가
-	    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
-	    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-	    response.setHeader("Expires", "0"); // Proxies
+//	    // 캐시 제어 헤더 추가
+//	    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+//	    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+//	    response.setHeader("Expires", "0"); // Proxies
+//		
+//		Cookie[] cookies = request.getCookies();
+//		if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("JSESSIONID")) {
+//                	cookie.setValue("");
+//                    cookie.setPath("/");
+//                    cookie.setMaxAge(0);
+//                    response.addCookie(cookie);
+//                }
+//            }
+//        }
 		
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("JSESSIONID")) {
-                	cookie.setValue("");
-                    cookie.setPath("/");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
-            }
-        }
 		
-		
-		mav.setViewName("index");
-		return mav;
-	}
+//		mav.setViewName("index");
+//		return mav;
+//	}
 	
 	@RequestMapping(value="/save")
 	public ModelAndView save(HttpSession session, HttpServletRequest request) {
