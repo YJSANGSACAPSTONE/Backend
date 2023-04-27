@@ -79,8 +79,8 @@ public class PlanController {
 		
 	}
 	//일정 삭제 메서드
-	@GetMapping("/deleteplan")
-	public ResponseEntity<Boolean> deletePlan(@ModelAttribute PlanDTO d) {
+	@PostMapping("/deleteplan")
+	public ResponseEntity<Boolean> deletePlan(@RequestBody PlanDTO d) {
 		boolean isDeleted = service.DeletePlan(d.getP_id());
 		if(isDeleted) {
 			return ResponseEntity.ok(true);

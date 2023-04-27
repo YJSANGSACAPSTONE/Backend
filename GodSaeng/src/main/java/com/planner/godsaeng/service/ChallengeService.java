@@ -3,6 +3,7 @@ package com.planner.godsaeng.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.tomcat.util.net.jsse.PEMFile;
 import org.hibernate.internal.build.AllowPrintStacktrace;
@@ -150,7 +151,9 @@ public class ChallengeService {
 	//여기까지 챌린지 R
 	//여기부터 CRUD-U 챌린지 UPDATE
 	public boolean UpdateChallenge(ChallengeDTO d) {
-		challenge = Challenge.builder()
+		Optional<Challenge>result = challengeRepository.findById(d.getC_id());
+		if(result.isPresent()) {
+			challenge = Challenge.builder()
 				.cid(d.getC_id())
 				.cname(d.getC_name())
 				.ccontent(d.getC_content())
@@ -167,20 +170,25 @@ public class ChallengeService {
 				.cfrequency(d.getC_frequency())
 				.cscore(d.getC_score())
 				.build();
+				
 		try {
 			challengeRepository.save(challenge);
 			return true;
 		}catch(Exception e) {
 			e.printStackTrace();
 			return false;
+			}
+		}else {
+			return false;
 		}
+		
 	}
 	
 	
-	//여기부터 CRUD-D 챌린지 DELETE
-	public boolean DeleteChallenge(long cid) {
+	//여기부터 CRUD-D 챌린지 DELETE	
+	public boolean DeleteChallenge(Long c_id) {
 		try {
-			challengeRepository.deleteById(cid);
+			challengeRepository.deleteById(c_id);
 			return true;
 			
 		}catch(Exception e){
