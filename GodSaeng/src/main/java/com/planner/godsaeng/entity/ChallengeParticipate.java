@@ -28,7 +28,7 @@ import lombok.ToString;
 public class ChallengeParticipate {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long cpid;
+	private Long cpid;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cid")
