@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
@@ -30,7 +31,7 @@ public class ChallengeController {
 	ChallengeService service;
 	
 	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean>AddChallenge(@ModelAttribute ChallengeDTO d){
+	public ResponseEntity<Boolean>AddChallenge(@RequestBody ChallengeDTO d){
 		boolean isAddSuccessed = service.InsertChallenge(d);
 		if(isAddSuccessed) {
 			return ResponseEntity.ok(true);
@@ -55,7 +56,7 @@ public class ChallengeController {
 		
 	}
 	@PostMapping("/update")
-	public ResponseEntity<ChallengeDTO>UpdateChallenge(@ModelAttribute ChallengeDTO d){
+	public ResponseEntity<ChallengeDTO>UpdateChallenge(@RequestBody ChallengeDTO d){
 		boolean isSuccess = service.UpdateChallenge(d);
 		if(isSuccess) {
 			return ResponseEntity.ok(d);
@@ -68,8 +69,8 @@ public class ChallengeController {
 		return null;
 	}
 	
-	@GetMapping("/delete")
-	public ResponseEntity<Boolean>DeleteChallenge(@ModelAttribute ChallengeDTO d){
+	@PostMapping("/delete")
+	public ResponseEntity<Boolean>DeleteChallenge(@RequestBody ChallengeDTO d){
 		boolean isDeleteSuccessed = service.DeleteChallenge(d.getC_id());
 		if(isDeleteSuccessed) {
 			return ResponseEntity.ok(true);

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -83,18 +84,17 @@ public class PlanService {
 	
 	
 	public boolean UpdatePlan(PlanDTO d) {
-		plan = Plan.builder()
-				.pid(d.getP_id())
-				.uid(d.getU_id())
-				.pstartdate(d.getP_startdate())
-				.penddate(d.getP_enddate())
-				.pstarttime(d.getP_starttime())
-				.pendtime(d.getP_endtime())
-				.ptitle(d.getP_title())
-				.pcontent(d.getP_content())
-				.pcategory(d.getP_category())
-				.premindornot(d.getP_remindornot())
-				.build();
+		Optional<Plan>result = planRepository.findById(d.getP_id());
+		if(result.isPresent())
+			plan = result.get();
+				plan.ChangeStartDate(d.getP_startdate());
+				plan.ChangeEndDate(d.getP_enddate());
+				plan.ChangeStartTime(d.getP_starttime());
+				plan.ChangeEndTime(d.getP_endtime());
+				plan.ChangeCategory(d.getP_category());
+				plan.ChangeTitle(d.getP_title());
+				plan.ChangeContent(d.getP_content());
+				plan.ChangeRemindOrNot(d.getP_remindornot());
 		try {
 			planRepository.save(plan);
 			return true;

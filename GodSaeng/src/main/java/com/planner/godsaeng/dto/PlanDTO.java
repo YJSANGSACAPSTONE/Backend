@@ -2,7 +2,7 @@ package com.planner.godsaeng.dto;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +17,8 @@ public class PlanDTO {
     private String u_id;
     private LocalDate p_startdate;
     private LocalDate p_enddate;
-    private LocalDateTime p_starttime;
-    private LocalDateTime p_endtime;
+    private LocalTime p_starttime;
+    private LocalTime p_endtime;
     private String p_title;
     private String p_content;
     private String p_category;
