@@ -20,14 +20,14 @@ public class UserService {
    //유저 회원가입(INSERT)
    public boolean InsertUser(UserDTO u) {
       user = User.builder()
-            .u_id(u.getU_id())
-            .u_nickname(u.getU_nickname())
-            .u_zepetoid(u.getU_zepetoid())
-            .u_img(u.getU_img())
-            .u_deposit(u.getU_deposit())
-            .u_grade(u.getU_grade())
-            .u_email(u.getU_email())
-            .u_successedchallenge(u.getU_successedchallenge())
+            .uid(u.getU_id())
+            .unickname(u.getU_nickname())
+            .uzepetoid(u.getU_zepetoid())
+            .uimg(u.getU_img())
+            .udeposit(u.getU_deposit())
+            .ugrade(u.getU_grade())
+            .uemail(u.getU_email())
+            .usuccessedchallenge(u.getU_successedchallenge())
             .build();
       
       try {
@@ -49,14 +49,14 @@ public class UserService {
    //유저 정보 수정
    public boolean UpdateUser(UserDTO u) {
       user = User.builder()
-            .u_id(u.getU_id())
-            .u_nickname(u.getU_nickname())
-            .u_zepetoid(u.getU_zepetoid())
-            .u_img(u.getU_img())
-            .u_deposit(u.getU_deposit())
-            .u_grade(u.getU_grade())
-            .u_email(u.getU_email())
-            .u_successedchallenge(u.getU_successedchallenge())
+    		  .uid(u.getU_id())
+              .unickname(u.getU_nickname())
+              .uzepetoid(u.getU_zepetoid())
+              .uimg(u.getU_img())
+              .udeposit(u.getU_deposit())
+              .ugrade(u.getU_grade())
+              .uemail(u.getU_email())
+              .usuccessedchallenge(u.getU_successedchallenge())
             .build();
       try {
          userRepository.save(user);
@@ -67,7 +67,7 @@ public class UserService {
       }
    }
    
-   //유저 정보 삭제
+   // 유저 정보 삭제
    public boolean DeleteUser(String u_id) {
       try {
          userRepository.deleteById(u_id);

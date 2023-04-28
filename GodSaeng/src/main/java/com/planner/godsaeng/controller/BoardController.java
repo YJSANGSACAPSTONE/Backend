@@ -22,11 +22,10 @@ public class BoardController {
 		return "publishing/pages/board/write";
 	}
 	
-	
 	@PostMapping("/add")
 	public String addBoard(BoardDTO b) {
 		service.InsertBoard(b);
-		return null;
+		return "redirect: /board/list";
 	}
 
 	@GetMapping("/list")

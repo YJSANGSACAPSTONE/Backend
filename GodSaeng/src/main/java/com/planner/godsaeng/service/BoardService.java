@@ -21,19 +21,12 @@ public class BoardService {
 	   BoardRepository boardRepository;
 	   
 	   // 게시판 작성 (Insert)
-	   public boolean InsertBoard (BoardDTO b) {
+	   public boolean InsertBoard(BoardDTO b) {
 	      board = Board.builder()
-	            .b_id(b.getB_id())
-	            .b_number(b.getB_number())
-	            .u_id(b.getU_id())
-	            .b_date(b.getB_date())
-	            .b_title(b.getB_title())
-	            .b_content(b.getB_content())
-	            .b_image(b.getB_image())
-	            .b_category(b.getB_category())
-	            .b_count(b.getB_count())
+	            .bid(b.getB_id())		// 게시판 id
+	            .aid(b.getA_id())		// 관리자 id
+	            .bname(b.getB_name())	// 게시판 이름
 	            .build();
-	      
 	      try {
 	         boardRepository.save(board);
 	         return true;
@@ -52,17 +45,11 @@ public class BoardService {
 	   
 	   // 게시판 수정 (Update)
 	   public boolean UpdateBoard(BoardDTO b) {
-	      board = Board.builder()
-	    		  .b_id(b.getB_id())
-	    		  .b_number(b.getB_number())
-	    		  .u_id(b.getU_id())
-	    		  .b_date(b.getB_date())
-	    		  .b_title(b.getB_title())
-	    		  .b_content(b.getB_content())
-	    		  .b_image(b.getB_image())
-	    		  .b_category(b.getB_category())
-	    		  .b_count(b.getB_count())
-	            .build();
+		   board = Board.builder()
+				   .bid(b.getB_id())		// 게시판 id
+				   .aid(b.getA_id())		// 관리자 id
+				   .bname(b.getB_name())	// 게시판 이름
+				   .build();
 	      try {
 	         boardRepository.save(board);
 	         return true;

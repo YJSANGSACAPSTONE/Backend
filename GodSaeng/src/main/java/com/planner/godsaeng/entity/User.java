@@ -24,27 +24,30 @@ public class User {
    
    @Id
    @Column(length=20, nullable=false)
-   private String u_id;
+   private String uid;
    
    @Column(length=20, nullable=false)
-   private String u_nickname;
+   private String unickname;
    
    @Column(length=20, nullable=false)
-   private String u_zepetoid;
+   private String uzepetoid;
    
    @Column(length=20, nullable=false)
-   private String u_img;
+   private String uimg;
    
    @Column(length=20, columnDefinition = "int default 0")
-   private int u_deposit;
-   
-   @Column(length=20, columnDefinition = "int default 5")
-   private String u_grade;
+   private int udeposit;
    
    @Column(length=20, nullable=false)
-   private String u_email;
+   private String ugrade;
+   
+   @Column(length=20, columnDefinition = "int default 0")
+   private int ulevel;
    
    @Column(length=20, nullable=false)
-   private String u_successedchallenge;
+   private String uemail;
+   
+   @Column(length=20, nullable=false)
+   private String usuccessedchallenge;
    
 }
