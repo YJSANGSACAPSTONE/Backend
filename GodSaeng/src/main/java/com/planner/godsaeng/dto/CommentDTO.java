@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class CommentDTO {
+	
 	private Long c_id;
 	private String c_writer;
 	private String c_content;

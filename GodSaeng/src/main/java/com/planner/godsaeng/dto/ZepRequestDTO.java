@@ -9,12 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
-public class ChallengeVerifyDTO {
-	private long cvid;
-	private ChallengeParticipateDTO ChallengeParticipate;
-	private String cvphoto;
+public class ZepRequestDTO {
+	
+	private Long cvid;
+	private Long cid;
 	private String cvzepid;
 	private Date cvtime;
 	private int cvsuccessornot;
+
 }

@@ -27,14 +27,6 @@ import lombok.ToString;
 @Builder
 public class Challenge {
 	
-	@Builder.Default
-	@OneToMany(mappedBy = "challenge")
-	private List<ChallengeParticipate>challengeParticipate = new ArrayList<>();
-	
-	@Builder.Default
-	@OneToMany(mappedBy = "challenge")
-	private List<ChallengeVerify>challengeVerify = new ArrayList<>();
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cid;

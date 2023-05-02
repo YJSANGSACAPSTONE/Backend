@@ -16,9 +16,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
+import com.planner.godsaeng.dto.ChallengeParticipateDTO;
+import com.planner.godsaeng.dto.ChallengeVerifyDTO;
+import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.service.ChallengeService;
+import com.planner.godsaeng.service.ChallengeVerifyService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +34,13 @@ import lombok.RequiredArgsConstructor;
 public class ChallengeController {
 	@Autowired
 	ChallengeService service;
+	ChallengeVerifyService verifyservice;
+	
+	@GetMapping("/addchallenge")
+	public RedirectView AddChallengeView(@ModelAttribute ChallengeDTO d) {
+		return null;
+		
+	}
 	
 	@PostMapping("/addchallenge")
 	public ResponseEntity<Boolean>AddChallenge(@RequestBody ChallengeDTO d){
@@ -65,7 +77,7 @@ public class ChallengeController {
 		}
 	}
 	@GetMapping("/update")
-	public String UpdateChallengeView() {
+	public RedirectView UpdateChallengeView() {
 		return null;
 	}
 	
@@ -73,6 +85,58 @@ public class ChallengeController {
 	public ResponseEntity<Boolean>DeleteChallenge(@RequestBody ChallengeDTO d){
 		boolean isDeleteSuccessed = service.DeleteChallenge(d.getC_id());
 		if(isDeleteSuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
+	
+	//챌린지 참가 신청 시 실행 메서드
+	@GetMapping("/participate")
+	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, HttpSession session){
+//		String u_id = session.getAttribute("uid");
+		boolean isParticipateSuccessed = true;
+		if(isParticipateSuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
+	
+	//인증 페이지로 이동 시에 페이지 매핑
+	@GetMapping("/verify")
+	public RedirectView VerifyChallengeView(@ModelAttribute ChallengeParticipateDTO m){
+		return null;
+			
+		}
+	
+	
+	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
+	@PostMapping("/verify")
+	public ResponseEntity<Boolean>VerifyChallenge(@ModelAttribute ChallengeParticipateDTO m){
+		boolean isVerifySuccessed = true;
+		if(isVerifySuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
+	//젶인증
+	@PostMapping("/zepverify")
+	public ResponseEntity<Boolean>ZepVerify(@ModelAttribute ZepRequestDTO m){
+		boolean isVerifySuccessed = verifyservice.VerifyMetaChallenge(m);
+		if(isVerifySuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
+	
+	//챌린지 참가 현황 눌렀을 시 데이터 출력 메서드
+	@GetMapping("/mychallenge")
+	public ResponseEntity<Boolean>MyChallenge(HttpSession session){
+		boolean isMychallengeSuccessed = true;
+		if(isMychallengeSuccessed) {
 			return ResponseEntity.ok(true);
 		}else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
