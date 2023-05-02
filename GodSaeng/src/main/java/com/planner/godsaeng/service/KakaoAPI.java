@@ -104,31 +104,31 @@ public class KakaoAPI {
 	}
 
 
-	public void kakaoLogout(String accessToken) {
-		String reqURL = "http://kapi.kakao.com/v1/user/logout";
-		try {
-			URL url = new URL(reqURL);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-			int responseCode = conn.getResponseCode();
-			System.out.println("responseCode = " + responseCode);
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			
-			String result = "";
-			String line = "";
-			
-			while((line = br.readLine()) != null) {
-				result+=line;
-			}
-			System.out.println(result);
-		} catch (FileNotFoundException e) {
-			System.out.println("Invalid access token. Please log in again.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void kakaoLogout(String accessToken) {
+//		String reqURL = "http://kapi.kakao.com/v1/user/logout";
+//		try {
+//			URL url = new URL(reqURL);
+//			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//			conn.setRequestMethod("POST");
+//			conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+//			int responseCode = conn.getResponseCode();
+//			System.out.println("responseCode = " + responseCode);
+//			
+//			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//			
+//			String result = "";
+//			String line = "";
+//			
+//			while((line = br.readLine()) != null) {
+//				result+=line;
+//			}
+//			System.out.println(result);
+//		} catch (FileNotFoundException e) {
+//			System.out.println("Invalid access token. Please log in again.");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	
