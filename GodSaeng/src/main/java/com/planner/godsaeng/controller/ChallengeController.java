@@ -19,10 +19,10 @@ public class ChallengeController {
 	@Autowired
 	ChallengeService service;
 	
-	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean>addChallenge(@ModelAttribute ChallengeDTO d){
-		boolean isAddSuccessed =true;
-	}
+//	@PostMapping("/addchallenge")
+//	public ResponseEntity<Boolean>addChallenge(@ModelAttribute ChallengeDTO d){
+//		boolean isAddSuccessed =true;
+//	}
 	
 	
 	

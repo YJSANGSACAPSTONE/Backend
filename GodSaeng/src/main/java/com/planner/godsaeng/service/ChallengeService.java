@@ -44,7 +44,7 @@ public class ChallengeService {
 			e.printStackTrace();
 			return false;
 		}
-	public List<ChallengeDTO>ReadPopularChallenge(St)
+//	public List<ChallengeDTO>ReadPopularChallenge(St)
 			
 		
 	}
