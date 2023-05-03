@@ -2,9 +2,7 @@ package com.planner.godsaeng.controller;
 
 import java.util.HashMap;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,21 +80,21 @@ public class KakaoController {
 	public ModelAndView save(HttpSession session, HttpServletRequest request) {
 	  String u_id = (String) session.getAttribute("userId");
 	  String u_nickname = request.getParameter("u_nickname");
-	  String u_zepetoid = request.getParameter("u_zepetoid");
+	  String u_zepid = request.getParameter("u_zepid");
 	  String u_img = request.getParameter("u_img");
 	  String u_grade = request.getParameter("u_grade");
-	  String u_email= request.getParameter("u_email");
+	  String u_content= request.getParameter("u_content");
 	  String u_successedchallenge= request.getParameter("u_successedchallenge");
 	  
 	  UserDTO dto = new UserDTO();
 	  dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
-      dto.setU_zepetoid(u_zepetoid);
+      dto.setU_zepid(u_zepid);
       dto.setU_img(u_img);
       dto.setU_deposit(1);
       dto.setU_grade(u_grade);
       dto.setU_level(1);
-      dto.setU_email(u_email);
+      dto.setU_content(u_content);
       dto.setU_successedchallenge(u_successedchallenge);
       
       service.InsertUser(dto);

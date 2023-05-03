@@ -3,6 +3,8 @@ package com.planner.godsaeng.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +22,13 @@ public class UserController {
    UserService service;
    
    @PostMapping("/adduser")
-   public String addUser(UserDTO u) {
-      service.InsertUser(u);
-      return null;
+   public ResponseEntity<Boolean> addUser(UserDTO u) {
+      boolean isAddSuccessed = service.InsertUser(u);
+      if(isAddSuccessed) {
+    	  return ResponseEntity.ok(true);
+      }else {
+    	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+      }
    }
    
    @GetMapping("/listuser")
@@ -35,15 +41,22 @@ public class UserController {
    }
    
    @PostMapping("/updateuser")
-   public String updateUser(UserDTO u) {
-      service.UpdateUser(u);
-      return null;
+   public ResponseEntity<Boolean> updateUser(UserDTO u) {
+      boolean isAddSuccessed = service.UpdateUser(u);
+      if(isAddSuccessed) {
+    	  return ResponseEntity.ok(true);
+      }else {
+    	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+      }
    }
    
    @GetMapping("/deleteplan")
-   public String deletePlan(UserDTO u) {
-      service.DeleteUser(u.getU_id());
-      
-      return null;
+   public ResponseEntity<Boolean> deletePlan(UserDTO u) {
+      boolean isDeleted = service.DeleteUser(u.getU_id());
+      if(isDeleted) {
+    	  return ResponseEntity.ok(true);
+      }else {
+    	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+      }
    }
 }
