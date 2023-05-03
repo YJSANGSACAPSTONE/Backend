@@ -38,9 +38,6 @@ public class Plan {
 	@JoinColumn(name = "uid")
 	private User user;
 	
-//	@Column(length=30, nullable=false)
-//	private String uid;
-	
 	@Column(length=30, nullable=false)
 	private LocalDate pstartdate;
 	

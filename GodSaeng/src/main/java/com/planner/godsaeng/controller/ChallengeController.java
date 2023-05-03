@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
+import com.planner.godsaeng.repository.ChallengeRepository;
 import com.planner.godsaeng.service.ChallengeService;
 import com.planner.godsaeng.service.ChallengeVerifyService;
 
@@ -34,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class ChallengeController {
 	@Autowired
 	ChallengeService service;
+	@Autowired
 	ChallengeVerifyService verifyservice;
 	
 	@GetMapping("/addchallenge")
@@ -54,7 +57,7 @@ public class ChallengeController {
 	}
 	@GetMapping("/list")
 	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(HttpSession session){
-		String uid = /*HttpSession.getAttribute(u_id)*/"hwangju";
+		String uid = /*HttpSession.getAttribute(u_id)*/"sanghee_ok@naver.com";
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
@@ -90,6 +93,11 @@ public class ChallengeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 		}
 	}
+	@GetMapping("/{cid}/signUp")
+	public ResponseEntity<ChallengeDTO>signUpView(@PathVariable("cid")Long cid){
+		return null;
+	}
+	
 	
 	//챌린지 참가 신청 시 실행 메서드
 	@GetMapping("/participate")
@@ -123,7 +131,7 @@ public class ChallengeController {
 	}
 	//젶인증
 	@PostMapping("/zepverify")
-	public ResponseEntity<Boolean>ZepVerify(@ModelAttribute ZepRequestDTO m){
+	public ResponseEntity<Boolean>ZepVerify(@RequestBody ZepRequestDTO m){
 		boolean isVerifySuccessed = verifyservice.VerifyMetaChallenge(m);
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);

@@ -32,7 +32,7 @@ public class PlanService {
 	//플랜 CREATE(INSERT)
 	public boolean InsertPlan(PlanDTO d) {
 		//dto to entity
-		String uid = "sanghee";
+		String uid = "sanghee_ok@naver.com";
 		Optional<User> user = userRepository.findById(d.getU_id());
 		
 		plan = Plan.builder()

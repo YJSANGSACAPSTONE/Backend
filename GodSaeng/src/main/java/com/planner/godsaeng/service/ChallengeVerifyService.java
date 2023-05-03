@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
@@ -26,12 +27,16 @@ public class ChallengeVerifyService {
 	private final ChallengeRepository challengeRepository;
 	private final ChallengeVerifyRepository challengeVerifyRepository;
 	
-	ChallengeVerify challengeverify = null;
+
+	ChallengeVerify challengeverify;
 	
 	public Boolean VerifyMetaChallenge(ZepRequestDTO m) {
+		
+		//dto에 담긴 챌린지id 정보로 챌린지id를 가져옴.
 		Long cid = m.getCid();
-		String uid = "sanghee";
-//		String uid = userRepository.get
+		//담겨져온 zepid를 역산하여 uid를 가져옴
+		String uid = userRepository.findUidByUzepid(m.getCvzepid());
+		//가져온 uid와 cid를 토대로 cpid를 추정하여 저장함.
 		Long cpid = challengeparticipateRepository.findCpidByCidAndUid(cid, uid);
 		
 		Optional<ChallengeParticipate> challengeparticipate = challengeparticipateRepository.findById(cpid);
@@ -48,9 +53,5 @@ public class ChallengeVerifyService {
 		}catch(Exception e) {
 			return false;
 		}
-				
-				
-		
 	}
-
 }

@@ -73,6 +73,6 @@ public class Challenge {
 	@Column(nullable = false)
 	private Integer cscore;
 	
-//	@OneToMany(mappedBy="challengeparticipate")
-//	private List<ChallengeParticipate>partitcipates = new ArrayList<>();
+	@OneToMany(mappedBy="challenge")
+	private List<ChallengeParticipate>participates = new ArrayList<>();
 }

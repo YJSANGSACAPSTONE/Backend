@@ -11,10 +11,10 @@ import lombok.Setter;
 @Builder
 public class ZepRequestDTO {
 	
-	private Long cvid;
+	
 	private Long cid;
 	private String cvzepid;
 	private Date cvtime;
-	private int cvsuccessornot;
+	private Integer cvsuccessornot;
 
 }
