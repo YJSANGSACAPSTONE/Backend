@@ -47,6 +47,7 @@ public class KakaoController {
 		Map<String, Object> responseBody = new HashMap<>();
 		responseBody.put("userId", userInfo.get("email"));
 		responseBody.put("profileImageUrl", userInfo.get("profileImageUrl"));
+		responseBody.put("accessToken", accessToken);
 		return ResponseEntity.ok(responseBody);
 	}
 	
