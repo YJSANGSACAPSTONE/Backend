@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
+import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.repository.ChallengeRepository;
@@ -94,8 +95,9 @@ public class ChallengeController {
 		}
 	}
 	@GetMapping("/{cid}/signUp")
-	public ResponseEntity<ChallengeDTO>signUpView(@PathVariable("cid")Long cid){
-		return null;
+	public ResponseEntity<List<ChallengeDTO>>signUpView(@PathVariable("cid")Long cid){
+		
+		return ResponseEntity.ok(service.ReadChallenge(cid));
 	}
 	
 	
@@ -142,12 +144,12 @@ public class ChallengeController {
 	
 	//챌린지 참가 현황 눌렀을 시 데이터 출력 메서드
 	@GetMapping("/mychallenge")
-	public ResponseEntity<Boolean>MyChallenge(HttpSession session){
+	public ResponseEntity <List<ChallengeStatusDTO>>MyChallenge(HttpSession session){
 		boolean isMychallengeSuccessed = true;
 		if(isMychallengeSuccessed) {
-			return ResponseEntity.ok(true);
+			return ResponseEntity.ok(service.myChallengeProgress((String)session.getAttribute("u_id")));
 		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 }

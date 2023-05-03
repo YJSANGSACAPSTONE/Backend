@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.net.jsse.PEMFile;
 import org.hibernate.internal.build.AllowPrintStacktrace;
@@ -23,6 +24,9 @@ import lombok.RequiredArgsConstructor;
 public class ChallengeService {
 	
 	private final ChallengeRepository challengeRepository;
+	
+	@Autowired
+    private ChallengeDataConverter challengeStatusConverter;
 	
 	Challenge challenge = null;
 	//여기서부터 CRUD-C 챌린지 CREATE
@@ -226,8 +230,12 @@ public class ChallengeService {
 			);	
 	}
 		return myList;
-//	   public List<ChallengeStatusDTO> myChallengeProgress(String uid) {
-//	        return challengeRepository.myChallengeProgress(uid);
-//	    }
+
 	}
+	public List<ChallengeStatusDTO> myChallengeProgress(String uid) {
+		List<Object[]> resultList = challengeRepository.myChallengeProgress(uid);
+        return resultList.stream()
+                .map(challengeStatusConverter::convert)
+                .collect(Collectors.toList());
+}
 }
