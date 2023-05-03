@@ -30,7 +30,7 @@ public class KakaoAPI {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=87c054c34eca4ca3541ab083e086cd12");
-			sb.append("&redirect_uri=http://localhost:8070/login");
+			sb.append("&redirect_uri=http://localhost:3000/kakaoLogin");
 			sb.append("&code="+code);
 			
 			bw.write(sb.toString());
@@ -92,10 +92,11 @@ public class KakaoAPI {
 			
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 			String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
+			String profileImageUrl = properties.getAsJsonObject().get("profile_image").getAsString();
 			
 			userInfo.put("nickname", nickname);
 			userInfo.put("email", email);
-			
+			userInfo.put("profileImageUrl", profileImageUrl);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
