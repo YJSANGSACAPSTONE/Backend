@@ -31,9 +31,6 @@ public class User {
    @Column(length=20, nullable=false)
    private String uzepid;
    
-   @Column(length=20, nullable=false)
-   private String uimg;
-   
    @Column(length=20, columnDefinition = "int default 0")
    private int udeposit;
    
