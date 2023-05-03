@@ -22,12 +22,11 @@ public class UserService {
       user = User.builder()
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
-            .uzepetoid(u.getU_zepetoid())
-            .uimg(u.getU_img())
+            .uzepid(u.getU_zepid())
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
-            .uemail(u.getU_email())
+            .ucontent(u.getU_content())
             .usuccessedchallenge(u.getU_successedchallenge())
             .build();
       
@@ -50,12 +49,11 @@ public class UserService {
     	  	userinfo = UserDTO.builder()
     	  	.u_id(result.get().getUid())
 			.u_nickname(result.get().getUnickname())
-			.u_zepetoid(result.get().getUzepetoid())
-			.u_img(result.get().getUimg())
+			.u_zepid(result.get().getUzepid())
 			.u_deposit(result.get().getUdeposit())
 			.u_grade(result.get().getUgrade())
 			.u_level(result.get().getUlevel())
-			.u_email(result.get().getUemail())
+			.u_content(result.get().getUcontent())
 			.u_successedchallenge(result.get().getUsuccessedchallenge())
 			.build();
     	  	return userinfo;
@@ -71,12 +69,11 @@ public class UserService {
       user = User.builder()
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
-            .uzepetoid(u.getU_zepetoid())
-            .uimg(u.getU_img())
+            .uzepid(u.getU_zepid())
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
-            .uemail(u.getU_email())
+            .ucontent(u.getU_content())
             .usuccessedchallenge(u.getU_successedchallenge())
             .build();
       try {

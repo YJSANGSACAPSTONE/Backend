@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Kakao Payment Test</h1>
+	<span th:if="${next_redirect_pc_url==null}">
+		<a href="http://localhost:8070/kakaopay/ready">
+			<img src="../img/payment_icon_yellow_large.png">
+		</a>
+	</span>
+	<span th:if="${next_redirect_pc_url!=null}">
+		<a th:href="${next_redirect_pc_url}">결제 페이지로 이동</a>
+	</span>
+</body>
+</html>

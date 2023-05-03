@@ -29,10 +29,7 @@ public class User {
    private String unickname;
    
    @Column(length=20, nullable=false)
-   private String uzepetoid;
-   
-   @Column(length=20, nullable=false)
-   private String uimg;
+   private String uzepid;
    
    @Column(length=20, columnDefinition = "int default 0")
    private int udeposit;
@@ -43,8 +40,8 @@ public class User {
    @Column(length=20, columnDefinition = "int default 0")
    private int ulevel;
    
-   @Column(length=20, nullable=false)
-   private String uemail;
+   @Column(length=100, nullable=false)
+   private String ucontent;
    
    @Column(length=20, nullable=false)
    private String usuccessedchallenge;
