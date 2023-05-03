@@ -27,14 +27,6 @@ import lombok.ToString;
 @Builder
 public class Challenge {
 	
-	@Builder.Default
-	@OneToMany(mappedBy = "challenge")
-	private List<ChallengeParticipate>challengeParticipate = new ArrayList<>();
-	
-	@Builder.Default
-	@OneToMany(mappedBy = "challenge")
-	private List<ChallengeVerify>challengeVerify = new ArrayList<>();
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cid;
@@ -81,6 +73,6 @@ public class Challenge {
 	@Column(nullable = false)
 	private Integer cscore;
 	
-//	@OneToMany(mappedBy="challengeparticipate")
-//	private List<ChallengeParticipate>partitcipates = new ArrayList<>();
+	@OneToMany(mappedBy="challenge")
+	private List<ChallengeParticipate>participates = new ArrayList<>();
 }

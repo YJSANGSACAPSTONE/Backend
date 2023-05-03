@@ -34,7 +34,7 @@ public class PlanController {
 	PlanService service;
 	
 	@PostMapping("/addplan")
-	public ResponseEntity<Boolean> addPlan(@RequestBody PlanDTO d) {
+	public ResponseEntity<Boolean> addPlan(@ModelAttribute PlanDTO d) {
 		System.out.println(d.getU_id() + "자 엔드데이터임.");
 		boolean isAddSuccessed = service.InsertPlan(d);
 		if(isAddSuccessed) {
@@ -56,17 +56,18 @@ public class PlanController {
 	
 	//로그인 후 메인 화면에 보이는 오늘의 일정 출력 메서드
 	@GetMapping("/dailyplan")
-	public String listPlan(HttpSession session, Model model) {
+	public ResponseEntity<List<PlanDTO>> listPlan(HttpSession session, Model model) {
 		String currentuser_id = (String)(session.getAttribute("u_id"));
-		currentuser_id = "sanghee";
+		currentuser_id = "sanghee_ok@naver.com";
 		List<PlanDTO> list = service.ReadDailyPlan(currentuser_id);
 		model.addAttribute("list",list);
-		return "publishing/pages/planner";
+		return ResponseEntity.ok(list);
+		
 	}
 	
 	//업데이트 시 실시간으로 업데이트된 데이터를 출력할 수 있도록 하는 메서드
 	@PostMapping("/updateplan")
-	public ResponseEntity<PlanDTO> updatePlan(@RequestBody PlanDTO d) {
+	public ResponseEntity<PlanDTO> updatePlan(@ModelAttribute PlanDTO d) {
 		boolean isSuccess = service.UpdatePlan(d);
 		//업데이트 서비스메서드를 실행한 결과를 isSuccess 변수에 담아줌.
 		if(isSuccess) {
@@ -79,8 +80,8 @@ public class PlanController {
 		
 	}
 	//일정 삭제 메서드
-	@GetMapping("/deleteplan")
-	public ResponseEntity<Boolean> deletePlan(@ModelAttribute PlanDTO d) {
+	@PostMapping("/deleteplan")
+	public ResponseEntity<Boolean> deletePlan(@RequestBody PlanDTO d) {
 		boolean isDeleted = service.DeletePlan(d.getP_id());
 		if(isDeleted) {
 			return ResponseEntity.ok(true);

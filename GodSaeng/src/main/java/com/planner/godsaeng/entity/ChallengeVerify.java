@@ -13,16 +13,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-//유저와 챌린지 사이의 관계(인증) 테이블입니다.
+//챌린지 참가(mapping table)과 1:N관계인 challengeVerify입니다
 @Entity
 @Table(name = "godsaeng_challengeverify")
 @ToString
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 
 
 //cv - challengeverify의 약자
@@ -32,27 +36,21 @@ public class ChallengeVerify {
 	private long cvid;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cid", nullable = false)
-	private Challenge challenge;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "uid", nullable = false)
-	private User user;
+	@JoinColumn(name = "cpid", nullable = false)
+	private ChallengeParticipate challengeParticipate;
 	
 	@Column(length=200, nullable=true)
 	private String cvphoto;
 	
 	@Column(length=50, nullable=false)
 	private Date cvtime;
+	
+	@Column(length=50, nullable=true)
+	private String cvzepid;
 
 	@Column(nullable = false)
 	private int cvsuccessornot;
 	
-	public ChallengeVerify() {}
 	
-	public ChallengeVerify(Challenge challenge, User user) {
-		this.challenge=challenge;
-		this.user = user;
-	}
 
 }
