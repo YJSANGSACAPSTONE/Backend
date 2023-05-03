@@ -92,10 +92,11 @@ public class KakaoAPI {
 			
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 			String email = kakaoAccount.getAsJsonObject().get("email").getAsString();
+			String profileImageUrl = properties.getAsJsonObject().get("profile_image").getAsString();
 			
 			userInfo.put("nickname", nickname);
 			userInfo.put("email", email);
-			
+			userInfo.put("profileImageUrl", profileImageUrl);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -83,7 +83,9 @@ public class QueryTest {
 
 	@Test
 	public void testFindUidByUzepid() {
+
 	    String uid = userRepository.findUidByUzepid("test_uzepid");
+
 	    System.out.println(uid);
 	}
 

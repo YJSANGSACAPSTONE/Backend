@@ -1,11 +1,13 @@
 package com.planner.godsaeng.controller;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,7 @@ public class KakaoController {
 	KakaoAPI kakaoApi = new KakaoAPI();
 	
 	@RequestMapping(value="/login")
-	public ModelAndView login(@RequestParam("code") String code, HttpSession session) {
+	public ResponseEntity login(@RequestParam("code") String code, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		// 1번 인증코드 요청 전달
 		String accessToken = kakaoApi.getAccessToken(code);
@@ -32,14 +34,20 @@ public class KakaoController {
 		
 		System.out.println("login info : " + userInfo.toString());
 		
-		if(userInfo.get("email") != null) {
+		if(userInfo.get("email") != null && userInfo.get("profileImageUrl") != null) {
 			session.setAttribute("userId", userInfo.get("email"));
+			session.setAttribute("profileImageUrl", userInfo.get("profileImageUrl"));
 			System.out.println(userInfo.get("email")); //내가 추가
 			session.setAttribute("accessToken", accessToken);
 		}
-		mav.addObject("userId", userInfo.get("email"));
-		mav.setViewName("signup");
-		return mav;
+//		mav.addObject("userId", userInfo.get("email"));
+//		mav.addObject("profileImageUrl", userInfo.get("profileImageUrl"));
+//		mav.setViewName("signup");
+//		return mav;
+		Map<String, Object> responseBody = new HashMap<>();
+		responseBody.put("userId", userInfo.get("email"));
+		responseBody.put("profileImageUrl", userInfo.get("profileImageUrl"));
+		return ResponseEntity.ok(responseBody);
 	}
 	
 //	@RequestMapping(value="/logout")
@@ -81,6 +89,7 @@ public class KakaoController {
 	  String u_id = (String) session.getAttribute("userId");
 	  String u_nickname = request.getParameter("u_nickname");
 	  String u_zepid = request.getParameter("u_zepid");
+
 	  String u_img = request.getParameter("u_img");
 	  String u_grade = request.getParameter("u_grade");
 	  String u_content= request.getParameter("u_content");
