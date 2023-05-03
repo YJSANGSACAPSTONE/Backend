@@ -23,6 +23,9 @@ public class UserService {
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
             .uzepid(u.getU_zepid())
+
+            .uimg(u.getU_img())
+
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
@@ -50,6 +53,8 @@ public class UserService {
     	  	.u_id(result.get().getUid())
 			.u_nickname(result.get().getUnickname())
 			.u_zepid(result.get().getUzepid())
+
+
 			.u_deposit(result.get().getUdeposit())
 			.u_grade(result.get().getUgrade())
 			.u_level(result.get().getUlevel())
@@ -70,6 +75,8 @@ public class UserService {
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
             .uzepid(u.getU_zepid())
+
+
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())

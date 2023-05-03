@@ -34,8 +34,9 @@ public class Plan {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long pid;
 	
-	@Column(length=20, nullable=false)
-	private String uid;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "uid")
+	private User user;
 	
 	@Column(length=30, nullable=false)
 	private LocalDate pstartdate;
