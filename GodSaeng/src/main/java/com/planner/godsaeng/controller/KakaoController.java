@@ -26,9 +26,11 @@ public class KakaoController {
 	
 	@RequestMapping(value="/login")
 	public ResponseEntity login(@RequestParam("code") String code, HttpSession session) {
+		System.out.println(code);
 		ModelAndView mav = new ModelAndView();
 		// 1번 인증코드 요청 전달
 		String accessToken = kakaoApi.getAccessToken(code);
+		System.out.println("access토큰값 : " + accessToken);
 		// 2번 인증코드로 토큰 전달
 		HashMap<String, Object> userInfo = kakaoApi.getUserInfo(accessToken);
 		

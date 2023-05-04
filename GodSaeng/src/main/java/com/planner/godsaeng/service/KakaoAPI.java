@@ -23,6 +23,7 @@ public class KakaoAPI {
 		try {
 			URL url = new URL(reqURL);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);
 			
@@ -30,8 +31,8 @@ public class KakaoAPI {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=87c054c34eca4ca3541ab083e086cd12");
-			sb.append("&redirect_uri=http://localhost:8070/login");
 			sb.append("&code="+code);
+			sb.append("&redirect_uri=http://localhost:3000/kakaoLogin");
 			
 			bw.write(sb.toString());
 			bw.flush();
