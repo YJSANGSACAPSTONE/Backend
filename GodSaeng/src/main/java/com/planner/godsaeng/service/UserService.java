@@ -23,9 +23,6 @@ public class UserService {
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
             .uzepid(u.getU_zepid())
-
-            .uimg(u.getU_img())
-
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
