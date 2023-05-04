@@ -2,8 +2,10 @@ package com.planner.godsaeng.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.net.jsse.PEMFile;
 import org.hibernate.internal.build.AllowPrintStacktrace;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
+import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.repository.ChallengeRepository;
 
@@ -21,6 +24,9 @@ import lombok.RequiredArgsConstructor;
 public class ChallengeService {
 	
 	private final ChallengeRepository challengeRepository;
+	
+	@Autowired
+    private ChallengeDataConverter challengeStatusConverter;
 	
 	Challenge challenge = null;
 	//여기서부터 CRUD-C 챌린지 CREATE
@@ -122,8 +128,10 @@ public class ChallengeService {
 	
 	String uid = "hwangjoo";
 	//내가 참가중인 챌린지 조회R3
+	//쿼리 검증 완료 - challenge와 challengeparticipate join하여 데이터출력.
 	public List<ChallengeDTO>ReadMyChallenge(String uid){
-		List<Challenge>myListEntity = challengeRepository.findAll();
+		
+		List<Challenge>myListEntity = challengeRepository.findChallengeByUid(uid);
 		List<ChallengeDTO>myList = new ArrayList<>();
 		for(Challenge e : myListEntity) {
 			myList.add(
@@ -196,4 +204,38 @@ public class ChallengeService {
 			return false;
 		}	
 	}
+	
+	public List<ChallengeDTO>ReadChallenge(Long c_id){
+		List<Challenge>challengeEntity = challengeRepository.findByCid(c_id);
+		List<ChallengeDTO>myList = new ArrayList<>();
+		for(Challenge e : challengeEntity) {
+			myList.add(
+					ChallengeDTO.builder()
+					.c_id(e.getCid())
+					.c_name(e.getCname())
+					.c_content(e.getCcontent())
+					.c_startdate(e.getCstartdate())
+					.c_enddate(e.getCenddate())
+					.c_numberofparticipants(e.getCnumberofparticipants())
+					.c_category(e.getCcategory())
+					.c_thumbnails(e.getCthumbnails())
+					.c_introduction(e.getCintroduction())
+					.c_fee(e.getCfee())
+					.c_numberofphoto(e.getCnumberofphoto())
+					.c_typeofverify(e.getCtypeofverify())
+					.c_typeoffrequency(e.getCtypeoffrequency())
+					.c_frequency(e.getCfrequency())
+					.c_score(e.getCscore())
+					.build()
+			);	
+	}
+		return myList;
+
+	}
+	public List<ChallengeStatusDTO> myChallengeProgress(String uid) {
+		List<Object[]> resultList = challengeRepository.myChallengeProgress(uid);
+        return resultList.stream()
+                .map(challengeStatusConverter::convert)
+                .collect(Collectors.toList());
+}
 }

@@ -58,7 +58,7 @@ public class PlanController {
 	@GetMapping("/dailyplan")
 	public ResponseEntity<List<PlanDTO>> listPlan(HttpSession session, Model model) {
 		String currentuser_id = (String)(session.getAttribute("u_id"));
-		currentuser_id = "sanghee";
+		currentuser_id = "sanghee_ok@naver.com";
 		List<PlanDTO> list = service.ReadDailyPlan(currentuser_id);
 		model.addAttribute("list",list);
 		return ResponseEntity.ok(list);

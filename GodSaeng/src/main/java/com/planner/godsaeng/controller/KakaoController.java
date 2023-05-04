@@ -92,6 +92,8 @@ public class KakaoController {
 	  String u_id = (String) session.getAttribute("userId");
 	  String u_nickname = request.getParameter("u_nickname");
 	  String u_zepid = request.getParameter("u_zepid");
+
+	  String u_img = request.getParameter("u_img");
 	  String u_grade = request.getParameter("u_grade");
 	  String u_content= request.getParameter("u_content");
 	  String u_successedchallenge= request.getParameter("u_successedchallenge");
@@ -100,6 +102,7 @@ public class KakaoController {
 	  dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
       dto.setU_zepid(u_zepid);
+      dto.setU_img(u_img);
       dto.setU_deposit(1);
       dto.setU_grade(u_grade);
       dto.setU_level(1);
