@@ -34,7 +34,7 @@ public class PlanController {
 	PlanService service;
 	
 	@PostMapping("/addplan")
-	public ResponseEntity<Boolean> addPlan(@ModelAttribute PlanDTO d) {
+	public ResponseEntity<Boolean> addPlan(@RequestBody PlanDTO d) {
 		System.out.println(d.getU_id() + "자 엔드데이터임.");
 		boolean isAddSuccessed = service.InsertPlan(d);
 		if(isAddSuccessed) {
@@ -58,7 +58,7 @@ public class PlanController {
 	@GetMapping("/dailyplan")
 	public ResponseEntity<List<PlanDTO>> listPlan(HttpSession session, Model model) {
 		String currentuser_id = (String)(session.getAttribute("u_id"));
-		currentuser_id = "sanghee_ok@naver.com";
+		currentuser_id = "sinsung@naver.com";
 		List<PlanDTO> list = service.ReadDailyPlan(currentuser_id);
 		model.addAttribute("list",list);
 		return ResponseEntity.ok(list);
