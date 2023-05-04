@@ -1,5 +1,7 @@
 package com.planner.godsaeng.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Modifying
 	@Query(value = "UPDATE Godsaeng_user SET deposit = deposit - :newDeposit WHERE uid = :uid", nativeQuery = true)
 	void updateDeposit(@Param("uid") String uid, @Param("newDeposit") Integer newDeposit);
+	
+	Optional<User> findByUid(String uid);
 }
