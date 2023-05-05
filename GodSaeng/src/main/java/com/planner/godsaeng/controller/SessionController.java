@@ -8,14 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.planner.godsaeng.entity.User;
-import com.planner.godsaeng.service.PlanService;
 import com.planner.godsaeng.service.SessionService;
 
 @RestController
@@ -26,17 +24,17 @@ public class SessionController {
 	SessionService service;
 	
 	@GetMapping("/login")
-	public boolean login(String uid, HttpSession session, HttpServletResponse response) {
-	    Optional<User> userOptional = service.loginVerify(uid);
-	    if (userOptional.isPresent()) {
-	        User user = userOptional.get();
-	        session.setAttribute("u_id", user.getUid());
-	        session.setAttribute("u_level", user.getUlevel());
-	        session.setAttribute("u_grade", user.getUgrade());
-	        session.setAttribute("u_deposit", user.getUdeposit());
-	        Cookie cookie = new Cookie("SESSIONID", session.getId());
+	public boolean login(@RequestParam String uid, HttpServletResponse response) {
+	    Optional<User> result = service.loginVerify(uid);
+	    if (result.isPresent()) {
+	        User user = result.get();
+	        
+	        Cookie cookie = new Cookie("uid", user.getUid());
+	        
+	        //쿠키 설정
 	        cookie.setPath("/");
 	        cookie.setHttpOnly(true);
+	        //응답 헤더에 쿠키 추가
 	        response.addCookie(cookie);
 	        return true;
 	    } else {
