@@ -1,5 +1,9 @@
 package com.planner.godsaeng.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +15,7 @@ import org.apache.tomcat.util.net.jsse.PEMFile;
 import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
@@ -31,8 +36,16 @@ public class ChallengeService {
 	Challenge challenge = null;
 	//여기서부터 CRUD-C 챌린지 CREATE
 	
-	public boolean InsertChallenge(ChallengeDTO d) {
-		challenge = Challenge.builder()
+	public boolean InsertChallenge(ChallengeDTO d, MultipartFile file) {
+		try {
+		 
+		byte[] thumbnailData = file.getBytes(); // MultipartFile에서 바이트 배열로 파일 데이터 읽어오기
+
+         // 파일 저장 로직
+        String fileName = file.getOriginalFilename();
+        Path path = Paths.get("/uploads/" + fileName);
+        Files.write(path, thumbnailData);
+        challenge = Challenge.builder()
 			.cid(d.getC_id())
 			.cname(d.getC_name())
 			.ccontent(d.getC_content())
@@ -40,7 +53,6 @@ public class ChallengeService {
 			.cenddate(d.getC_enddate())
 			.cnumberofparticipants(d.getC_numberofparticipants())
 			.ccategory(d.getC_category())
-			.cthumbnails(d.getC_thumbnails())
 			.cintroduction(d.getC_introduction())
 			.cfee(d.getC_fee())
 			.cnumberofphoto(d.getC_numberofphoto())
@@ -48,12 +60,13 @@ public class ChallengeService {
 			.ctypeoffrequency(d.getC_typeoffrequency())
 			.cfrequency(d.getC_frequency())
 			.cscore(d.getC_score())
+			.cthumbnails(thumbnailData)
 			.build();
 		
-		try {
 			challengeRepository.save(challenge);
+			
 			return true;
-		}catch(Exception e){
+		}catch(IOException e){
 			e.printStackTrace();
 			return false;
 		}
@@ -153,6 +166,7 @@ public class ChallengeService {
 					.c_score(e.getCscore())
 					.build()
 			);
+			
 		}
 		return myList;
 	}
