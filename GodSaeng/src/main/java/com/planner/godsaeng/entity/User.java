@@ -17,7 +17,6 @@ import lombok.ToString;
 @ToString
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -28,24 +27,24 @@ public class User {
    
    @Column(length=20, nullable=false)
    private String unickname;
-   
-   @Column(length=20, nullable=false)
-   private String uzepetoid;
-   
-   @Column(length=20, nullable=false)
-   private String uimg;
-   
+  
    @Column(length=20, columnDefinition = "int default 0")
    private int udeposit;
-   
-   @Column(length=20, nullable=false)
-   private String ugrade;
    
    @Column(length=20, columnDefinition = "int default 0")
    private int ulevel;
    
    @Column(length=20, nullable=false)
    private String uemail;
+   
+   @Column(length=20, nullable=false)
+   private String uzepid;
+   
+   @Column(length=20, nullable=false)
+   private String ugrade;
+   
+   @Column(length=100, nullable=false)
+   private String ucontent;
    
    @Column(length=20, nullable=false)
    private String usuccessedchallenge;
