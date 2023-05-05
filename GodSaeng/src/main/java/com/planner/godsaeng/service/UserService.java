@@ -41,28 +41,28 @@ public class UserService {
    
    //유저 정보 목록
    public UserDTO ReadUser(String uid){
-	  
+     
       UserDTO userinfo = null;
       Optional<User> result = userRepository.findById(uid);
-    	
+       
       if(result.isPresent()) {
-    	  	userinfo = UserDTO.builder()
-    	  	.u_id(result.get().getUid())
-			.u_nickname(result.get().getUnickname())
-			.u_zepid(result.get().getUzepid())
+            userinfo = UserDTO.builder()
+            .u_id(result.get().getUid())
+         .u_nickname(result.get().getUnickname())
+         .u_zepid(result.get().getUzepid())
 
 
-			.u_deposit(result.get().getUdeposit())
-			.u_grade(result.get().getUgrade())
-			.u_level(result.get().getUlevel())
-			.u_content(result.get().getUcontent())
-			.u_successedchallenge(result.get().getUsuccessedchallenge())
-			.build();
-    	  	return userinfo;
+         .u_deposit(result.get().getUdeposit())
+         .u_grade(result.get().getUgrade())
+         .u_level(result.get().getUlevel())
+         .u_content(result.get().getUcontent())
+         .u_successedchallenge(result.get().getUsuccessedchallenge())
+         .build();
+            return userinfo;
       } else {
-    	  return null;
+         return null;
       }
-	     
+        
    }
 
    

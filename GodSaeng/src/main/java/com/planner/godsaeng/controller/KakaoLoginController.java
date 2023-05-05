@@ -19,6 +19,7 @@ import com.planner.godsaeng.service.UserService;
 
 @RestController
 public class KakaoLoginController {
+
 	@Autowired
 	UserService service;
 
