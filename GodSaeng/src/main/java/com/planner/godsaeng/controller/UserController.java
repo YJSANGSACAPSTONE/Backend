@@ -59,8 +59,22 @@ public class UserController {
    }
    
    @PostMapping("/updateuser")
-   public ResponseEntity<Boolean> updateUser(UserDTO u) {
-      boolean isUdateSuccessed = service.UpdateUser(u);
+   public ResponseEntity<Boolean> updateUser(@RequestBody SaveResponseDTO userinfo) {
+	   
+	  String u_id = userinfo.getU_id();
+	  String u_nickname = userinfo.getU_nickname();
+	  String u_content = userinfo.getU_content();
+		  
+	  UserDTO dto = new UserDTO();
+	  dto.setU_id(u_id);
+      dto.setU_nickname(u_nickname);
+      dto.setU_zepid(null);
+      dto.setU_deposit(0);
+      dto.setU_grade(null);
+      dto.setU_level(1);
+      dto.setU_content(u_content);
+      dto.setU_successedchallenge(null);	  
+      boolean isUdateSuccessed = service.UpdateUser(dto);
       if(isUdateSuccessed) {
     	  return ResponseEntity.ok(true);
       }else {
