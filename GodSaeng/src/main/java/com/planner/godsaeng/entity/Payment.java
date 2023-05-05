@@ -24,21 +24,21 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payment {
-   
-   @Id
-   @GeneratedValue(strategy=GenerationType.IDENTITY)
-   private long kpid;
-   
-   @Column(length=20, nullable=false)
-   private String kpmethodtype;
-   
-   @Column(length=20, nullable=false)
-   private String kpdate;
-   
-   @Column(length=20, nullable=false)
-   private int kpamount;
-   
-   @ManyToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "uid", nullable = false)
-   private User user;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private long kpid;
+	
+	@Column(length=20, nullable=false)
+	private String kpmethodtype;
+	
+	@Column(length=20, nullable=false)
+	private String kpdate;
+	
+	@Column(length=20, nullable=false)
+	private int kpamount;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "uid", nullable = false)
+	private User user;
 }

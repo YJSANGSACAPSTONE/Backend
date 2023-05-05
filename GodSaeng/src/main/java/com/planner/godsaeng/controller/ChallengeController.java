@@ -1,5 +1,7 @@
 package com.planner.godsaeng.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
@@ -47,14 +51,25 @@ public class ChallengeController {
 	}
 	
 	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean>AddChallenge(@RequestBody ChallengeDTO d){
-		boolean isAddSuccessed = service.InsertChallenge(d);
-		if(isAddSuccessed) {
-			return ResponseEntity.ok(true);
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-		}
-	
+	public ResponseEntity<Boolean> AddChallenge(@RequestParam("thumbnail") MultipartFile thumbnail,
+	                                             @RequestBody ChallengeDTO d) throws IOException {
+	    // 파일 저장 경로
+	    String path = "/img/challengeimg";
+	    // 파일 저장
+	    if (!thumbnail.isEmpty()) {
+	        String fileName = thumbnail.getOriginalFilename();
+	        File dest = new File(path + File.separator + fileName);
+	        thumbnail.transferTo(dest);
+	        d.setThumbnailData(thumbnail);
+	    }
+
+	    boolean isAddSuccessed = service.InsertChallenge(d,thumbnail);
+
+	    if (isAddSuccessed) {
+	        return ResponseEntity.ok(true);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+	    }
 	}
 	@GetMapping("/list")
 	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(HttpSession session){

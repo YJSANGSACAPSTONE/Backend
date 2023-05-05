@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/kakaopay")
 @RequiredArgsConstructor
-public class KakoPayController {
+public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
     
