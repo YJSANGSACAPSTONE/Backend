@@ -1,23 +1,21 @@
 package com.planner.godsaeng.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planner.godsaeng.dto.SaveResponseDTO;
 import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
    
@@ -50,13 +48,23 @@ public class UserController {
       }
    }
    
+   @Autowired
+   private ObjectMapper objectMapper;
+   
    @GetMapping("/listuser")
-   public String listUser(HttpSession session, Model m) {
-	  String sessionuser_id = (String)(session.getAttribute("u_id"));
-	  sessionuser_id = "hwangjoo";
-      UserDTO userinfo = service.ReadUser(sessionuser_id);
-      m.addAttribute("userinfo", userinfo);
-      return "publishing/pages/userview";
+   public ResponseEntity listUser(@RequestParam("uid") String uid) {
+//	  String sessionuser_id = (String)(session.getAttribute("u_id"));
+//	  sessionuser_id = "hwangjoo";
+      UserDTO userinfo = service.ReadUser(uid);
+      
+      try {
+          // DTO 객체를 JSON 형식으로 변환
+          String json = objectMapper.writeValueAsString(userinfo);
+          // JSON 데이터를 ResponseBody에 담아서 반환
+          return ResponseEntity.ok(json);
+      } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
    }
    
    @PostMapping("/updateuser")
