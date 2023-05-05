@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -49,9 +50,6 @@ public class Challenge {
 	@Column(nullable = false)
 	private Integer ccategory;
 	
-	@Column(length = 100, nullable = false)
-	private String cthumbnails;
-	
 	@Column(length = 50, nullable = false)
 	private String cintroduction;
 	
@@ -72,6 +70,9 @@ public class Challenge {
 	
 	@Column(nullable = false)
 	private Integer cscore;
+	
+	@Column(nullable = true)
+	private String cthumbnails;
 	
 	@OneToMany(mappedBy="challenge")
 	private List<ChallengeParticipate>participates = new ArrayList<>();
