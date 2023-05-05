@@ -156,7 +156,7 @@ public class ChallengeService {
 		try {
 			challengeRepository.deleteById(c_id);
 			return true;
-			
+
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
@@ -170,43 +170,43 @@ public class ChallengeService {
 			ChallengeDTO dto = entityToDto(e);
 			ChallengeList.add(dto);
 			String thumbnailPath = e.getCthumbnails();
-			 File thumbnailFile = new File(thumbnailPath);
-			 try {
-				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
-						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				 dto.setThumbnailData(thumbnailData);
-				 ChallengeList.add(dto);
-			 } catch (IOException c) {
-				 // 예외 처리 로직
-				 c.printStackTrace();
-			 }
-		 }
-		 return ChallengeList;
-	 }
+			File thumbnailFile = new File(thumbnailPath);
+			try {
+				MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
+						ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
+				dto.setThumbnailData(thumbnailData);
+				ChallengeList.add(dto);
+			} catch (IOException c) {
+				// 예외 처리 로직
+				c.printStackTrace();
+			}
+		}
+		return ChallengeList;
+	}
 	public List<ChallengeStatusDTO> myChallengeProgress(String uid) {
 		List<Object[]> resultList = challengeRepository.myChallengeProgress(uid);
-        return resultList.stream()
-                .map(challengeStatusConverter::convert)
-                .collect(Collectors.toList());
-}
+		return resultList.stream()
+				.map(challengeStatusConverter::convert)
+				.collect(Collectors.toList());
+	}
 	public ChallengeDTO entityToDto(Challenge e) {
-	    return ChallengeDTO.builder()
-	            .c_id(e.getCid())
-	            .c_name(e.getCname())
-	            .c_content(e.getCcontent())
-	            .c_startdate(e.getCstartdate())
-	            .c_enddate(e.getCenddate())
-	            .c_numberofparticipants(e.getCnumberofparticipants())
-	            .c_category(e.getCcategory())
-	            .c_thumbnails(e.getCthumbnails())
-	            .c_introduction(e.getCintroduction())
-	            .c_fee(e.getCfee())
-	            .c_numberofphoto(e.getCnumberofphoto())
-	            .c_typeofverify(e.getCtypeofverify())
-	            .c_typeoffrequency(e.getCtypeoffrequency())
-	            .c_frequency(e.getCfrequency())
-	            .c_score(e.getCscore())
-	            .build();
+		return ChallengeDTO.builder()
+				.c_id(e.getCid())
+				.c_name(e.getCname())
+				.c_content(e.getCcontent())
+				.c_startdate(e.getCstartdate())
+				.c_enddate(e.getCenddate())
+				.c_numberofparticipants(e.getCnumberofparticipants())
+				.c_category(e.getCcategory())
+				.c_thumbnails(e.getCthumbnails())
+				.c_introduction(e.getCintroduction())
+				.c_fee(e.getCfee())
+				.c_numberofphoto(e.getCnumberofphoto())
+				.c_typeofverify(e.getCtypeofverify())
+				.c_typeoffrequency(e.getCtypeoffrequency())
+				.c_frequency(e.getCfrequency())
+				.c_score(e.getCscore())
+				.build();
 	}
 	public Challenge dtoToEntity(ChallengeDTO d) {
 		return Challenge.builder()
