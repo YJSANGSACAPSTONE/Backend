@@ -2,18 +2,24 @@ package com.planner.godsaeng.service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.planner.godsaeng.entity.User;
+import com.planner.godsaeng.repository.KakaoLoginRepository;
 
-public class KakaoAPI {
+@Service
+public class KakaoLoginService {
 
 	public String getAccessToken(String code) {
 		String accessToken = "";
@@ -131,7 +137,18 @@ public class KakaoAPI {
 //		}
 //	}
 	
+	@Autowired
+	KakaoLoginRepository kakaoLoginRepository;
 	
+	public boolean checkUser(String uid) {
+		System.out.println("테스트:" + uid);
+		Optional<User> result = kakaoLoginRepository.findById(uid);
+		if(result.isPresent()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 
 
