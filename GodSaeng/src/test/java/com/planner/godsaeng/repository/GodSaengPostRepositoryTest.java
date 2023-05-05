@@ -1,7 +1,11 @@
 package com.planner.godsaeng.repository;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -11,10 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
+import com.planner.godsaeng.entity.PostImage;
 import com.planner.godsaeng.entity.QPost;
 import com.planner.godsaeng.entity.User;
 import com.querydsl.core.BooleanBuilder;
@@ -30,8 +36,13 @@ public class GodSaengPostRepositoryTest {
 	
 	@Autowired
 	private BoardRepository boardRepository;
+	
+	@Autowired
+	private PostImageRepository imageRepository;
 
-//	// 삽입 테스트
+	// 삽입 테스트
+//	@Transactional
+//	@Commit
 //	@Test
 //	public void insertPostDummies() {
 //		
@@ -48,10 +59,21 @@ public class GodSaengPostRepositoryTest {
 //					.build();
 //			
 //			postRepository.save(post);
+//			
+//			int count = (int)(Math.random() * 5) + 1;
+//
+//			for(int j = 0; j < count; j++) {
+//				PostImage postImage = PostImage.builder()
+//						.uuid(UUID.randomUUID().toString())
+//						.post(post)
+//						.imgName("test" + j + ".jpg").build();
+//				
+//				imageRepository.save(postImage);
+//			}
 //		});
 //	}
 	
-//	// 업데이트 테스트	
+	// 업데이트 테스트	
 //	@Test
 //	public void updateTest() {
 //		Optional<Post> result = postRepository.findById(5L);
@@ -134,11 +156,23 @@ public class GodSaengPostRepositoryTest {
 //		System.out.println(Arrays.toString(arr));
 //	}
 	
-	@Test
-	public void testGetPostByPid() {
-		Object result = postRepository.getPostWithUid(100L);
-		Object[] arr = (Object[])result;
-		System.out.println(Arrays.toString(arr));
-	}
+//	@Test
+//	public void testGetPostByPid() {
+//		Object result = postRepository.getPostWithUid(100L);
+//		Object[] arr = (Object[])result;
+//		System.out.println(Arrays.toString(arr));
+//	}
+	
+	 @Test
+	    public void testGetMovieWithAll(){
 
+	        List<Object[]> result = postRepository.getPostWithAll(93L);
+
+	        System.out.println(result);
+
+	        for (Object[] arr : result){
+	            System.out.println(Arrays.toString(arr));
+	        }
+	    }
+	
 }

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.QBoard;
 import com.planner.godsaeng.entity.QPost;
+import com.planner.godsaeng.entity.QPostImage;
 import com.planner.godsaeng.entity.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
@@ -36,12 +37,14 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
 		QPost post = QPost.post;
 		QUser user= QUser.user;
 		QBoard board = QBoard.board;
+		QPostImage postImage = QPostImage.postImage;
 		
 		JPQLQuery<Post> jpqlQuery = from(post);
 		jpqlQuery.leftJoin(user).on(post.uid.eq(user));
 		jpqlQuery.leftJoin(board).on(post.bid.eq(board));
+		jpqlQuery.leftJoin(postImage).on(postImage.post.eq(post)); // 2. PostImage를 추가한 leftJoin
 		
-		JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user.uid, board.bid);
+		JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, postImage, board.bid);
 		tuple.groupBy(post);
 		
 		log.info("-------------------------------");
@@ -61,12 +64,14 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
 		QPost post = QPost.post;
 		QUser user= QUser.user;
 		QBoard board = QBoard.board;
+		QPostImage postImage = QPostImage.postImage;
 		
 		JPQLQuery<Post> jpqlQuery = from(post);
 		jpqlQuery.leftJoin(user).on(post.uid.eq(user));
 		jpqlQuery.leftJoin(board).on(post.bid.eq(board));
+		jpqlQuery.leftJoin(postImage).on(postImage.post.eq(post)); // 2. PostImage를 추가한 leftJoin
 		
-		JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, board.bid);
+		JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, postImage, board.bid);
 
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
 		BooleanExpression expression = post.pid.gt(0L);
