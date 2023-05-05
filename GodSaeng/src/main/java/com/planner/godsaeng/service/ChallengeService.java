@@ -1,5 +1,6 @@
 package com.planner.godsaeng.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.apache.tomcat.util.net.jsse.PEMFile;
 import org.hibernate.internal.build.AllowPrintStacktrace;
@@ -36,41 +39,23 @@ public class ChallengeService {
 	Challenge challenge = null;
 	//여기서부터 CRUD-C 챌린지 CREATE
 	
-	public boolean InsertChallenge(ChallengeDTO d, MultipartFile file) {
-		try {
-		 
-		byte[] thumbnailData = file.getBytes(); // MultipartFile에서 바이트 배열로 파일 데이터 읽어오기
+	 @Transactional
+	 public boolean InsertChallenge(ChallengeDTO dto, MultipartFile thumbnail) throws IOException {
+		 String path = "/img/challengeimg";
+		 if (!thumbnail.isEmpty()) {
+			 String fileName = thumbnail.getOriginalFilename();
+			 File dest = new File(path + File.separator + fileName);
+			 thumbnail.transferTo(dest);
+			 dto.setThumbnailData(thumbnail);
 
-         // 파일 저장 로직
-        String fileName = file.getOriginalFilename();
-        Path path = Paths.get("/uploads/" + fileName);
-        Files.write(path, thumbnailData);
-        challenge = Challenge.builder()
-			.cid(d.getC_id())
-			.cname(d.getC_name())
-			.ccontent(d.getC_content())
-			.cstartdate(d.getC_startdate())
-			.cenddate(d.getC_enddate())
-			.cnumberofparticipants(d.getC_numberofparticipants())
-			.ccategory(d.getC_category())
-			.cintroduction(d.getC_introduction())
-			.cfee(d.getC_fee())
-			.cnumberofphoto(d.getC_numberofphoto())
-			.ctypeofverify(d.getC_typeofverify())
-			.ctypeoffrequency(d.getC_typeoffrequency())
-			.cfrequency(d.getC_frequency())
-			.cscore(d.getC_score())
-			.cthumbnails(thumbnailData)
-			.build();
-		
-			challengeRepository.save(challenge);
-			
-			return true;
-		}catch(IOException e){
-			e.printStackTrace();
-			return false;
-		}
-	}
+			 String thumbnailPath = path + File.separator + fileName;
+			 dto.setC_thumbnails(thumbnailPath);
+		 }
+		 Challenge entity = dtoToEntity(dto);
+		 challengeRepository.save(entity);
+
+		 return true;
+	 }
 	//insert문 끝
 	//여기서부터 CRUD - Read
 	//인기챌린지 (Read)조회 - querytest완료
@@ -252,4 +237,42 @@ public class ChallengeService {
                 .map(challengeStatusConverter::convert)
                 .collect(Collectors.toList());
 }
+	public ChallengeDTO entityToDto(Challenge e) {
+	    return ChallengeDTO.builder()
+	            .c_id(e.getCid())
+	            .c_name(e.getCname())
+	            .c_content(e.getCcontent())
+	            .c_startdate(e.getCstartdate())
+	            .c_enddate(e.getCenddate())
+	            .c_numberofparticipants(e.getCnumberofparticipants())
+	            .c_category(e.getCcategory())
+	            .c_thumbnails(e.getCthumbnails())
+	            .c_introduction(e.getCintroduction())
+	            .c_fee(e.getCfee())
+	            .c_numberofphoto(e.getCnumberofphoto())
+	            .c_typeofverify(e.getCtypeofverify())
+	            .c_typeoffrequency(e.getCtypeoffrequency())
+	            .c_frequency(e.getCfrequency())
+	            .c_score(e.getCscore())
+	            .build();
+	}
+	public Challenge dtoToEntity(ChallengeDTO d) {
+		return Challenge.builder()
+				.cid(d.getC_id())
+				.cname(d.getC_name())
+				.ccontent(d.getC_content())
+				.cstartdate(d.getC_startdate())
+				.cenddate(d.getC_enddate())
+				.cnumberofparticipants(d.getC_numberofparticipants())
+				.ccategory(d.getC_category())
+				.cthumbnails(d.getC_thumbnails())
+				.cintroduction(d.getC_introduction())
+				.cfee(d.getC_fee())
+				.cnumberofphoto(d.getC_numberofphoto())
+				.ctypeofverify(d.getC_typeofverify())
+				.ctypeoffrequency(d.getC_typeoffrequency())
+				.cfrequency(d.getC_frequency())
+				.cscore(d.getC_score())
+				.build();
+	}
 }

@@ -31,6 +31,7 @@ public class ChallengeDTO {
 	private Integer c_frequency;
 	private Integer c_score;
 	private MultipartFile thumbnailData;
+    private String c_thumbnails;
 	
 	public void toEntity(ChallengeDTO d) {
 		Challenge entity = Challenge.builder()
