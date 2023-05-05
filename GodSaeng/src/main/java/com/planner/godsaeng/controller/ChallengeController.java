@@ -58,7 +58,7 @@ public class ChallengeController {
 	}
 	@GetMapping("/list")
 	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(HttpSession session){
-		String uid = /*HttpSession.getAttribute(u_id)*/"sanghee_ok@naver.com";
+		String uid = /*HttpSession.getAttribute(u_id)*/"sinsung@naver.com";
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
