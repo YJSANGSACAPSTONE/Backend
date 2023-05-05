@@ -97,33 +97,33 @@ public class KakaoLoginController {
 		}
 	}
 	
-	@RequestMapping(value="/save")
-	public ResponseEntity<Boolean> save(@RequestBody SaveResponseDTO userinfo) {
-		
-	  String u_id = userinfo.getU_id();
-	  String u_nickname = userinfo.getU_nickname();
-	  String u_content = userinfo.getU_content();
-	  
-	  UserDTO dto = new UserDTO();
-	  dto.setU_id(u_id);
-      dto.setU_nickname(u_nickname);
-      dto.setU_zepid(null);
-      dto.setU_deposit(0);
-      dto.setU_grade(null);
-      dto.setU_level(1);
-      dto.setU_content(u_content);
-      dto.setU_successedchallenge(null);
-      
-      boolean isAddSuccessed = service.InsertUser(dto);
-      
-//	  ModelAndView mav = new ModelAndView();
-//	  mav.addObject("userId", u_id);
-//	  mav.setViewName("index");
-      if(isAddSuccessed) {
-    	  return ResponseEntity.ok(true);
-      }else {
-    	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-      }
-	}
+//	@RequestMapping(value="/save")
+//	public ResponseEntity<Boolean> save(@RequestBody SaveResponseDTO userinfo) {
+//		
+//	  String u_id = userinfo.getU_id();
+//	  String u_nickname = userinfo.getU_nickname();
+//	  String u_content = userinfo.getU_content();
+//	  
+//	  UserDTO dto = new UserDTO();
+//	  dto.setU_id(u_id);
+//      dto.setU_nickname(u_nickname);
+//      dto.setU_zepid(null);
+//      dto.setU_deposit(0);
+//      dto.setU_grade(null);
+//      dto.setU_level(1);
+//      dto.setU_content(u_content);
+//      dto.setU_successedchallenge(null);
+//      
+//      boolean isAddSuccessed = service.InsertUser(dto);
+//      
+////	  ModelAndView mav = new ModelAndView();
+////	  mav.addObject("userId", u_id);
+////	  mav.setViewName("index");
+//      if(isAddSuccessed) {
+//    	  return ResponseEntity.ok(true);
+//      }else {
+//    	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+//      }
+//	}
 	
 }
