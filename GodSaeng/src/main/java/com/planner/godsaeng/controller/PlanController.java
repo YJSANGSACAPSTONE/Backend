@@ -43,7 +43,6 @@ public class PlanController {
 	
 	@PostMapping("/addplan")
 	public ResponseEntity<Boolean> addPlan(@RequestBody PlanDTO d) {
-		logger.info("addPlan 요청 도착: {}", d.getU_id());
 		boolean isAddSuccessed = service.InsertPlan(d);
 		if(isAddSuccessed) {
 			return ResponseEntity.ok(true);
@@ -66,6 +65,8 @@ public class PlanController {
 	//업데이트 시 실시간으로 업데이트된 데이터를 출력할 수 있도록 하는 메서드
 	@PostMapping("/updateplan")
 	public ResponseEntity<PlanDTO> updatePlan(@RequestBody PlanDTO d) {
+		logger.info("addPlan 요청 도착: {}", d.getU_id());
+
 		boolean isSuccess = service.UpdatePlan(d);
 		//업데이트 서비스메서드를 실행한 결과를 isSuccess 변수에 담아줌.
 		if(isSuccess) {
