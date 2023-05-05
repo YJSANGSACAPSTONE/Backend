@@ -16,29 +16,34 @@ import com.planner.godsaeng.service.BoardService;
 @RequestMapping("/board")
 public class BoardController {
 	BoardService service = new BoardService();
-
-	@PostMapping("/addboard")
-	public String addUser(BoardDTO b) {
+	
+	@GetMapping("/write")
+	public String Mainpage() {
+		return "publishing/pages/board/write";
+	}
+	
+	@PostMapping("/add")
+	public String addBoard(BoardDTO b) {
 		service.InsertBoard(b);
-		return null;
+		return "redirect: /board/list";
 	}
 
-	@GetMapping("/listboard")
-	public String listUser(Model m) {
+	@GetMapping("/list")
+	public String listBoard(Model m) {
 		List<Board> list = service.ReadBoard();
 		m.addAttribute("list", list);
-		return null;
+		return "publishing/pages/board/list";
 	}
 
-	@PostMapping("/updateuser")
-	public String updateUser(BoardDTO b) {
+	@PostMapping("/updateboard")
+	public String updateBoard(BoardDTO b) {
 		service.UpdateBoard(b);
 		return null;
 	}
 
-	@GetMapping("/deleteplan")
-	public String deletePlan(BoardDTO b) {
-		service.DeleteBoard(b.getU_id());
+	@GetMapping("/deleteboard")
+	public String deleteBoard(BoardDTO b) {
+		service.DeleteBoard(b.getB_id());
 
 		return null;
 	}

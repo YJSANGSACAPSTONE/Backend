@@ -1,5 +1,31 @@
 package com.planner.godsaeng.dto;
 
+import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CommentDTO {
+	
+	// comment ID
+	private Long commentId;
+	
+	// 게시판 id
+	private Long p_id;
+	
+	// 유저 id
+	private String u_id;
+	
+	private String text;
+	
+	private LocalDateTime regDate, modDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

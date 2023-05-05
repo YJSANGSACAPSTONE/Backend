@@ -30,7 +30,7 @@ import lombok.ToString;
 @DynamicInsert
 
 
-public class Plan {
+public class Plan extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

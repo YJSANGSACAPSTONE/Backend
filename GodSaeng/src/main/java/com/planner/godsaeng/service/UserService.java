@@ -22,6 +22,11 @@ public class UserService {
       user = User.builder()
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
+            .uzepetoid(u.getU_zepetoid())
+            .uimg(u.getU_img())
+            .udeposit(u.getU_deposit())
+            .ugrade(u.getU_grade())
+            .uemail(u.getU_email())
             .uzepid(u.getU_zepid())
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
@@ -89,7 +94,7 @@ public class UserService {
       }
    }
    
-   //유저 정보 삭제
+   // 유저 정보 삭제
    public boolean DeleteUser(String u_id) {
       try {
          userRepository.deleteById(u_id);

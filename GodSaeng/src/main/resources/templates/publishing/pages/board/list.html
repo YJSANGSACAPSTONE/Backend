@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>게시글 목록</title>
+</head>
+<body>
+	<h2>게시글 목록</h2>
+	<button type="button" id="btWrite">글쓰기</button>
+	<table border="1" width="600px">
+		<tr>
+			<th>계시글 ID</th>
+			<th>게시글 번호</th>
+			<th>작성자 ID</th>
+			<th>제목</th>	
+			<th>카테고리</th>
+			<th>작성일</th>
+			<th>조회수</th>
+		</tr>
+		<tr th:each="row : ${list}">
+      		<td th:text="${row.b_id}"></td>
+     		<td th:text="${row.b_number}"></td>
+      		<td th:text="${row.u_id}"></td>
+      		<td>
+  				<a th:href="@{/board/{id}(id=${row.b_id})}" th:text="${row.b_title}"></a>
+			</td>
+      		<td th:text="${row.b_category}"></td>
+      		<td th:text="${row.b_date}"></td>
+      		<td th:text="${row.b_count}"></td>
+    	</tr>
+	</table>
+</body>
+</html>

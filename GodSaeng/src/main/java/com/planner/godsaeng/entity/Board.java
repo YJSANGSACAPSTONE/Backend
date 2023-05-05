@@ -1,14 +1,12 @@
 package com.planner.godsaeng.entity;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -16,6 +14,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -23,28 +22,13 @@ public class Board {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long b_id;
+	private int bid;				// 계시판 ID
+	private String bname;			// 게시판 이름
 	
 	@Column(length=20, nullable=false)
-	private String u_id;
+	private String aid;				// 관리자 ID(임시 값: 업데이트 필요)
 	
-	@Column(length=30, nullable=false)
-	private LocalDateTime b_date;	// 작성시간
 	
-	@Column(length=30, nullable=false)
-	private String b_title;			// 제목
-
-	@Column(length=500, nullable=true)
-	private String b_content;		// 내용
-	
-	@Column(length=30, nullable=true)
-	private String b_image; 		// 사진
-	
-	@Column(length=30, nullable=false)
-	private String b_category;		// 카테고리
-	
-	@Column(length=30, nullable=false)
-	private int b_count;			// 조회수
 
 
 }

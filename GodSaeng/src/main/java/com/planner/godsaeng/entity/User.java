@@ -22,23 +22,26 @@ import lombok.ToString;
 public class User {
    
    @Id
-   @Column(length=30, nullable=false)
+   @Column(length=20, nullable=false)
    private String uid;
    
    @Column(length=20, nullable=false)
    private String unickname;
-   
-   @Column(length=20, nullable=false)
-   private String uzepid;
-
+  
    @Column(length=20, columnDefinition = "int default 0")
    private int udeposit;
    
-   @Column(length=20, nullable=false)
-   private String ugrade;
-   
    @Column(length=20, columnDefinition = "int default 0")
    private int ulevel;
+   
+   @Column(length=20, nullable=false)
+   private String uemail;
+   
+   @Column(length=20, nullable=false)
+   private String uzepid;
+   
+   @Column(length=20, nullable=false)
+   private String ugrade;
    
    @Column(length=100, nullable=false)
    private String ucontent;
