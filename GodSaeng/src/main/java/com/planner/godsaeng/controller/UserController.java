@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.planner.godsaeng.dto.SaveResponseDTO;
 import com.planner.godsaeng.dto.UserDTO;
@@ -82,9 +83,10 @@ public class UserController {
       }
    }
    
-   @GetMapping("/deleteplan")
-   public ResponseEntity<Boolean> deletePlan(UserDTO u) {
-      boolean isDeleted = service.DeleteUser(u.getU_id());
+   @GetMapping("/deleteuser")
+   public ResponseEntity<Boolean> deleteUser(@RequestParam("uid") String uid) {
+	   
+      boolean isDeleted = service.DeleteUser(uid);
       if(isDeleted) {
     	  return ResponseEntity.ok(true);
       }else {
