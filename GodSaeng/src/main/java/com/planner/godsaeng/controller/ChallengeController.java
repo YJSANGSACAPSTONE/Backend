@@ -53,15 +53,6 @@ public class ChallengeController {
 	@PostMapping("/addchallenge")
 	public ResponseEntity<Boolean> AddChallenge(@RequestParam("thumbnail") MultipartFile thumbnail,
 	                                             @RequestBody ChallengeDTO d) throws IOException {
-	    // 파일 저장 경로
-	    String path = "/img/challengeimg";
-	    // 파일 저장
-	    if (!thumbnail.isEmpty()) {
-	        String fileName = thumbnail.getOriginalFilename();
-	        File dest = new File(path + File.separator + fileName);
-	        thumbnail.transferTo(dest);
-	        d.setThumbnailData(thumbnail);
-	    }
 
 	    boolean isAddSuccessed = service.InsertChallenge(d,thumbnail);
 
