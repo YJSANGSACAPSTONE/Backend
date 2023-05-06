@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.planner.godsaeng.dto.CommentDTO;
 import com.planner.godsaeng.entity.Comment;
+import com.planner.godsaeng.entity.User;
+import com.planner.godsaeng.entity.Post;
 
 public interface CommentService {
 	
 	// 모든 post를 가져온다
-	List<CommentDTO> getListOfPost(Long pid);
+	List<CommentDTO> getListOfPost(Long poid);
 	
 	// 댓굴 추가
 	Long register(CommentDTO postCommentDTO);
@@ -23,29 +25,25 @@ public interface CommentService {
 
 		Comment postComment = Comment.builder()
 				.commentId(postCommentDTO.getCommentId())
-				.post(Comment.builder().pid(postCommentDTO.getP_id()).build())
-				.member(Comment.builder().uid(postCommentDTO.getU_id()).build())
-				.grade(postCommentDTO.getGrade())
+				.post(Post.builder().poid(postCommentDTO.getPo_id()).build())
+				.user(User.builder().uid(postCommentDTO.getU_id()).build())
 				.text(postCommentDTO.getText())
 				.build();
 
 		return postComment;
 	}
 
-	default CommentDTO entityToDto(Comment movieReview){
+	default CommentDTO entityToDto(Comment postComment){
 
-		CommentDTO movieReviewDTO = CommentDTO.builder()
-				.reviewnum(movieReview.getReviewnum())
-				.mno(movieReview.getMovie().getMno())
-				.mid(movieReview.getMember().getMid())
-				.nickname(movieReview.getMember().getNickname())
-				.email(movieReview.getMember().getEmail())
-				.grade(movieReview.getGrade())
-				.text(movieReview.getText())
-				.regDate(movieReview.getRegDate())
-				.modDate(movieReview.getModDate())
+		CommentDTO postCommentDTO = CommentDTO.builder()
+				.commentId(postComment.getCommentId())
+				.po_id(postComment.getPost().getPoid())
+				.u_id(postComment.getUser().getUid())
+				.text(postComment.getText())
+				.regDate(postComment.getRegDateTime())
+				.modDate(postComment.getMoDateTime())
 				.build();
 
-		return movieReviewDTO;
+		return postCommentDTO;
 	}
 }

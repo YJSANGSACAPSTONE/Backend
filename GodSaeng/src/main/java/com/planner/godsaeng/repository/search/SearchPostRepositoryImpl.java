@@ -40,8 +40,8 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
 		QPostImage postImage = QPostImage.postImage;
 		
 		JPQLQuery<Post> jpqlQuery = from(post);
-		jpqlQuery.leftJoin(user).on(post.uid.eq(user));
-		jpqlQuery.leftJoin(board).on(post.bid.eq(board));
+		jpqlQuery.leftJoin(user).on(post.user.eq(user));
+		jpqlQuery.leftJoin(board).on(post.board.eq(board));
 		jpqlQuery.leftJoin(postImage).on(postImage.post.eq(post)); // 2. PostImage를 추가한 leftJoin
 		
 		JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, postImage, board.bid);
@@ -67,14 +67,14 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
 		QPostImage postImage = QPostImage.postImage;
 		
 		JPQLQuery<Post> jpqlQuery = from(post);
-		jpqlQuery.leftJoin(user).on(post.uid.eq(user));
-		jpqlQuery.leftJoin(board).on(post.bid.eq(board));
+		jpqlQuery.leftJoin(user).on(post.user.eq(user));
+		jpqlQuery.leftJoin(board).on(post.board.eq(board));
 		jpqlQuery.leftJoin(postImage).on(postImage.post.eq(post)); // 2. PostImage를 추가한 leftJoin
 		
 		JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, postImage, board.bid);
 
 		BooleanBuilder booleanBuilder = new BooleanBuilder();
-		BooleanExpression expression = post.pid.gt(0L);
+		BooleanExpression expression = post.poid.gt(0L);
 		
 		booleanBuilder.and(expression);
 		
@@ -85,9 +85,9 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
 			
 			for (String t : typeArr) {
 				switch (t) {
-				case "t": conditionBuilder.or(post.ptitle.contains(keyword)); break;
+				case "t": conditionBuilder.or(post.potitle.contains(keyword)); break;
 				case "w": conditionBuilder.or(user.uid.contains(keyword)); break;
-				case "c": conditionBuilder.or(post.pcontent.contains(keyword)); break;
+				case "c": conditionBuilder.or(post.pocontent.contains(keyword)); break;
 				}
 			}
 			booleanBuilder.and(conditionBuilder);

@@ -57,9 +57,9 @@ public class PostController {
 	public ResponseEntity<?> register(@RequestBody PostDTO dto) {
 	    log.info("dto...................." + dto);
 
-	    Long pid = postService.register(dto);
+	    Long poid = postService.register(dto);
 
-	    return ResponseEntity.ok(pid);
+	    return ResponseEntity.ok(poid);
 	}
 	
 //	@PostMapping("/register")
@@ -89,9 +89,9 @@ public class PostController {
 	// rest
 	// test: http://localhost:8070/post/read?pid=223 (GET)
 	@GetMapping({"/read", "/modify"})
-	public ResponseEntity<PostDTO> read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long pid) {
-		log.info("PID: " + pid);
-		PostDTO postDTO = postService.getPost(pid);
+	public ResponseEntity<PostDTO> read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long poid) {
+		log.info("POID: " + poid);
+		PostDTO postDTO = postService.getPost(poid);
 
 		log.info(postDTO);
 
@@ -110,10 +110,10 @@ public class PostController {
 	// rest 
 	// test: http://localhost:8070/post/remove/222 (POST)
 	@PostMapping("/remove/{pid}")
-	public ResponseEntity<String> remove(@PathVariable long pid) {
-		log.info("pid: " + pid);
-		postService.removeWithImages(pid);
-		return ResponseEntity.ok().body("Post with ID " + pid + " has been removed.");
+	public ResponseEntity<String> remove(@PathVariable long poid) {
+		log.info("poid: " + poid);
+		postService.removeWithImages(poid);
+		return ResponseEntity.ok().body("Post with ID " + poid + " has been removed.");
 	}
 	
 //	@PostMapping("/modify")
@@ -133,11 +133,11 @@ public class PostController {
 //	}
 	
 	@PostMapping("/modify/{pid}")
-	public ResponseEntity<String> modify(@PathVariable long pid, @RequestBody PostDTO dto) {
+	public ResponseEntity<String> modify(@PathVariable long poid, @RequestBody PostDTO dto) {
 		log.info("post modify.......................");
 		log.info("dto: " + dto);
 		postService.modify(dto);
 
-		return ResponseEntity.ok().body("Post with ID " + pid + " has been modified.");
+		return ResponseEntity.ok().body("Post with ID " + poid + " has been modified.");
 	}
 }

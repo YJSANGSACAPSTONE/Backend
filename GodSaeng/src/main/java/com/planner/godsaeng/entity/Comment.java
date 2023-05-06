@@ -1,17 +1,8 @@
 package com.planner.godsaeng.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Builder
@@ -19,7 +10,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString(exclude = {"post", "user"})
-public class Comment extends BaseEntity{
+@Table(name="godsaeng_comment")
+public class Comment extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

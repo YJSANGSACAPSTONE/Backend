@@ -40,22 +40,23 @@ public class GodSaengPostRepositoryTest {
 	@Autowired
 	private PostImageRepository imageRepository;
 
-	// 삽입 테스트
+	// 성공
+//	// 삽입 테스트
 //	@Transactional
 //	@Commit
 //	@Test
 //	public void insertPostDummies() {
-//		
+//
 //		IntStream.rangeClosed(1, 100).forEach(i -> {
 //			User user = User.builder().uid("userID" + i).build();
 //			Board board = Board.builder().bid(1).build();
 //			
 //			Post post = Post.builder()
-//					.uid(user)
-//					.bid(board)
-//					.ptitle("Title..." + (i % 5))
-//					.pcontent("Content...." + (i % 8))
-//					.phitCount(i)
+//					.user(user)
+//					.board(board)
+//					.potitle("Title..." + (i % 5))
+//					.pocontent("Content...." + (i % 8))
+//					.pohitCount(i)
 //					.build();
 //			
 //			postRepository.save(post);
@@ -73,7 +74,8 @@ public class GodSaengPostRepositoryTest {
 //		});
 //	}
 	
-	// 업데이트 테스트	
+	// 성공
+//	// 업데이트 테스트	
 //	@Test
 //	public void updateTest() {
 //		Optional<Post> result = postRepository.findById(5L);
@@ -88,10 +90,11 @@ public class GodSaengPostRepositoryTest {
 //		}
 // 	}
 	
+	// 성공
 //	// 제목에 특정 키워드가 있는 데이터 조회
 //	@Test
 //	public void testQuery1() {
-//		Pageable pageable = PageRequest.of(0, 10, Sort.by("pid").descending());
+//		Pageable pageable = PageRequest.of(0, 10, Sort.by("poid").descending());
 //		
 //		QPost qPost = QPost.post;
 //		
@@ -99,7 +102,7 @@ public class GodSaengPostRepositoryTest {
 //		
 //		BooleanBuilder builder = new BooleanBuilder();
 //		
-//		BooleanExpression expression = qPost.ptitle.contains(keyword);
+//		BooleanExpression expression = qPost.potitle.contains(keyword);
 //		
 //		builder.and(expression);
 //		
@@ -110,10 +113,11 @@ public class GodSaengPostRepositoryTest {
 //		});
 //	}
 	
+	// 성공
 //	// 제목 또는 내용에 특정한 키워드가 있고 gno가 250보다 큰 조건을 만족하는 데이터 조회
 //	@Test
 //	public void testQuesry2() {
-//		Pageable pageable = PageRequest.of(0, 10, Sort.by("pid").descending());
+//		Pageable pageable = PageRequest.of(0, 10, Sort.by("poid").descending());
 //
 //		QPost qPost = QPost.post;
 //
@@ -122,12 +126,12 @@ public class GodSaengPostRepositoryTest {
 //
 //		BooleanBuilder builder = new BooleanBuilder();
 //
-//		BooleanExpression exTitle = qPost.ptitle.contains(keyword);
-//		BooleanExpression exContent = qPost.pcontent.contains(keyword2);
+//		BooleanExpression exTitle = qPost.potitle.contains(keyword);
+//		BooleanExpression exContent = qPost.pocontent.contains(keyword2);
 //		BooleanExpression exAll = exTitle.and(exContent);
 //
 //		builder.and(exAll);
-//		builder.and(qPost.pid.gt(10L));
+//		builder.and(qPost.poid.gt(10L));
 //
 //		Page<Post> result = postRepository.findAll(builder, pageable);
 //
@@ -136,6 +140,7 @@ public class GodSaengPostRepositoryTest {
 //		});
 //	}
 	
+	// 성공
 //	@Transactional
 //	@Test
 //	public void testReadPost() {
@@ -144,9 +149,10 @@ public class GodSaengPostRepositoryTest {
 //		Post post = result.get();
 //		
 //		System.out.println(post);
-//		System.out.println(post.getUid());
+//		System.out.println(post.getUser().getUid());
 //	}
 	
+	// 성공
 //	@Test
 //	public void testReadWithWriter() {
 //		Object result = postRepository.getPostWithUid(100L);
@@ -163,16 +169,17 @@ public class GodSaengPostRepositoryTest {
 //		System.out.println(Arrays.toString(arr));
 //	}
 	
-	 @Test
-	    public void testGetMovieWithAll(){
-
-	        List<Object[]> result = postRepository.getPostWithAll(93L);
-
-	        System.out.println(result);
-
-	        for (Object[] arr : result){
-	            System.out.println(Arrays.toString(arr));
-	        }
-	    }
+	// 성공
+//	 @Test
+//	 public void testGetMovieWithAll(){
+//
+//		 List<Object[]> result = postRepository.getPostWithAll(93L);
+//
+//		 System.out.println(result);
+//
+//		 for (Object[] arr : result){
+//			 System.out.println(Arrays.toString(arr));
+//		 }
+//	 }
 	
 }

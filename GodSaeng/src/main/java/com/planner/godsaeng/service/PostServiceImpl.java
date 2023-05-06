@@ -20,6 +20,7 @@ import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.entity.PostImage;
 import com.planner.godsaeng.repository.PostRepository;
+import com.planner.godsaeng.repository.CommentRepository;
 import com.planner.godsaeng.repository.FileRepositroy;
 import com.planner.godsaeng.repository.PostImageRepository;
 
@@ -32,7 +33,8 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
-	private final PostImageRepository imageRepository; 
+	private final PostImageRepository imageRepository;
+	private final CommentRepository commentRepository;
 
 	@Transactional
 	@Override
@@ -50,7 +52,7 @@ public class PostServiceImpl implements PostService {
 			});
 		}
 
-		return post.getPid();
+		return post.getPoid();
 	}
 
 	@Override
@@ -60,23 +62,23 @@ public class PostServiceImpl implements PostService {
 		Page<Object[]> result = postRepository.searchPage(
 				pageRequestDTO.getType(),
 				pageRequestDTO.getKeyword(),
-				pageRequestDTO.getPageable(Sort.by("pid").descending()));
+				pageRequestDTO.getPageable(Sort.by("poid").descending()));
 				
-		result.forEach(en -> System.out.println(en[2].getClass().getName()));
+		result.forEach(en -> System.out.println(en[3].getClass().getName()));
 		
 		Function<Object[], PostDTO> fn = (en -> entityToDto(
-				(Post)en[0],
-				(User)en[1],
-				(List<PostImage>) (Arrays.asList((PostImage) en[2]))
-				
-		));
+				(Post) en[0],
+				(User) en[1],
+				(List<PostImage>) (Arrays.asList((PostImage) en[2])),
+				Long.valueOf(en[3].toString()))	
+		);
 
 		return new PageResultDTO<>(result, fn);
 	}
 
 	@Override
-	public PostDTO getPost(Long pid) {
-		List<Object[]> result = postRepository.getPostWithAll(pid);
+	public PostDTO getPost(Long poid) {
+		List<Object[]> result = postRepository.getPostWithAll(poid);
 		
 		Post post = (Post) result.get(0)[0];	// Post 엔티티는 가장 앞에 존재 - 모든 Row가 동일한 값이다
 		
@@ -89,23 +91,27 @@ public class PostServiceImpl implements PostService {
 		
 		User user = (User) result.get(0)[2];
 		
-		return entityToDto(post, user, postImageList);
+		Long commentCnt = (Long) result.get(0)[3]; // 댓글 개수 - 모든 Row가 동일한 값
+		
+		return entityToDto(post, user, postImageList, commentCnt);
 	}
 	
 	@Transactional
 	@Override
-	public void removeWithImages(Long pid) {
-		postRepository.deleteById(pid);
-		imageRepository.deleteByBid(pid);
+	public void removeWithImages(Long poid) {
+		postRepository.deleteById(poid);
+		imageRepository.deleteByPoid(poid);
+		commentRepository.deleteByPoid(poid);
+		
 	}
 
 	@Transactional
 	@Override
 	public void modify(PostDTO postDTO) {
-		Post post = postRepository.getOne(postDTO.getP_id());
+		Post post = postRepository.getOne(postDTO.getPo_id());
 		
-		post.changeTitle(postDTO.getP_title());
-		post.changeContent(postDTO.getP_content());
+		post.changeTitle(postDTO.getPo_title());
+		post.changeContent(postDTO.getPo_content());
 		
 		System.out.println("post-------------" + post);
 		

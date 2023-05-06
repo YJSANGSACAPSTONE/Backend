@@ -17,7 +17,7 @@ public class CommentDTO {
 	private Long commentId;
 	
 	// 게시판 id
-	private Long p_id;
+	private Long po_id;
 	
 	// 유저 id
 	private String u_id;

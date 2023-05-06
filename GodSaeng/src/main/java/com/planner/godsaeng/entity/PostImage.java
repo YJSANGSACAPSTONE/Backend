@@ -31,13 +31,13 @@ public class PostImage {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private Long iid;		// 이미지 넘버(ID)
+	private Long iid;			// 이미지 넘버(ID)
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Post post;				// 게시판 ID
+	private Post post;			// 게시판 ID
  
 	@Column(length = 200, nullable = false)
-	private String imgName;			// 원본 이미지 이름
+	private String imgName;		// 원본 이미지 이름
 	
 	private String uuid;		// 변경된 파일 이름
 	

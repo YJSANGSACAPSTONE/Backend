@@ -1,5 +1,6 @@
 package com.planner.godsaeng.service;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import com.planner.godsaeng.dto.BoardDTO;
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
+import com.planner.godsaeng.dto.PostImageDTO;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.PostImage;
 import com.planner.godsaeng.repository.PostImageRepository;
@@ -20,23 +22,24 @@ public class GodSaengPostServiceTest {
 	@Autowired
 	private PostService postService;
 	
-	@Test 
-	public void testRegister() {
-		PostDTO postDTO = PostDTO.builder()
-				.p_title("게시판 타이틀 제목 테스트...")
-				.p_content("게시판 내용 테스트....")
-				.u_id("userID27")
-				.b_id(1)
-				.build();
-
-		Long pid = postService.register(postDTO);
-		
-		PostImage postImage = PostImage.builder()
-                .uuid(UUID.randomUUID().toString())
-                .imgName("test" + 27 +".jpg").build();
-		
-		System.out.println("----------end of boardservice.register()");
-	}
+//	// 성공!
+//	@Test
+//	public void testRegister() {
+//	    PostDTO postDTO = PostDTO.builder()
+//	        .po_title("게시판 타이틀 제목 테스트...")
+//	        .po_content("게시판 내용 테스트....")
+//	        .u_id("userID30")
+//	        .b_id(1)
+//	        .imageDTOList(Collections.singletonList(PostImageDTO.builder()
+//	            .uuid(UUID.randomUUID().toString())
+//	            .imgName("test" + 30 + ".jpg")
+//	            .build()))
+//	        .build();
+//
+//	    Long poid = postService.register(postDTO);
+//
+//	    System.out.println("----------end of boardservice.register()");
+//	}
 	
 //	// 성공
 //	@Test
@@ -56,7 +59,7 @@ public class GodSaengPostServiceTest {
 ////	성공!	
 //	@Test
 //	public void testGet() {
-//		Long pid = 100L;
+//		Long pid = 11L;
 //		PostDTO postDTO = postService.getPost(pid);
 //		System.out.println(postDTO);
 //	}
@@ -64,16 +67,16 @@ public class GodSaengPostServiceTest {
 ////	성공!
 //	@Test 
 //	public void testRemove() {
-//		Long pid = 99L;
+//		Long pid = 19L;
 //		postService.removeWithImages(pid);
 //	}
 	
 //	@Test
 //	public void testModify() {
 //		PostDTO postDTO = PostDTO.builder()
-//				.p_id(2L)
-//				.p_title("제목 변경")
-//				.p_content("내용 변경")
+//				.po_id(9L)
+//				.po_title("제목 변경")
+//				.po_content("내용 변경")
 //				.build();
 //		postService.modify(postDTO);
 //	}

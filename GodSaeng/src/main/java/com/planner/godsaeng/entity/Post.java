@@ -20,7 +20,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name="godsaeng_post")
-@ToString(exclude = {"uid", "bid"})
+@ToString(exclude = {"user", "board"})
 @Getter
 @Builder
 @AllArgsConstructor
@@ -29,36 +29,36 @@ import lombok.ToString;
 public class Post extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private User uid;				// 유저 ID
+	private User user;				// 유저 ID
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Board bid;				// 게시판 ID
+	private Board board;				// 게시판 ID
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long pid;				// 게시글 ID
+	private Long poid;				// 게시글 ID
 	
 	@Column(length = 100, nullable = false)
-	private String ptitle;			// 제목
+	private String potitle;			// 제목
 	
 	@Column(length = 1500, nullable = false)
-	private String pcontent;		// 내용
+	private String pocontent;		// 내용
 	
 	@Column(columnDefinition = "int default 0")
-	private int phitCount;			// 조회수
+	private int pohitCount;			// 조회수
 	
 	@Column(columnDefinition = "int default 0")
-	private int plike;				// 추천수
+	private int polike;				// 추천수
 	
 	@Column(columnDefinition = "boolean default true")
-	private boolean psecret;		// 비밀글 여부
+	private boolean posecret;		// 비밀글 여부
 	
-	public void changeTitle(String ptitle) {
-		this.ptitle = ptitle;
+	public void changeTitle(String potitle) {
+		this.potitle = potitle;
 	}
 	
-	public void changeContent(String pcontent) {
-		this.pcontent = pcontent;
+	public void changeContent(String pocontent) {
+		this.pocontent = pocontent;
 	}
 	
 	

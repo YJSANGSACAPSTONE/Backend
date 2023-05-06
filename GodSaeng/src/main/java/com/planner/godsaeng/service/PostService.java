@@ -22,10 +22,10 @@ public interface PostService {
 	PageResultDTO<PostDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
 	
 	// 게시물 조회
-	PostDTO getPost(Long pid);
+	PostDTO getPost(Long poid);
 	
 	// 게시물 삭제
-	void removeWithImages(Long pid);
+	void removeWithImages(Long poid);
 	
 	
 	// 게시물 수정
@@ -51,19 +51,19 @@ public interface PostService {
 //		return post;
 //	}
 
-	default PostDTO entityToDto(Post post, User user, List<PostImage> postImages) {
+	default PostDTO entityToDto(Post post, User user, List<PostImage> postImages, Long commentCnt) {
 		PostDTO postDTO = PostDTO.builder()
 				.u_id(user.getUid())
 //				.u_id(post.getUser().getUid())
-				.b_id(post.getBid().getBid())
-				.p_id(post.getPid())
-				.p_title(post.getPtitle())
-				.p_content(post.getPcontent())
-				.p_regDate(post.getRegDateTime())
-				.p_modDate(post.getMoDateTime())
-				.p_hitCount(post.getPhitCount())
-				.p_like(post.getPlike())
-				.p_secret(post.isPsecret())
+				.b_id(post.getBoard().getBid())
+				.po_id(post.getPoid())
+				.po_title(post.getPotitle())
+				.po_content(post.getPocontent())
+				.po_regDate(post.getRegDateTime())
+				.po_modDate(post.getMoDateTime())
+				.po_hitCount(post.getPohitCount())
+				.po_like(post.getPolike())
+				.po_secret(post.isPosecret())
 				.build();
 		
 		List<PostImageDTO> postImageDTOList = postImages.stream().map(postImage -> { 
@@ -75,6 +75,7 @@ public interface PostService {
 		}).collect(Collectors.toList());
 
 		postDTO.setImageDTOList(postImageDTOList);
+		postDTO.setCommentCnt(commentCnt);
 		
 		return postDTO;
 	}
@@ -90,14 +91,14 @@ public interface PostService {
 				.bid(postDTO.getB_id()).build();
 				
 		Post post = Post.builder()
-				.uid(user)
-				.bid(board)
-				.pid(postDTO.getP_id())
-				.ptitle(postDTO.getP_title())
-				.pcontent(postDTO.getP_content())
-				.phitCount(postDTO.getP_hitCount())
-				.plike(postDTO.getP_like())
-				.psecret(postDTO.isP_secret())
+				.user(user)
+				.board(board)
+				.poid(postDTO.getPo_id())
+				.potitle(postDTO.getPo_title())
+				.pocontent(postDTO.getPo_content())
+				.pohitCount(postDTO.getPo_hitCount())
+				.polike(postDTO.getPo_like())
+				.posecret(postDTO.isPo_secret())
 				.build();
 
         entityMap.put("post", post);
