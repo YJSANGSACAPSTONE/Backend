@@ -3,33 +3,24 @@ package com.planner.godsaeng.service;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 
 import org.apache.http.entity.ContentType;
-import org.apache.tomcat.util.net.jsse.PEMFile;
-import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.repository.ChallengeRepository;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.ResourceUtils;
 
 import lombok.RequiredArgsConstructor;
 

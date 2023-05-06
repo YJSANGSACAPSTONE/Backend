@@ -2,6 +2,9 @@ package com.planner.godsaeng.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,19 +16,25 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.planner.godsaeng.dto.KakaoApproveResponse;
 import com.planner.godsaeng.dto.KakaoReadyResponse;
+import com.planner.godsaeng.entity.Payment;
+import com.planner.godsaeng.entity.User;
+import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.service.KakaoPayService;
+import com.planner.godsaeng.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/kakaopay")
 @RequiredArgsConstructor
+@Transactional
 public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
+    private final UserService userService;
     
 	@GetMapping("/payment")
-	public String paymeant() {
+	public String payment() {
 		return "kakaopay/payment";
 	}
     
@@ -35,7 +44,9 @@ public class KakaoPayController {
     @RequestMapping("/ready")
     @ResponseBody
     public ResponseEntity readyToKakaoPay(@RequestParam("uid") String uid, @RequestParam("kpamount") int kpamount) {
-    	
+//    	HttpSession session_uid = request.getSession();
+//    	session.setAttribute("userid", "test1234");
+//    	
     	ModelAndView mv = new ModelAndView();
     	KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(uid, kpamount);
     	String nextRedirectPcUrl = kakaoReady.getNext_redirect_pc_url();
@@ -54,7 +65,21 @@ public class KakaoPayController {
     	
     	ModelAndView mv = new ModelAndView();
         KakaoApproveResponse kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
-
+        
+//      결제정보 저장
+        String uid = kakaoApprove.getPartner_user_id();
+        Optional<User> userEntity = userService.SearchId(uid);
+        
+        Payment payment = Payment.builder()
+        		.kpmethodtype(kakaoApprove.getPayment_method_type())
+        		.kpdate(kakaoApprove.getApproved_at())
+        		.kpamount(kakaoApprove.getAmount().getTotal())
+        		.user(userEntity.get())
+        		.build();
+        
+        kakaoPayService.SavePayment(payment);
+        userService.AddDeposit(uid, kakaoApprove.getAmount().getTotal());
+        
         mv.addObject("kakaoApprove", kakaoApprove);
         mv.setViewName("kakaopay/approve");
         return mv;

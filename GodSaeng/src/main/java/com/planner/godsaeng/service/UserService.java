@@ -46,8 +46,8 @@ public class UserService {
       Optional<User> result = userRepository.findById(uid);
        
       if(result.isPresent()) {
-            userinfo = UserDTO.builder()
-            .u_id(result.get().getUid())
+          userinfo = UserDTO.builder()
+         .u_id(result.get().getUid())
          .u_nickname(result.get().getUnickname())
          .u_zepid(result.get().getUzepid())
 
@@ -98,5 +98,14 @@ public class UserService {
          e.printStackTrace();
          return false;
       }
+   }
+   
+   public void AddDeposit(String uid, int newDeposit) {
+	   userRepository.addDeposit(uid, newDeposit);
+   }
+   
+   public Optional<User> SearchId(String uid) {
+	   Optional<User> userEntity = userRepository.findById(uid);
+	   return userEntity;
    }
 }
