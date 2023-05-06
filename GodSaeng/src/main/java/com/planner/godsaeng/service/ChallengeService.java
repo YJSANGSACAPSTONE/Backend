@@ -59,44 +59,58 @@ public class ChallengeService {
 
 		return true;
 	}
-	 public List<ChallengeDTO>ReadPopularChallenge(){
-
-
-		 List<Challenge>popularListEntity=challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
-		 List<ChallengeDTO>popularList=new ArrayList<>();
-
-		 for(Challenge e : popularListEntity) {
-			 ChallengeDTO dto = entityToDto(e);
-			 String thumbnailPath = e.getCthumbnails();
-			 File thumbnailFile = new File(thumbnailPath);
-			 try {
-				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
-						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				 dto.setThumbnailData(thumbnailData);
-				 popularList.add(dto);
-			 } catch (IOException c) {
-				 // 예외 처리 로직
-				 c.printStackTrace();
-			 }
-		 }
-		 return popularList;
-	 }
+	public List<ChallengeDTO> ReadPopularChallenge() {
+	    List<Challenge> popularListEntity = challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
+	    List<ChallengeDTO> popularList = new ArrayList<>();
+	    for (Challenge e : popularListEntity) {
+	        ChallengeDTO dto = entityToDto(e);
+	        try {
+	            String thumbnailPath = e.getCthumbnails();
+	            File thumbnailFile = new File(thumbnailPath);
+	            byte[] thumbnailBytes = Files.readAllBytes(thumbnailFile.toPath());
+	            String originalFilename = thumbnailFile.getName();
+	            String contentType = Files.probeContentType(thumbnailFile.toPath());
+	            MultipartFile thumbnailData = new MockMultipartFile(
+	                    originalFilename,  // 파일 이름
+	                    originalFilename,  // 오리지날 파일 이름
+	                    contentType,       // 파일의 MIME 타입
+	                    thumbnailBytes     // 파일 바이트 배열
+	            );
+	            dto.setThumbnailData(thumbnailData);
+	            popularList.add(dto);
+	        } catch (IOException ex) {
+	            // 예외 처리 로직
+	            ex.printStackTrace();
+	        }
+	    }
+	    return popularList;
+	}
 	//최신챌린지 조회R2 - querytest 완료
-	 public List<ChallengeDTO>ReadRecentChallenge(){
-		 List<Challenge>recentListEntity = challengeRepository.findAllByOrderByCstartdateDesc();
-		 List<ChallengeDTO>recentList = new ArrayList<>();
-		 for(Challenge e : recentListEntity) {
+	 public List<ChallengeDTO> ReadRecentChallenge() {
+		 List<Challenge> recentListEntity = challengeRepository.findAllByOrderByCstartdateDesc();
+		 List<ChallengeDTO> recentList = new ArrayList<>();
+		 for (Challenge e : recentListEntity) {
 			 ChallengeDTO dto = entityToDto(e);
-			 String thumbnailPath = e.getCthumbnails();
-			 File thumbnailFile = new File(thumbnailPath);
 			 try {
-				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
-						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
+				 String thumbnailPath = e.getCthumbnails();
+				 System.out.println("thumbnailPath: " + thumbnailPath);
+				 File thumbnailFile = new File(thumbnailPath);
+				 byte[] thumbnailBytes = Files.readAllBytes(thumbnailFile.toPath());
+				 String originalFilename = thumbnailFile.getName();
+				 System.out.println("thumbnailPath: " + thumbnailFile.toPath());
+
+				 String contentType = Files.probeContentType(thumbnailFile.toPath());
+				 MultipartFile thumbnailData = new MockMultipartFile(
+						 originalFilename,  // 파일 이름
+						 originalFilename,  // 오리지날 파일 이름
+						 contentType,       // 파일의 MIME 타입
+						 thumbnailBytes     // 파일 바이트 배열
+						 );
 				 dto.setThumbnailData(thumbnailData);
 				 recentList.add(dto);
-			 } catch (IOException c) {
+			 } catch (IOException ex) {
 				 // 예외 처리 로직
-				 c.printStackTrace();
+				 ex.printStackTrace();
 			 }
 		 }
 		 return recentList;
@@ -105,25 +119,32 @@ public class ChallengeService {
 	String uid = "hwangjoo";
 	//내가 참가중인 챌린지 조회R3
 	//쿼리 검증 완료 - challenge와 challengeparticipate join하여 데이터출력.
-	public List<ChallengeDTO>ReadMyChallenge(String uid){
-		
-		List<Challenge>myListEntity = challengeRepository.findChallengeByUid(uid);
-		List<ChallengeDTO>myList = new ArrayList<>();
-		for(Challenge e : myListEntity) {
-		ChallengeDTO dto = entityToDto(e);
-		String thumbnailPath = e.getCthumbnails();
-	    File thumbnailFile = new File(thumbnailPath);
-	    try {
-	        MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
-	                ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-	        dto.setThumbnailData(thumbnailData);
-	        myList.add(dto);
-	    } catch (IOException c) {
-	        // 예외 처리 로직
-	        c.printStackTrace();
-	    	}
+	public List<ChallengeDTO> ReadMyChallenge(String uid) {
+		List<Challenge> myListEntity = challengeRepository.findChallengeByUid(uid);
+		List<ChallengeDTO> myList = new ArrayList<>();
+		for (Challenge e : myListEntity) {
+			ChallengeDTO dto = entityToDto(e);
+			try {
+				String thumbnailPath = e.getCthumbnails();
+				System.out.println("thumbnailPath: " + thumbnailPath);
+				File thumbnailFile = new File(thumbnailPath);
+				byte[] thumbnailBytes = Files.readAllBytes(thumbnailFile.toPath());
+				String originalFilename = thumbnailFile.getName();
+				String contentType = Files.probeContentType(thumbnailFile.toPath());
+				MultipartFile thumbnailData = new MockMultipartFile(
+						originalFilename,  // 파일 이름
+						originalFilename,  // 오리지날 파일 이름
+						contentType,       // 파일의 MIME 타입
+						thumbnailBytes     // 파일 바이트 배열
+						);
+				dto.setThumbnailData(thumbnailData);
+				myList.add(dto);
+			} catch (IOException ex) {
+				// 예외 처리 로직
+				ex.printStackTrace();
+			}
 		}
-		 return myList;
+		return myList;
 	}
 	//여기까지 챌린지 R
 	//여기부터 CRUD-U 챌린지 UPDATE
