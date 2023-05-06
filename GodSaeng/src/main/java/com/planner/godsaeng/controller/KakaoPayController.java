@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import com.planner.godsaeng.dto.KakaoApproveResponse;
 import com.planner.godsaeng.dto.KakaoReadyResponse;
 import com.planner.godsaeng.entity.Payment;
 import com.planner.godsaeng.entity.User;
-import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.service.KakaoPayService;
 import com.planner.godsaeng.service.UserService;
 
@@ -61,7 +61,7 @@ public class KakaoPayController {
      * 결제 성공
      */
     @RequestMapping("/approve")
-    public ModelAndView afterPayRequest(@RequestParam("pg_token") String pgToken) {
+    public String afterPayRequest(@Value("${frontend.base.url}") final String frontendBaseUrl,@RequestParam("pg_token") String pgToken) {
     	
     	ModelAndView mv = new ModelAndView();
         KakaoApproveResponse kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
@@ -80,9 +80,9 @@ public class KakaoPayController {
         kakaoPayService.SavePayment(payment);
         userService.AddDeposit(uid, kakaoApprove.getAmount().getTotal());
         
-        mv.addObject("kakaoApprove", kakaoApprove);
-        mv.setViewName("kakaopay/approve");
-        return mv;
+//        mv.addObject("kakaoApprove", kakaoApprove);
+//        mv.setViewName("kakaopay/approve");
+        return "redirect:" + frontendBaseUrl + "/JobComplete";
 //        return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
     }
 
