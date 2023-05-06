@@ -1,6 +1,8 @@
 package com.planner.godsaeng.controller;
 
-import org.springframework.http.HttpStatus;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,14 +34,16 @@ public class KakaoPayController {
      */
     @RequestMapping("/ready")
     @ResponseBody
-    public ModelAndView readyToKakaoPay() {
+    public ResponseEntity readyToKakaoPay(@RequestParam("uid") String uid, @RequestParam("kpamount") int kpamount) {
     	
     	ModelAndView mv = new ModelAndView();
-    	KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady();
+    	KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(uid, kpamount);
     	String nextRedirectPcUrl = kakaoReady.getNext_redirect_pc_url();
-    	mv.addObject("next_redirect_pc_url", nextRedirectPcUrl);
-    	mv.setViewName("kakaopay/payment");
-    	return mv;
+//    	mv.addObject("next_redirect_pc_url", nextRedirectPcUrl);
+//    	mv.setViewName("kakaopay/payment");
+    	Map<String, Object> responseBody = new HashMap<>();
+    	responseBody.put("nextRedirectPcUrl", nextRedirectPcUrl);
+    	return ResponseEntity.ok(responseBody);
     }
     
     /**
@@ -74,4 +78,9 @@ public class KakaoPayController {
     	mv.setViewName("kakaopay/fail");
     	return mv;
     }
+    
+//    @GetMapping("/save")
+//    public ResponseEntity<Boolean> savepayment(){
+//    	
+//    }
 }
