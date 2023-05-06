@@ -36,7 +36,7 @@ public class ChallengeDTO {
 	private Integer c_typeoffrequency;
 	private Integer c_frequency;
 	private Integer c_score;
-	private MultipartFile thumbnail;
+	private MultipartFile thumbnailData;
     private String c_thumbnails;
 	
 	public void toEntity(ChallengeDTO d) {
