@@ -45,10 +45,8 @@ public class PlanController {
    
    //로그인 후 메인 화면에 보이는 오늘의 일정 출력 메서드
    @GetMapping("/dailyplan")
-   public ResponseEntity<List<PlanDTO>> listPlan(HttpSession session) {
-      String currentuser_id = (String)(session.getAttribute("u_id"));
-      currentuser_id = "sinsung@naver.com";
-      List<PlanDTO> list = service.ReadDailyPlan(currentuser_id);
+   public ResponseEntity<List<PlanDTO>> listPlan(String uid) {
+      List<PlanDTO> list = service.ReadDailyPlan(uid);
       return ResponseEntity.ok(list);
       
    }

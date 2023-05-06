@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
 import javax.transaction.Transactional;
 
 import org.apache.http.entity.ContentType;
@@ -51,8 +52,7 @@ public class ChallengeService {
 			File dest = new File(path + File.separator + fileName);
 			thumbnail.transferTo(dest);
 			dto.setThumbnailData(thumbnail);
-			String thumbnailPath = path + File.separator + fileName;
-			dto.setC_thumbnails(thumbnailPath);
+			dto.setC_thumbnails("/img/challengeimg/" + fileName);
 		}
 		Challenge entity = dtoToEntity(dto);
 		challengeRepository.save(entity);
@@ -60,61 +60,29 @@ public class ChallengeService {
 		return true;
 	}
 	public List<ChallengeDTO> ReadPopularChallenge() {
-	    List<Challenge> popularListEntity = challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
-	    List<ChallengeDTO> popularList = new ArrayList<>();
-	    for (Challenge e : popularListEntity) {
-	        ChallengeDTO dto = entityToDto(e);
-	        try {
-	            String thumbnailPath = e.getCthumbnails();
-	            File thumbnailFile = new File(thumbnailPath);
-	            byte[] thumbnailBytes = Files.readAllBytes(thumbnailFile.toPath());
-	            String originalFilename = thumbnailFile.getName();
-	            String contentType = Files.probeContentType(thumbnailFile.toPath());
-	            MultipartFile thumbnailData = new MockMultipartFile(
-	                    originalFilename,  // 파일 이름
-	                    originalFilename,  // 오리지날 파일 이름
-	                    contentType,       // 파일의 MIME 타입
-	                    thumbnailBytes     // 파일 바이트 배열
-	            );
-	            dto.setThumbnailData(thumbnailData);
-	            popularList.add(dto);
-	        } catch (IOException ex) {
-	            // 예외 처리 로직
-	            ex.printStackTrace();
-	        }
-	    }
-	    return popularList;
-	}
+		List<Challenge> popularListEntity = challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
+		List<ChallengeDTO> popularList = new ArrayList<>();
+		for (Challenge e : popularListEntity) {
+		ChallengeDTO dto = entityToDto(e);
+		String thumbnailPath = e.getCthumbnails();
+		System.out.println("thumbnailPath:인기리스트 " + thumbnailPath);
+		dto.setC_thumbnails(thumbnailPath);
+		popularList.add(dto);
+		}
+		return popularList;
+		}
 	//최신챌린지 조회R2 - querytest 완료
-	 public List<ChallengeDTO> ReadRecentChallenge() {
-		 List<Challenge> recentListEntity = challengeRepository.findAllByOrderByCstartdateDesc();
-		 List<ChallengeDTO> recentList = new ArrayList<>();
-		 for (Challenge e : recentListEntity) {
-			 ChallengeDTO dto = entityToDto(e);
-			 try {
-				 String thumbnailPath = e.getCthumbnails();
-				 System.out.println("thumbnailPath: " + thumbnailPath);
-				 File thumbnailFile = new File(thumbnailPath);
-				 byte[] thumbnailBytes = Files.readAllBytes(thumbnailFile.toPath());
-				 String originalFilename = thumbnailFile.getName();
-				 System.out.println("thumbnailPath: " + thumbnailFile.toPath());
-
-				 String contentType = Files.probeContentType(thumbnailFile.toPath());
-				 MultipartFile thumbnailData = new MockMultipartFile(
-						 originalFilename,  // 파일 이름
-						 originalFilename,  // 오리지날 파일 이름
-						 contentType,       // 파일의 MIME 타입
-						 thumbnailBytes     // 파일 바이트 배열
-						 );
-				 dto.setThumbnailData(thumbnailData);
-				 recentList.add(dto);
-			 } catch (IOException ex) {
-				 // 예외 처리 로직
-				 ex.printStackTrace();
-			 }
-		 }
-		 return recentList;
-	 }
+	public List<ChallengeDTO> ReadRecentChallenge() {
+	    List<Challenge> recentListEntity = challengeRepository.findAllByOrderByCstartdateDesc();
+	    List<ChallengeDTO> recentList = new ArrayList<>();
+	    for (Challenge e : recentListEntity) {
+	        ChallengeDTO dto = entityToDto(e);
+	        String thumbnailPath = e.getCthumbnails();
+	        dto.setC_thumbnails(thumbnailPath);
+	        recentList.add(dto);
+	    }
+	    return recentList;
+	}
 	
 	String uid = "hwangjoo";
 	//내가 참가중인 챌린지 조회R3
@@ -124,25 +92,9 @@ public class ChallengeService {
 		List<ChallengeDTO> myList = new ArrayList<>();
 		for (Challenge e : myListEntity) {
 			ChallengeDTO dto = entityToDto(e);
-			try {
-				String thumbnailPath = e.getCthumbnails();
-				System.out.println("thumbnailPath: " + thumbnailPath);
-				File thumbnailFile = new File(thumbnailPath);
-				byte[] thumbnailBytes = Files.readAllBytes(thumbnailFile.toPath());
-				String originalFilename = thumbnailFile.getName();
-				String contentType = Files.probeContentType(thumbnailFile.toPath());
-				MultipartFile thumbnailData = new MockMultipartFile(
-						originalFilename,  // 파일 이름
-						originalFilename,  // 오리지날 파일 이름
-						contentType,       // 파일의 MIME 타입
-						thumbnailBytes     // 파일 바이트 배열
-						);
-				dto.setThumbnailData(thumbnailData);
-				myList.add(dto);
-			} catch (IOException ex) {
-				// 예외 처리 로직
-				ex.printStackTrace();
-			}
+			dto.setThumbnailData(null); // MultipartFile 객체를 null로 설정
+			dto.setC_thumbnails(e.getCthumbnails()); // 이미지 경로만 설정
+			myList.add(dto);
 		}
 		return myList;
 	}

@@ -110,8 +110,7 @@ public class ChallengeController {
 	
 	//챌린지 참가 신청 시 실행 메서드
 	@GetMapping("/participate")
-	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, HttpSession session){
-//		String u_id = session.getAttribute("uid");
+	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, String uid){
 		boolean isParticipateSuccessed = true;
 		if(isParticipateSuccessed) {
 			return ResponseEntity.ok(true);
