@@ -57,7 +57,7 @@ public class ChallengeService {
 			 String fileName = thumbnail.getOriginalFilename();
 			 File dest = new File(path + File.separator + fileName);
 			 thumbnail.transferTo(dest);
-			 dto.setThumbnailData(thumbnail);
+			 dto.setThumbnail(thumbnail);
 
 			 String thumbnailPath = path + File.separator + fileName;
 			 dto.setC_thumbnails(thumbnailPath);
@@ -80,7 +80,7 @@ public class ChallengeService {
 			 try {
 				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				 dto.setThumbnailData(thumbnailData);
+				 dto.setThumbnail(thumbnailData);
 				 popularList.add(dto);
 			 } catch (IOException c) {
 				 // 예외 처리 로직
@@ -100,7 +100,7 @@ public class ChallengeService {
 			 try {
 				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				 dto.setThumbnailData(thumbnailData);
+				 dto.setThumbnail(thumbnailData);
 				 recentList.add(dto);
 			 } catch (IOException c) {
 				 // 예외 처리 로직
@@ -124,7 +124,7 @@ public class ChallengeService {
 	    try {
 	        MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 	                ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-	        dto.setThumbnailData(thumbnailData);
+	        dto.setThumbnail(thumbnailData);
 	        myList.add(dto);
 	    } catch (IOException c) {
 	        // 예외 처리 로직
@@ -174,7 +174,7 @@ public class ChallengeService {
 			try {
 				MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 						ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				dto.setThumbnailData(thumbnailData);
+				dto.setThumbnail(thumbnailData);
 				ChallengeList.add(dto);
 			} catch (IOException c) {
 				// 예외 처리 로직
