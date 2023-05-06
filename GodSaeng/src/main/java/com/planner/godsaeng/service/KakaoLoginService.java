@@ -21,6 +21,7 @@ import com.planner.godsaeng.repository.KakaoLoginRepository;
 @Service
 public class KakaoLoginService {
 
+
 	public String getAccessToken(String code) {
 		String accessToken = "";
 		String refreshToken = "";

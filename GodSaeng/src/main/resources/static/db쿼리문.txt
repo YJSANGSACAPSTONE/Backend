@@ -1,0 +1,86 @@
+
+
+1. godsaeng_user 인서트 예시문
+insert into godsaeng_user (uid,udeposit,ugrade,ulevel,unickname,usuccessedchallenge,uzepid,ucontent) VALUES('sinsung@naver.com','20000',"0","0","상희","0","sinsung","신성입니다");
+
+2. plan 인서트 예시문
+insert into godsaeng_plan (pcategory,pcontent,penddate,pstarttime,premindornot,pstartdate,pendtime,ptitle,uid) values('study','공부하기','2023-05-04','11:00',1,'2023-05-04','12:00','spring study','sinsung@naver.com');
+
+3. 챌린지 인서트문
+INSERT INTO godsaeng_challenge (
+   ccategory, ccontent, cenddate, cfee, cfrequency, 
+  cintroduction, cname, cnumberofparticipants, cnumberofphoto, cscore, 
+  cstartdate, cthumbnails, ctypeoffrequency, ctypeofverify
+) VALUES (
+  1, "조황주패기입니다", "2023-05-04", 12000, 5, "황주궁둥이때리기다", 
+  "조황주바보", 71, 2, 100, "2023-05-12", "haha", 2, 1
+);
+
+
+4.challenge_participate 인서트문
+insert into godsaeng_challengeparticipate (cid,uid,cpfinalsuccess) VALUES('1','sanghee_ok@naver.com',0);
+
+
+
+참가중인 챌린지에 필요한 dataset
+SELECT godsaeng_challenge.*, godsaeng_challengeparticipate.cpid, COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccess_count
+FROM godsaeng_challenge
+JOIN godsaeng_challengeparticipate ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid
+LEFT JOIN godsaeng_challengeverify ON godsaeng_challengeparticipate.cpid = godsaeng_challengeverify.cpid AND godsaeng_challengeverify.cvsuccessornot = 1
+WHERE godsaeng_challengeparticipate.uid = "sinsung@naver.com" AND godsaeng_challengeparticipate.cpfinalsuccess = 0
+GROUP BY godsaeng_challengeparticipate.cpid;
+
+
+참가중인 챌린지에 필요한 dataset(real)
+SELECT godsaeng_challenge.cid,cname,cthumbnails,cstartdate,cenddate,cenddate - cstartdate+1 AS date_diff, (cenddate-cstartdate+1) % cfrequency AS totalcount, godsaeng_challengeparticipate.cpid, COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccess_count
+FROM godsaeng_challenge
+JOIN godsaeng_challengeparticipate ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid
+LEFT JOIN godsaeng_challengeverify ON godsaeng_challengeparticipate.cpid = godsaeng_challengeverify.cpid AND godsaeng_challengeverify.cvsuccessornot = 1
+WHERE godsaeng_challengeparticipate.uid = "sinsung@naver.com" AND godsaeng_challengeparticipate.cpfinalsuccess = 0
+GROUP BY godsaeng_challengeparticipate.cpid;
+
+참가중인 챌린지에 필요한 dataset(빈도 타입에 따라 구분하기)
+SELECT godsaeng_challenge.cid,cname,cthumbnails,cstartdate,cenddate,cenddate - cstartdate+1 AS date_diff, 
+CASE 
+   WHEN ctypeoffrequency = 2 THEN (cenddate-cstartdate+1) % cfrequency 
+   WHEN ctypeoffrequency = 1 THEN (cenddate-cstartdate+1) * cfrequency 
+END AS totalcount, 
+godsaeng_challengeparticipate.cpid, COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccess_count
+FROM godsaeng_challenge
+JOIN godsaeng_challengeparticipate ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid
+LEFT JOIN godsaeng_challengeverify ON godsaeng_challengeparticipate.cpid = godsaeng_challengeverify.cpid AND godsaeng_challengeverify.cvsuccessornot = 1
+WHERE godsaeng_challengeparticipate.uid = "sinsung@naver.com" AND godsaeng_challengeparticipate.cpfinalsuccess = 0
+GROUP BY godsaeng_challengeparticipate.cpid;
+
+챌린지 postman test용
+{
+   "c_id" : "1",
+   "c_name" : "황주",
+   "c_content" : "수정테스트",
+   "c_startdate" : "2023-04-25",
+   "c_enddate" : "2023-04-28",
+   "c_numberofparticipants":"115",
+   "c_category" : "2",
+   "c_thumbnails" : "aa.jpg",
+   "c_introduction" : "수정소개",
+   "c_fee" : "14000",
+   "c_numberofphoto" : "2",
+   "c_typeofverify" : "4",
+   "c_typeoffrequency" : "10",
+   "c_frequency" : "3",
+   "c_score" : "25"
+}
+
+플랜 postman test용
+{
+   "p_id" : "2",
+   "u_id" : "hwangju",
+   "p_startdate" : "2023-04-25",
+   "p_enddate" : "2023-04-17",
+   "p_starttime" : "15:00",
+   "p_endtime" : "17:00",
+   "p_title" : "플랜인서트테스트",
+   "p_content" : "플랜인서트테스트내용",
+   "p_category" : "1",
+   "p_remindornot" : "1"
+}
