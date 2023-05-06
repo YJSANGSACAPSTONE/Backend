@@ -36,28 +36,8 @@ public class ChallengeDTO {
 	private Integer c_typeoffrequency;
 	private Integer c_frequency;
 	private Integer c_score;
-	private MultipartFile thumbnail;
+	private MultipartFile thumbnailData;
     private String c_thumbnails;
-	
-	public void toEntity(ChallengeDTO d) {
-		Challenge entity = Challenge.builder()
-				.cid(d.getC_id())
-				.cname(d.getC_name())
-				.ccontent(d.getC_content())
-				.cstartdate(d.getC_startdate())
-				.cenddate(d.getC_enddate())
-				.cnumberofparticipants(d.getC_numberofparticipants())
-				.ccategory(d.getC_category())
-				.cintroduction(d.getC_introduction())
-				.cfee(d.getC_fee())
-				.cnumberofphoto(d.getC_numberofphoto())
-				.ctypeofverify(d.getC_typeofverify())
-				.ctypeoffrequency(d.getC_typeoffrequency())
-				.cfrequency(d.getC_frequency())
-				.cscore(d.getC_score())
-				.build();
-		
-	}
 }
 
 

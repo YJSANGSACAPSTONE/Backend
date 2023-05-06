@@ -72,7 +72,7 @@ public class ChallengeService {
 			 try {
 				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				 dto.setThumbnail(thumbnailData);
+				 dto.setThumbnailData(thumbnailData);
 				 popularList.add(dto);
 			 } catch (IOException c) {
 				 // 예외 처리 로직
@@ -92,7 +92,7 @@ public class ChallengeService {
 			 try {
 				 MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 						 ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				 dto.setThumbnail(thumbnailData);
+				 dto.setThumbnailData(thumbnailData);
 				 recentList.add(dto);
 			 } catch (IOException c) {
 				 // 예외 처리 로직
@@ -116,7 +116,7 @@ public class ChallengeService {
 	    try {
 	        MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 	                ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-	        dto.setThumbnail(thumbnailData);
+	        dto.setThumbnailData(thumbnailData);
 	        myList.add(dto);
 	    } catch (IOException c) {
 	        // 예외 처리 로직
@@ -166,7 +166,7 @@ public class ChallengeService {
 			try {
 				MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
 						ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				dto.setThumbnail(thumbnailData);
+				dto.setThumbnailData(thumbnailData);
 				ChallengeList.add(dto);
 			} catch (IOException c) {
 				// 예외 처리 로직
