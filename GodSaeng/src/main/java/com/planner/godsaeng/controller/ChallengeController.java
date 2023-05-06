@@ -113,7 +113,9 @@ public class ChallengeController {
 	
 	//챌린지 참가 신청 시 실행 메서드
 	@PostMapping("/participate")
-	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, String uid){
+	public ResponseEntity<Boolean>ParticipateChallenge(@RequestBody ChallengeDTO m, String uid){
+		System.out.println("아이디는: " + uid);
+		System.out.println("챌린지 이름은: " + m.getC_name());
 		boolean isParticipateSuccessed = participateService.ParticipateChallenge(m, uid);
 		if(isParticipateSuccessed) {
 			return ResponseEntity.ok(true);
