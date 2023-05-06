@@ -49,7 +49,9 @@ public class KakaoPayService {
                 "https://kapi.kakao.com/v1/payment/ready",
                 requestEntity,
                 KakaoReadyResponse.class);
-                
+        
+        kakaoReady.setPartner_user_id(uid);
+        
         return kakaoReady;
     }
     
@@ -63,7 +65,7 @@ public class KakaoPayService {
         parameters.add("cid", cid);
         parameters.add("tid", kakaoReady.getTid());
         parameters.add("partner_order_id", "partner_order_id");
-        parameters.add("partner_user_id", "partner_user_id");
+        parameters.add("partner_user_id", kakaoReady.getPartner_user_id());
         parameters.add("pg_token", pgToken);
 
         // 파라미터, 헤더
