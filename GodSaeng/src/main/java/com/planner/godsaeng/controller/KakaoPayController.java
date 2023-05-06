@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +18,20 @@ import com.planner.godsaeng.dto.KakaoApproveResponse;
 import com.planner.godsaeng.dto.KakaoReadyResponse;
 import com.planner.godsaeng.entity.Payment;
 import com.planner.godsaeng.entity.User;
-import com.planner.godsaeng.repository.KakaoPayRepository;
 import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.service.KakaoPayService;
+import com.planner.godsaeng.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/kakaopay")
 @RequiredArgsConstructor
+@Transactional
 public class KakaoPayController {
 
     private final KakaoPayService kakaoPayService;
-    private final UserRepository userRepository;
-    private final KakaoPayRepository kakaoPayRepository;
+    private final UserService userService;
     
 	@GetMapping("/payment")
 	public String payment() {
@@ -66,7 +68,7 @@ public class KakaoPayController {
         
 //      결제정보 저장
         String uid = kakaoApprove.getPartner_user_id();
-        Optional<User> userEntity = userRepository.findById(uid);
+        Optional<User> userEntity = userService.SearchId(uid);
         
         Payment payment = Payment.builder()
         		.kpmethodtype(kakaoApprove.getPayment_method_type())
@@ -75,7 +77,8 @@ public class KakaoPayController {
         		.user(userEntity.get())
         		.build();
         
-        kakaoPayRepository.save(payment);
+        kakaoPayService.SavePayment(payment);
+        userService.AddDeposit(uid, kakaoApprove.getAmount().getTotal());
         
         mv.addObject("kakaoApprove", kakaoApprove);
         mv.setViewName("kakaopay/approve");
