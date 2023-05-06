@@ -27,11 +27,11 @@ public class ChallengeParticipateService {
 	
 	ChallengeParticipate challengeparticipate = null;
 	
-	public Boolean ParticipateChallenge(ChallengeDTO m,HttpSession session) {
+	public Boolean ParticipateChallenge(ChallengeDTO m,String uid) {
 		
 		Integer participatefee = m.getC_fee();
-		String u_id = (String)session.getAttribute("uid");
-		Optional<User>user = userRepository.findById(u_id);
+		
+		Optional<User>user = userRepository.findById(uid);
 		Optional<Challenge>challenge = challengeRepository.findById(m.getC_id());
 		challengeparticipate = ChallengeParticipate.builder()
 				.user(user.get())
@@ -39,12 +39,16 @@ public class ChallengeParticipateService {
 				.cpfinalsuccess(0)
 				.build();
 		try {
-			
+			System.out.println(uid + "참가비 : " + participatefee);
+			userRepository.updateDeposit(uid, participatefee);
+			System.out.println("여기까지 흐름이 오니?"); 
 			challengeparticipateRepository.save(challengeparticipate);
+			System.out.println("여기는 오니?"); 
 			return true;
 		}catch(Exception e) {
 			return false;
 		}
+		
 	}
 	
 	public Boolean LeftChallenge(ChallengeParticipateDTO m) {
