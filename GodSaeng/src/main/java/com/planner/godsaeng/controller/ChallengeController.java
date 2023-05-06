@@ -31,6 +31,7 @@ import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.repository.ChallengeRepository;
+import com.planner.godsaeng.service.ChallengeParticipateService;
 import com.planner.godsaeng.service.ChallengeService;
 import com.planner.godsaeng.service.ChallengeVerifyService;
 
@@ -45,6 +46,8 @@ public class ChallengeController {
 	ChallengeService service;
 	@Autowired
 	ChallengeVerifyService verifyservice;
+	@Autowired
+	ChallengeParticipateService participateService;
 	
 	@GetMapping("/addchallenge")
 	public RedirectView AddChallengeView(@RequestBody ChallengeDTO d) {
@@ -109,9 +112,9 @@ public class ChallengeController {
 	
 	
 	//챌린지 참가 신청 시 실행 메서드
-	@GetMapping("/participate")
+	@PostMapping("/participate")
 	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, String uid){
-		boolean isParticipateSuccessed = true;
+		boolean isParticipateSuccessed = participateService.ParticipateChallenge(m, uid);
 		if(isParticipateSuccessed) {
 			return ResponseEntity.ok(true);
 		}else {
