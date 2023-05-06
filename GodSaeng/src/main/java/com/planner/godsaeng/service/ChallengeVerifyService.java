@@ -34,9 +34,11 @@ public class ChallengeVerifyService {
 		
 		//dto에 담긴 챌린지id 정보로 챌린지id를 가져옴.
 		Long cid = m.getCid();
+		System.out.println("cid : " + cid);
 		//담겨져온 zepid를 역산하여 uid를 가져옴
 		String uid = userRepository.findUidByUzepid(m.getCvzepid());
 		//가져온 uid와 cid를 토대로 cpid를 추정하여 저장함.
+		System.out.println("cid: " + cid + "uid: " + uid);
 		Long cpid = challengeparticipateRepository.findCpidByCidAndUid(cid, uid);
 		
 		Optional<ChallengeParticipate> challengeparticipate = challengeparticipateRepository.findById(cpid);

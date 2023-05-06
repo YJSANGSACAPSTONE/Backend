@@ -57,6 +57,9 @@ public class User {
    
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
    private List<Plan> plans;
+   
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
+   private List<Payment> payments;
 
 }
    
