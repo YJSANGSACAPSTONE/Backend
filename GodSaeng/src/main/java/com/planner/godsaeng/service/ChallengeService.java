@@ -135,16 +135,9 @@ public class ChallengeService {
 			ChallengeDTO dto = entityToDto(e);
 			ChallengeList.add(dto);
 			String thumbnailPath = e.getCthumbnails();
-			File thumbnailFile = new File(thumbnailPath);
-			try {
-				MultipartFile thumbnailData = new MockMultipartFile(thumbnailFile.getName(), thumbnailFile.getName(),
-						ContentType.APPLICATION_OCTET_STREAM.toString(), Files.readAllBytes(thumbnailFile.toPath()));
-				dto.setThumbnailData(thumbnailData);
+				dto.setThumbnailData(null);
 				ChallengeList.add(dto);
-			} catch (IOException c) {
-				// 예외 처리 로직
-				c.printStackTrace();
-			}
+				// 예외 처리 로직		
 		}
 		return ChallengeList;
 	}
