@@ -10,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.planner.godsaeng.dto.KakaoApproveResponse;
 import com.planner.godsaeng.dto.KakaoReadyResponse;
+import com.planner.godsaeng.entity.Payment;
+import com.planner.godsaeng.repository.KakaoPayRepository;
+import com.planner.godsaeng.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class KakaoPayService {
+	private final KakaoPayRepository kakaoPayRepository;
+	private final UserRepository userRepository;
 	
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     static final String admin_Key = "a061fa236640dfa13b0d0993ddcffb93"; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
@@ -49,7 +54,9 @@ public class KakaoPayService {
                 "https://kapi.kakao.com/v1/payment/ready",
                 requestEntity,
                 KakaoReadyResponse.class);
-                
+        
+        kakaoReady.setPartner_user_id(uid);
+        
         return kakaoReady;
     }
     
@@ -63,7 +70,7 @@ public class KakaoPayService {
         parameters.add("cid", cid);
         parameters.add("tid", kakaoReady.getTid());
         parameters.add("partner_order_id", "partner_order_id");
-        parameters.add("partner_user_id", "partner_user_id");
+        parameters.add("partner_user_id", kakaoReady.getPartner_user_id());
         parameters.add("pg_token", pgToken);
 
         // 파라미터, 헤더
@@ -94,4 +101,27 @@ public class KakaoPayService {
         return httpHeaders;
     }
 
+    public void SavePayment(Payment payment) {
+    	kakaoPayRepository.save(payment);
+    }
+    
+//    public PaymentDTO ReadPayment(String uid) {
+//    	
+//    	Optional<Payment> result = kakaoPayRepository.findByUid(uid);
+//    	
+//    	if(result.isPresent()) {
+//    		User userinfo = result.get().getUser();
+//    		Optional<User> userEntity = userRepository.findByUid(userinfo.getUid());
+//    		PaymentDTO userpayment = PaymentDTO.builder()
+//    				.kp_id(result.get().getKpid())
+//    				.kp_methodtype(result.get().getKpmethodtype())
+//    				.kp_date(result.get().getKpdate())
+//    				.kp_amount(result.get().getKpamount())
+//    				.user(userEntity)
+//    				.build();
+//    		return userpayment;
+//    	}
+    			
+//    }
+    
 }
