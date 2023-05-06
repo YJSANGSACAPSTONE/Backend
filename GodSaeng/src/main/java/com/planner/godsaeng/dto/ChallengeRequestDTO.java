@@ -19,9 +19,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ChallengeDTO {
+public class ChallengeRequestDTO {
 	
-
 	private Long c_id;
 	private String c_name;
 	private String c_content;
@@ -36,7 +35,6 @@ public class ChallengeDTO {
 	private Integer c_typeoffrequency;
 	private Integer c_frequency;
 	private Integer c_score;
-	private MultipartFile thumbnailData;
     private String c_thumbnails;
 	
 	public void toEntity(ChallengeDTO d) {
