@@ -14,10 +14,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowCredentials(true);
     }
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {	
-//	    registry.addResourceHandler("/img/**")
-//	            .addResourceLocations("classpath:/static/img/");
-//	}
-
 }

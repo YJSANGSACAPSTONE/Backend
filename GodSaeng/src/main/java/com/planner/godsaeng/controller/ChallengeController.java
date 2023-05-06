@@ -65,8 +65,7 @@ public class ChallengeController {
 	    }
 	}
 	@GetMapping("/list")
-	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(HttpSession session){
-		String uid = /*HttpSession.getAttribute(u_id)*/"sinsung@naver.com";
+	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(String uid){
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
@@ -111,8 +110,7 @@ public class ChallengeController {
 	
 	//챌린지 참가 신청 시 실행 메서드
 	@GetMapping("/participate")
-	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, HttpSession session){
-//		String u_id = session.getAttribute("uid");
+	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, String uid){
 		boolean isParticipateSuccessed = true;
 		if(isParticipateSuccessed) {
 			return ResponseEntity.ok(true);
@@ -152,12 +150,7 @@ public class ChallengeController {
 	
 	//챌린지 참가 현황 눌렀을 시 데이터 출력 메서드
 	@GetMapping("/mychallenge")
-	public ResponseEntity <List<ChallengeStatusDTO>>MyChallenge(HttpSession session){
-		boolean isMychallengeSuccessed = true;
-		if(isMychallengeSuccessed) {
-			return ResponseEntity.ok(service.myChallengeProgress((String)session.getAttribute("u_id")));
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+	public List<ChallengeStatusDTO>MyChallenge(String uid){
+		return service.myChallengeProgress(uid);
 	}
 }
