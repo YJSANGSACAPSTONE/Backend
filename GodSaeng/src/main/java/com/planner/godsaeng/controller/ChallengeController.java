@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -35,7 +37,7 @@ import com.planner.godsaeng.service.ChallengeVerifyService;
 import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping("/challenge")
 @RequiredArgsConstructor
 public class ChallengeController {
@@ -45,15 +47,15 @@ public class ChallengeController {
 	ChallengeVerifyService verifyservice;
 	
 	@GetMapping("/addchallenge")
-	public RedirectView AddChallengeView(@ModelAttribute ChallengeDTO d) {
+	public RedirectView AddChallengeView(@RequestBody ChallengeDTO d) {
 		return null;
 		
 	}
 	
 	@PostMapping("/addchallenge")
 	public ResponseEntity<Boolean> AddChallenge(@RequestParam("thumbnail") MultipartFile thumbnail,
-	                                             @RequestBody ChallengeDTO d) throws IOException {
-
+	                                             @ModelAttribute ChallengeDTO d) throws IOException {
+		
 	    boolean isAddSuccessed = service.InsertChallenge(d,thumbnail);
 
 	    if (isAddSuccessed) {

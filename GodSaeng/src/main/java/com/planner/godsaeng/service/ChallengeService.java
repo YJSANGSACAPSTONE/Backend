@@ -18,6 +18,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.tomcat.util.net.jsse.PEMFile;
 import org.hibernate.internal.build.AllowPrintStacktrace;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,14 +28,7 @@ import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.repository.ChallengeRepository;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-
-
-
-
-
-
-
+import org.springframework.util.ResourceUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,24 +43,22 @@ public class ChallengeService {
 	
 	Challenge challenge = null;
 	//여기서부터 CRUD-C 챌린지 CREATE
-	
-	 @Transactional
-	 public boolean InsertChallenge(ChallengeDTO dto, MultipartFile thumbnail) throws IOException {
-		 String path = "/img/challengeimg";
-		 if (!thumbnail.isEmpty()) {
-			 String fileName = thumbnail.getOriginalFilename();
-			 File dest = new File(path + File.separator + fileName);
-			 thumbnail.transferTo(dest);
-			 dto.setThumbnail(thumbnail);
+	@Transactional
+	public boolean InsertChallenge(ChallengeDTO dto, MultipartFile thumbnail) throws IOException {
+		String path = ResourceUtils.getFile("src/main/resources/static/img/challengeimg").getAbsolutePath();
+		if (!thumbnail.isEmpty()) {
+			String fileName = thumbnail.getOriginalFilename();
+			File dest = new File(path + File.separator + fileName);
+			thumbnail.transferTo(dest);
+			dto.setThumbnailData(thumbnail);
+			String thumbnailPath = path + File.separator + fileName;
+			dto.setC_thumbnails(thumbnailPath);
+		}
+		Challenge entity = dtoToEntity(dto);
+		challengeRepository.save(entity);
 
-			 String thumbnailPath = path + File.separator + fileName;
-			 dto.setC_thumbnails(thumbnailPath);
-		 }
-		 Challenge entity = dtoToEntity(dto);
-		 challengeRepository.save(entity);
-
-		 return true;
-	 }
+		return true;
+	}
 	 public List<ChallengeDTO>ReadPopularChallenge(){
 
 
