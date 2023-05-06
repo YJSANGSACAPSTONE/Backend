@@ -59,6 +59,7 @@ public class ChallengeService {
 
 		return true;
 	}
+
 	public List<ChallengeDTO> ReadPopularChallenge() {
 		List<Challenge> popularListEntity = challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
 		List<ChallengeDTO> popularList = new ArrayList<>();
@@ -83,10 +84,12 @@ public class ChallengeService {
 	    }
 	    return recentList;
 	}
+
 	
 	String uid = "hwangjoo";
 	//내가 참가중인 챌린지 조회R3
 	//쿼리 검증 완료 - challenge와 challengeparticipate join하여 데이터출력.
+
 	public List<ChallengeDTO> ReadMyChallenge(String uid) {
 		List<Challenge> myListEntity = challengeRepository.findChallengeByUid(uid);
 		List<ChallengeDTO> myList = new ArrayList<>();
@@ -95,6 +98,7 @@ public class ChallengeService {
 			dto.setThumbnailData(null); // MultipartFile 객체를 null로 설정
 			dto.setC_thumbnails(e.getCthumbnails()); // 이미지 경로만 설정
 			myList.add(dto);
+
 		}
 		return myList;
 	}
