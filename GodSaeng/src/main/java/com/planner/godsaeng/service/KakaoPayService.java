@@ -1,5 +1,8 @@
 package com.planner.godsaeng.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.planner.godsaeng.dto.KakaoApproveResponse;
 import com.planner.godsaeng.dto.KakaoReadyResponse;
+import com.planner.godsaeng.dto.PaymentDTO;
 import com.planner.godsaeng.entity.Payment;
 import com.planner.godsaeng.repository.KakaoPayRepository;
 import com.planner.godsaeng.repository.UserRepository;
@@ -105,8 +109,24 @@ public class KakaoPayService {
     	kakaoPayRepository.save(payment);
     }
     
+    public List<PaymentDTO> readPayment(String uid) {
+        List<Payment> paymentList = kakaoPayRepository.findPaymentByUid(uid);
+        List<PaymentDTO> paymentDTOList = new ArrayList<>();
+        for (Payment payment : paymentList) {
+            PaymentDTO paymentDTO = PaymentDTO.builder()
+                    .kp_id(payment.getKpid())
+                    .kp_methodtype(payment.getKpmethodtype())
+                    .kp_date(payment.getKpdate())
+                    .kp_amount(payment.getKpamount())
+                    .user(payment.getUser())
+                    .build();
+            paymentDTOList.add(paymentDTO);
+        }
+        return paymentDTOList;
+    }
+    
 //    public PaymentDTO ReadPayment(String uid) {
-//    	
+//   	
 //    	Optional<Payment> result = kakaoPayRepository.findByUid(uid);
 //    	
 //    	if(result.isPresent()) {
@@ -121,7 +141,35 @@ public class KakaoPayService {
 //    				.build();
 //    		return userpayment;
 //    	}
-    			
+//    			
 //    }
     
+//    public PaymentDTO readPayment(String uid) {
+//        Optional<Payment> result = kakaoPayRepository.findByUid(uid);
+//        	
+//        if(result.isPresent()) {
+//            User userinfo = result.get().getUser();
+//            Optional<User> userEntity = userRepository.findByUid(userinfo.getUid());
+//            
+//            if(userEntity.isPresent()) { // userEntity가 존재할 경우에만 UserDTO 생성
+//                UserDTO userDto = UserDTO.builder()
+//                    .uid(userEntity.get().getUid())
+//                    .name(userEntity.get().getName())
+//                    .email(userEntity.get().getEmail())
+//                    .build();
+//                
+//                PaymentDTO userpayment = PaymentDTO.builder()
+//                    .kp_id(result.get().getKpid())
+//                    .kp_methodtype(result.get().getKpmethodtype())
+//                    .kp_date(result.get().getKpdate())
+//                    .kp_amount(result.get().getKpamount())
+//                    .user(userDto)
+//                    .build();
+//                
+//                return userpayment;
+//            }
+//        }
+//        
+//        return null; // Optional이 비어있을 경우 null 반환
+//    }
 }
