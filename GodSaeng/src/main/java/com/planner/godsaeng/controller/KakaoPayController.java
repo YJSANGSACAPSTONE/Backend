@@ -1,6 +1,7 @@
 package com.planner.godsaeng.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.planner.godsaeng.dto.KakaoApproveResponse;
 import com.planner.godsaeng.dto.KakaoReadyResponse;
+import com.planner.godsaeng.dto.PaymentDTO;
 import com.planner.godsaeng.entity.Payment;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.service.KakaoPayService;
@@ -102,6 +104,12 @@ public class KakaoPayController {
     public ModelAndView fail(ModelAndView mv) {
     	mv.setViewName("kakaopay/fail");
     	return mv;
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsByUid(@RequestParam("uid") String uid) {
+        List<PaymentDTO> paymentDTOList = kakaoPayService.readPayment(uid);
+        return ResponseEntity.ok(paymentDTOList);
     }
     
 //    @GetMapping("/save")

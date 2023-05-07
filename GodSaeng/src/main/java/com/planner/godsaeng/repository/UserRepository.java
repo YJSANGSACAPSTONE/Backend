@@ -17,7 +17,7 @@ import com.planner.godsaeng.entity.User;
 public interface UserRepository extends JpaRepository<User, String> {
 
 	@Query(value = "SELECT uid FROM Godsaeng_user WHERE uzepid = :uzepid", nativeQuery = true)
-	   String findUidByUzepid(@Param("uzepid") String uzepid);
+	String findUidByUzepid(@Param("uzepid") String uzepid);
 	
 	@Transactional
 	@Modifying
