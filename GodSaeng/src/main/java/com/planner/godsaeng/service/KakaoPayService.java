@@ -112,19 +112,33 @@ public class KakaoPayService {
     public List<PaymentDTO> readPayment(String uid) {
         List<Payment> paymentList = kakaoPayRepository.findPaymentByUid(uid);
         List<PaymentDTO> paymentDTOList = new ArrayList<>();
-        for (Payment payment : paymentList) {
-            PaymentDTO paymentDTO = PaymentDTO.builder()
-                    .kp_id(payment.getKpid())
-                    .kp_methodtype(payment.getKpmethodtype())
-                    .kp_date(payment.getKpdate())
-                    .kp_amount(payment.getKpamount())
-                    .user(payment.getUser())
-                    .build();
+        
+        for (Payment p : paymentList) {
+        	PaymentDTO paymentDTO = entityToDto(p);
             paymentDTOList.add(paymentDTO);
         }
         return paymentDTOList;
     }
     
+    public PaymentDTO entityToDto(Payment p) {
+    	return PaymentDTO.builder()
+    			.kp_id(p.getKpid())
+    			.kp_methodtype(p.getKpmethodtype())
+    			.kp_date(p.getKpdate())
+    			.kp_amount(p.getKpamount())
+    			.user(p.getUser())
+    			.build();
+    }
+    
+    public Payment dtoToEntity(PaymentDTO p) {
+    	return Payment.builder()
+    			.kpid(p.getKp_id())
+    			.kpmethodtype(p.getKp_methodtype())
+    			.kpdate(p.getKp_date())
+    			.kpamount(p.getKp_amount())
+    			.user(p.getUser())
+    			.build();
+    }
 //    public PaymentDTO ReadPayment(String uid) {
 //   	
 //    	Optional<Payment> result = kakaoPayRepository.findByUid(uid);
