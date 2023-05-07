@@ -104,7 +104,8 @@ public class UserController {
     	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
       }
    }
-   
+ 
+//   예치금 업데이트
 //	@PostMapping("/finddeposit")
 //	public ResponseEntity login(@RequestParam("uid") String uid) {
 //		String accessToken = kakaoLoginService.getAccessToken(code);
