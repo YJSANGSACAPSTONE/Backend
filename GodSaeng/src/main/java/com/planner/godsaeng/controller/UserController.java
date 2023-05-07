@@ -1,5 +1,8 @@
 package com.planner.godsaeng.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -101,4 +104,18 @@ public class UserController {
     	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
       }
    }
+ 
+//   예치금 업데이트
+//	@PostMapping("/finddeposit")
+//	public ResponseEntity login(@RequestParam("uid") String uid) {
+//		String accessToken = kakaoLoginService.getAccessToken(code);
+//		HashMap<String, Object> userInfo = kakaoLoginService.getUserInfo(accessToken);
+//		
+//		
+//
+//		Map<String, Object> responseBody = new HashMap<>();
+//		responseBody.put("userId", userInfo.get("email"));
+//		responseBody.put("accessToken", accessToken);
+//		return ResponseEntity.ok(responseBody);
+//	}
 }
