@@ -47,7 +47,7 @@ public class ChallengeParticipate {
 	@Column
 	private int cpfinalsuccess;
 	
-	@OneToMany(mappedBy="challengeParticipate")
+	@OneToMany(mappedBy="challengeParticipate",cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
 	private List<ChallengeVerify>verify = new ArrayList<>();
 	
 
