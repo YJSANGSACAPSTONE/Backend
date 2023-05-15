@@ -1,11 +1,13 @@
 package com.planner.godsaeng.service;
 
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.UserDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
 
@@ -19,10 +21,12 @@ public class UserService {
    
    //유저 회원가입(INSERT)
    public boolean InsertUser(UserDTO u) {
+	  Random r = new Random();
+	  int randomnumber = r.nextInt(100000);
       user = User.builder()
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
-            .uzepid(u.getU_zepid())
+            .uzepid(u.getU_id() + randomnumber)
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
@@ -72,8 +76,6 @@ public class UserService {
             .uid(u.getU_id())
             .unickname(u.getU_nickname())
             .uzepid(u.getU_zepid())
-
-
             .udeposit(u.getU_deposit())
             .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
@@ -107,6 +109,32 @@ public class UserService {
    public Optional<User> SearchId(String uid) {
 	   Optional<User> userEntity = userRepository.findById(uid);
 	   return userEntity;
+   }
+   
+   public String FindZepidByuID(String uid) {
+	   return userRepository.findUzepidByUid("sanghee_ok@navr.com");
+   }
+   
+   public Boolean VerifyZepid(ZepIdVerifyDTO m,String uid) {
+	   
+	   String currentVerifykey = userRepository.findUzepidByUid(uid);
+	   System.out.println(m.getVerifykey() + "들어왔나?");
+	   System.out.println(currentVerifykey);
+	   if(m.getVerifykey() == currentVerifykey) {
+		   user = User.builder()
+		            .uzepid(m.getZepid())
+		            .uverifiedornot(1)
+		            .build();
+		      try {
+		         userRepository.save(user);
+		         return true;
+		      }catch(Exception e) {
+		         e.printStackTrace();
+		         return false;
+		      }
+		   }else {
+			   return false;
+		   }
    }
    
    

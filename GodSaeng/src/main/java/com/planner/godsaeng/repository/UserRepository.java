@@ -29,6 +29,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 	void addDeposit(@Param("uid") String uid, @Param("newDeposit") Integer newDeposit);
 	
 	Optional<User> findByUid(String uid);
+	
+	@Query(value= "SELECT uzepid FROM Godsaeng_user Where uid= :uid", nativeQuery = true)
+	String findUzepidByUid(@Param("uid") String uid);
 
 //	@Query(value = "SELECT uid FROM godsaeng_user", nativeQuery = true)
 //    Optional<User> findByUid(String uid);

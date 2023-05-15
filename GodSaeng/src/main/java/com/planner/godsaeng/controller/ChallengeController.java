@@ -29,11 +29,13 @@ import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.repository.ChallengeRepository;
 import com.planner.godsaeng.service.ChallengeParticipateService;
 import com.planner.godsaeng.service.ChallengeService;
 import com.planner.godsaeng.service.ChallengeVerifyService;
+import com.planner.godsaeng.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -48,6 +50,8 @@ public class ChallengeController {
 	ChallengeVerifyService verifyservice;
 	@Autowired
 	ChallengeParticipateService participateService;
+	@Autowired
+	UserService userService;
 	
 	@GetMapping("/addchallenge")
 	public RedirectView AddChallengeView(@RequestBody ChallengeDTO d) {
@@ -125,11 +129,22 @@ public class ChallengeController {
 	}
 	
 	//인증 페이지로 이동 시에 페이지 매핑
-	@GetMapping("/verify")
-	public RedirectView VerifyChallengeView(@ModelAttribute ChallengeParticipateDTO m){
-		return null;
+	@GetMapping("/zepidverify")
+	public String ZepidVerifyView(String uid){
+		return userService.FindZepidByuID(uid);
 			
 		}
+	@PostMapping("/zepidverify")
+	public ResponseEntity<Boolean>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
+		boolean isVerifySuccessed = userService.VerifyZepid(m, "sanghee_ok@naver.com");
+		if(isVerifySuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+		
+		
+	}
 	
 	
 	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
