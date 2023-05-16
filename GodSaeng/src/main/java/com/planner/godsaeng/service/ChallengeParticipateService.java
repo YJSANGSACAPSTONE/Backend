@@ -32,6 +32,7 @@ public class ChallengeParticipateService {
 		Integer participatefee = m.getC_fee();
 		
 		Optional<User>user = userRepository.findById(uid);
+		if(user.get().getUdeposit() - participatefee >=0) {
 		Optional<Challenge>challenge = challengeRepository.findById(m.getC_id());
 		challengeparticipate = ChallengeParticipate.builder()
 				.user(user.get())
@@ -39,13 +40,15 @@ public class ChallengeParticipateService {
 				.cpfinalsuccess(0)
 				.build();
 		try {
-			System.out.println(uid + "참가비 : " + participatefee);
+			
 			userRepository.updateDeposit(uid, participatefee);
-			System.out.println("여기까지 흐름이 오니?"); 
 			challengeparticipateRepository.save(challengeparticipate);
-			System.out.println("여기는 오니?"); 
+			
 			return true;
 		}catch(Exception e) {
+			return false;
+		}
+			}else {
 			return false;
 		}
 		
