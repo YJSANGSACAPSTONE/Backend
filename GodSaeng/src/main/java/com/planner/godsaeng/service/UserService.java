@@ -112,7 +112,7 @@ public class UserService {
    }
    
    public String FindZepidByuID(String uid) {
-	   return userRepository.findUzepidByUid("sanghee_ok@navr.com");
+	   return userRepository.findUzepidByUid("sanghee_ok@naver.com");
    }
    
    public Boolean VerifyZepid(ZepIdVerifyDTO m,String uid) {
@@ -121,15 +121,7 @@ public class UserService {
 	   System.out.println(m.getVerifykey() + "들어왔나?");
 	   System.out.println(currentVerifykey);
 	   if(m.getVerifykey().equals(currentVerifykey)) {
-//		   user = User.builder()
-//				    .uid(uid)
-//				    .ucontent("aa")
-//				    .unickname("aa")
-//		            .uzepid(m.getZepid())
-//		            .uverifiedornot(1)
-//		            .build();
 		      try {
-//		         userRepository.save(user);
 		    	 userRepository.updateZepid(uid, m.getZepid());
 		         return true;
 		      }catch(Exception e) {
