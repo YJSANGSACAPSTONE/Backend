@@ -27,16 +27,16 @@ public class Payment {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long pid;
+	private long kpid;
 	
 	@Column(length=20, nullable=false)
-	private String pmethodtype;
+	private String kpmethodtype;
 	
 	@Column(length=20, nullable=false)
-	private String pdate;
+	private String kpdate;
 	
 	@Column(length=20, nullable=false)
-	private int pamount;
+	private int kpamount;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uid", nullable = false)
