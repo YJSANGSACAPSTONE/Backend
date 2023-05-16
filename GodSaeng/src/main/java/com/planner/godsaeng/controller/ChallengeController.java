@@ -136,7 +136,7 @@ public class ChallengeController {
 		}
 	@PostMapping("/zepidverify")
 	public ResponseEntity<Boolean>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
-		boolean isVerifySuccessed = userService.VerifyZepid(m,"sanghee_ok@naver.com");
+		boolean isVerifySuccessed = userService.VerifyZepid(m, "0fairytale0@naver.com");
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
 		}else {
