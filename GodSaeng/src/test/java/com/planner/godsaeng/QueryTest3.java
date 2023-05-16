@@ -41,6 +41,7 @@ public class QueryTest3 {
 	            System.out.println(c.getCname());
 	            System.out.println(c.getCvsuccesscount());
 	            System.out.println(c.getCenddate());
+	            System.out.println(c.toString());
 	        }
 	    }
 

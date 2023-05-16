@@ -28,13 +28,13 @@ import lombok.ToString;
 public class User {
    
    @Id
-   @Column(length=30, nullable=false)
+   @Column(length=100, nullable=false)
    private String uid;
    
    @Column(length=20, nullable=false)
    private String unickname;
    
-   @Column(length=20, nullable=true)
+   @Column(length=100, nullable=true)
    private String uzepid;
 
    @Column(length=20, columnDefinition = "int default 0")
@@ -51,6 +51,9 @@ public class User {
    
    @Column(length=20, nullable=true)
    private String usuccessedchallenge;
+   
+   @Column(nullable= false, columnDefinition = "int default 0")
+   private int uverifiedornot;
    
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
    private List<ChallengeParticipate> challengeParticipateList = new ArrayList<>();
