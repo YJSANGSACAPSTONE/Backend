@@ -115,7 +115,7 @@ public class UserService {
 	   return userRepository.findUzepidByUid("sanghee_ok@naver.com");
    }
    
-   public Boolean VerifyZepid(ZepIdVerifyDTO m,String uid) {
+   public int VerifyZepid(ZepIdVerifyDTO m,String uid) {
 	   
 	   String currentVerifykey = userRepository.findUzepidByUid(uid);
 	   System.out.println(m.getVerifykey() + "들어왔나?");
@@ -123,15 +123,17 @@ public class UserService {
 	   if(m.getVerifykey().equals(currentVerifykey)) {
 		      try {
 		    	 userRepository.updateZepid(uid, m.getZepid());
-		         return true;
+		    	 System.out.println("인증 성공");
+		         return 1;
+		        
 		      }catch(Exception e) {
 		         e.printStackTrace();
-		         System.out.println("오류");
-		         return false;
+		         System.out.println("이미 인증된 계정입니다.");
+		         return 2;
 		      }
 		   }else {
-			   System.out.println("휴");
-			   return false;
+			   System.out.println("인증 코드가 잘못되었습니다.");
+			   return 3;
 		   }
 	   
    }

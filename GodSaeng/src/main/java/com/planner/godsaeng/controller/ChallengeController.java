@@ -135,12 +135,16 @@ public class ChallengeController {
 			
 		}
 	@PostMapping("/zepidverify")
-	public ResponseEntity<Boolean>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
-		boolean isVerifySuccessed = userService.VerifyZepid(m, "sanghee_ok@naver.com");
-		if(isVerifySuccessed) {
-			return ResponseEntity.ok(true);
+	public ResponseEntity<String>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
+		int isVerifySuccessed = userService.VerifyZepid(m, "sanghee_ok@naver.com");
+		if(isVerifySuccessed == 1) {
+			return ResponseEntity.ok("인증 성공");
+		}else if(isVerifySuccessed == 2){
+			return ResponseEntity.ok("이미 인증된 계정입니다.");
+		}else if(isVerifySuccessed == 3) {
+			return ResponseEntity.ok("인증 코드가 틀렸습니다.");
 		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 에러");
 		}
 		
 		
