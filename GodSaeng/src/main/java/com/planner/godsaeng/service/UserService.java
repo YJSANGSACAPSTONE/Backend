@@ -120,21 +120,28 @@ public class UserService {
 	   String currentVerifykey = userRepository.findUzepidByUid(uid);
 	   System.out.println(m.getVerifykey() + "들어왔나?");
 	   System.out.println(currentVerifykey);
-	   if(m.getVerifykey() == currentVerifykey) {
-		   user = User.builder()
-		            .uzepid(m.getZepid())
-		            .uverifiedornot(1)
-		            .build();
+	   if(m.getVerifykey().equals(currentVerifykey)) {
+//		   user = User.builder()
+//				    .uid(uid)
+//				    .ucontent("aa")
+//				    .unickname("aa")
+//		            .uzepid(m.getZepid())
+//		            .uverifiedornot(1)
+//		            .build();
 		      try {
-		         userRepository.save(user);
+//		         userRepository.save(user);
+		    	 userRepository.updateZepid(uid, m.getZepid());
 		         return true;
 		      }catch(Exception e) {
 		         e.printStackTrace();
+		         System.out.println("오류");
 		         return false;
 		      }
 		   }else {
+			   System.out.println("휴");
 			   return false;
 		   }
+	   
    }
    
    
