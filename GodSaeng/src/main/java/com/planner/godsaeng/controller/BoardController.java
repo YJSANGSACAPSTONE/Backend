@@ -15,31 +15,36 @@ import com.planner.godsaeng.service.BoardService;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
-	BoardService service = new BoardService();
-
-	@PostMapping("/addboard")
-	public String addUser(BoardDTO b) {
-		service.InsertBoard(b);
-		return null;
-	}
-
-	@GetMapping("/listboard")
-	public String listUser(Model m) {
-		List<Board> list = service.ReadBoard();
-		m.addAttribute("list", list);
-		return null;
-	}
-
-	@PostMapping("/updateuser")
-	public String updateUser(BoardDTO b) {
-		service.UpdateBoard(b);
-		return null;
-	}
-
-	@GetMapping("/deleteplan")
-	public String deletePlan(BoardDTO b) {
-		service.DeleteBoard(b.getU_id());
-
-		return null;
-	}
+//   BoardService service = new BoardService();
+//   
+//   @GetMapping("/write")
+//   public String Mainpage() {
+//      return "publishing/pages/board/write";
+//   }
+//   
+//   @PostMapping("/add")
+//   public String addBoard(BoardDTO b) {
+//      service.InsertBoard(b);
+//      return "redirect: /board/list";
+//   }
+//
+//   @GetMapping("/list")
+//   public String listBoard(Model m) {
+//      List<Board> list = service.ReadBoard();
+//      m.addAttribute("list", list);
+//      return "publishing/pages/board/list";
+//   }
+//
+//   @PostMapping("/updateboard")
+//   public String updateBoard(BoardDTO b) {
+//      service.UpdateBoard(b);
+//      return null;
+//   }
+//
+//   @GetMapping("/deleteboard")
+//   public String deleteBoard(BoardDTO b) {
+//      service.DeleteBoard(b.getB_id());
+//
+//      return null;
+//   }
 }

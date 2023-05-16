@@ -16,12 +16,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Table(name="godsaeng_plan")
 @ToString
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -64,28 +66,4 @@ public class Plan {
 	@Column(length=30, nullable=true)
 	private Integer premindornot;
 	
-	public void ChangeStartDate(LocalDate pstartdate) {
-		this.pstartdate = pstartdate;
-	}
-	public void ChangeEndDate(LocalDate penddate) {
-		this.penddate = penddate;
-	}
-	public void ChangeStartTime(LocalTime pstarttime) {
-		this.pstarttime = pstarttime;
-	}
-	public void ChangeEndTime(LocalTime pendtime) {
-		this.pendtime =pendtime;
-	}
-	public void ChangeTitle(String ptitle) {
-		this.ptitle = ptitle;
-	}
-	public void ChangeContent(String pcontent) {
-		this.pcontent = pcontent;
-	}
-	public void ChangeCategory(String pcategory) {
-		this.pcategory = pcategory;
-	}
-	public void ChangeRemindOrNot(Integer premindornot) {
-		this.premindornot = premindornot;
-	}
 }

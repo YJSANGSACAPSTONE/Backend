@@ -1,16 +1,24 @@
 package com.planner.godsaeng.dto;
 
+import java.math.BigInteger;
 import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.planner.godsaeng.entity.Challenge;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class ChallengeDTO {
 	
 
@@ -21,7 +29,6 @@ public class ChallengeDTO {
 	private Date c_enddate;
 	private Integer c_numberofparticipants;
 	private Integer c_category;
-	private String c_thumbnails;
 	private String c_introduction;
 	private Integer c_fee;
 	private Integer c_numberofphoto;
@@ -29,6 +36,8 @@ public class ChallengeDTO {
 	private Integer c_typeoffrequency;
 	private Integer c_frequency;
 	private Integer c_score;
+	private MultipartFile thumbnailData;
+    private String c_thumbnails;
 	
 	public void toEntity(ChallengeDTO d) {
 		Challenge entity = Challenge.builder()
@@ -39,7 +48,6 @@ public class ChallengeDTO {
 				.cenddate(d.getC_enddate())
 				.cnumberofparticipants(d.getC_numberofparticipants())
 				.ccategory(d.getC_category())
-				.cthumbnails(d.getC_thumbnails())
 				.cintroduction(d.getC_introduction())
 				.cfee(d.getC_fee())
 				.cnumberofphoto(d.getC_numberofphoto())

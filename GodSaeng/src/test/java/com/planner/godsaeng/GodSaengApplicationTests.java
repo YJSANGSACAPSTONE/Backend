@@ -31,6 +31,7 @@ class GodsaengApplicationTests {
 			System.out.println(c.getC_numberofparticipants());
 		}
 		
+		
 //		LocalDateTime now = LocalDateTime.now();
 //		System.out.println(now);
 //		List<PlanDTO> plan= ReadDailyPlan("sanghee");

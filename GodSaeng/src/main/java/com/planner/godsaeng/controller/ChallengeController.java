@@ -1,5 +1,7 @@
 package com.planner.godsaeng.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,20 +19,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
+import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.repository.ChallengeRepository;
+import com.planner.godsaeng.service.ChallengeParticipateService;
 import com.planner.godsaeng.service.ChallengeService;
 import com.planner.godsaeng.service.ChallengeVerifyService;
+import com.planner.godsaeng.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping("/challenge")
 @RequiredArgsConstructor
 public class ChallengeController {
@@ -38,26 +48,31 @@ public class ChallengeController {
 	ChallengeService service;
 	@Autowired
 	ChallengeVerifyService verifyservice;
+	@Autowired
+	ChallengeParticipateService participateService;
+	@Autowired
+	UserService userService;
 	
 	@GetMapping("/addchallenge")
-	public RedirectView AddChallengeView(@ModelAttribute ChallengeDTO d) {
+	public RedirectView AddChallengeView(@RequestBody ChallengeDTO d) {
 		return null;
 		
 	}
 	
 	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean>AddChallenge(@RequestBody ChallengeDTO d){
-		boolean isAddSuccessed = service.InsertChallenge(d);
-		if(isAddSuccessed) {
-			return ResponseEntity.ok(true);
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-		}
-	
+	public ResponseEntity<Boolean> AddChallenge(@RequestParam("thumbnail") MultipartFile thumbnail,
+	                                             @ModelAttribute ChallengeDTO d) throws IOException {
+		
+	    boolean isAddSuccessed = service.InsertChallenge(d,thumbnail);
+
+	    if (isAddSuccessed) {
+	        return ResponseEntity.ok(true);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+	    }
 	}
 	@GetMapping("/list")
-	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(HttpSession session){
-		String uid = /*HttpSession.getAttribute(u_id)*/"sanghee_ok@naver.com";
+	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(String uid){
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
@@ -94,16 +109,18 @@ public class ChallengeController {
 		}
 	}
 	@GetMapping("/{cid}/signUp")
-	public ResponseEntity<ChallengeDTO>signUpView(@PathVariable("cid")Long cid){
-		return null;
+	public ResponseEntity<List<ChallengeDTO>>signUpView(@PathVariable("cid")Long cid){
+		
+		return ResponseEntity.ok(service.ReadChallenge(cid));
 	}
 	
 	
 	//챌린지 참가 신청 시 실행 메서드
-	@GetMapping("/participate")
-	public ResponseEntity<Boolean>ParticipateChallenge(@ModelAttribute ChallengeDTO m, HttpSession session){
-//		String u_id = session.getAttribute("uid");
-		boolean isParticipateSuccessed = true;
+	@PostMapping("/participate")
+	public ResponseEntity<Boolean>ParticipateChallenge(@RequestBody ChallengeDTO m, String uid){
+		System.out.println("아이디는: " + uid);
+		System.out.println("챌린지 이름은: " + m.getC_name());
+		boolean isParticipateSuccessed = participateService.ParticipateChallenge(m, uid);
 		if(isParticipateSuccessed) {
 			return ResponseEntity.ok(true);
 		}else {
@@ -112,11 +129,26 @@ public class ChallengeController {
 	}
 	
 	//인증 페이지로 이동 시에 페이지 매핑
-	@GetMapping("/verify")
-	public RedirectView VerifyChallengeView(@ModelAttribute ChallengeParticipateDTO m){
-		return null;
+	@GetMapping("/zepidverify")
+	public String ZepidVerifyView(@RequestParam("uid") String uid){
+		return userService.FindZepidByuID(uid);
 			
 		}
+	@PostMapping("/zepidverify")
+	public ResponseEntity<String>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
+		int isVerifySuccessed = userService.VerifyZepid(m, "sanghee_ok@naver.com");
+		if(isVerifySuccessed == 1) {
+			return ResponseEntity.ok("인증 성공");
+		}else if(isVerifySuccessed == 2){
+			return ResponseEntity.ok("이미 인증된 계정입니다.");
+		}else if(isVerifySuccessed == 3) {
+			return ResponseEntity.ok("인증 코드가 틀렸습니다.");
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 에러");
+		}
+		
+		
+	}
 	
 	
 	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
@@ -142,12 +174,7 @@ public class ChallengeController {
 	
 	//챌린지 참가 현황 눌렀을 시 데이터 출력 메서드
 	@GetMapping("/mychallenge")
-	public ResponseEntity<Boolean>MyChallenge(HttpSession session){
-		boolean isMychallengeSuccessed = true;
-		if(isMychallengeSuccessed) {
-			return ResponseEntity.ok(true);
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-		}
+	public List<ChallengeStatusDTO>MyChallenge(String uid){
+		return service.myChallengeProgress(uid);
 	}
 }

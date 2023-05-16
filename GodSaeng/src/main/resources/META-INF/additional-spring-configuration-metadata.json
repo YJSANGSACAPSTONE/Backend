@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "file.upload.path",
+    "type": "java.lang.String",
+    "description": "A description for 'file.upload.path'"
+  },
+  {
+    "name": "static-locations",
+    "type": "java.lang.String",
+    "description": "A description for 'static-locations'"
+  },
+  {
+    "name": "com.planner.godsaeng.upload.path",
+    "type": "java.lang.String",
+    "description": "A description for 'com.planner.godsaeng.upload.path'"
+  }
+]}

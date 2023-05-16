@@ -3,62 +3,60 @@ package com.planner.godsaeng.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.planner.godsaeng.dto.CommentDTO;
-import com.planner.godsaeng.entity.Comment;
 import com.planner.godsaeng.service.CommentService;
 
-@Controller
-@RequestMapping("/comment")
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/comments/")
+@RequiredArgsConstructor
 public class CommentController {
+   @Autowired
+    private final CommentService commentService;
 
-    @Autowired
-    CommentService service;
+    @GetMapping("/{poid}/all") // 결과데이터 : CommentDTO 리스트, 해당게시물의 모든 댓글 반환
+    public ResponseEntity<List<CommentDTO>> getList(@PathVariable("poid") Long poid){
 
-	@PostMapping("/addcomment")
-	public String addComment(@ModelAttribute("comment") CommentDTO c) {
-		service.InsertComment(c);
-		return "comment";
-	}
+        List<CommentDTO> commentDTOList = commentService.getListOfPost(poid);
 
-//	@PostMapping("/addcomment")
-//	public String addComment(
-//	    @RequestParam(name = "c_time") String c_time,
-//	    @RequestParam(name = "c_writer") String c_writer,
-//	    @RequestParam(name = "c_content") String c_content) {
-//	    CommentDTO commentDTO = new CommentDTO();
-//	    commentDTO.setC_time(c_time);
-//	    commentDTO.setC_writer(c_writer);
-//	    commentDTO.setC_content(c_content);
-//	    service.InsertComment(commentDTO);
-//	    return "index";
-//	}
-	
-	
-	@GetMapping("/listcomment")
-	public String listComment(Model m) {
-		List<Comment> list = service.ReadComment();
-		m.addAttribute("list", list);
-		return "comment";
-	}
+        return new ResponseEntity<>(commentDTOList, HttpStatus.OK);
+    }
 
-	@PostMapping("/updatecomment")
-	public String updateComment(CommentDTO c) {
-		service.UpdateComment(c);
-		return null;
-	}
+    @PostMapping("/{poid}") // 결과데이터 : 생성된 댓글 번호 , 새로운 댓글등록
+    public ResponseEntity<Long> addComment(@RequestBody CommentDTO postCommentDTO){
 
-	@GetMapping("/deletecomment")
-	public String deleteComment(CommentDTO c) {
-		service.DeleteComment(c.getC_id());
-		
+        Long commentId = commentService.register(postCommentDTO);
 
-		return null;
-	}
+        return new ResponseEntity<>(commentId, HttpStatus.OK);
+    }
+
+    @PutMapping("/{poid}/{commentId}") // 결과데이터 : 댓글의 수정 성공 여부, 댓글 수정
+    public ResponseEntity<Long> modifyComment(@PathVariable Long commentId, @RequestBody CommentDTO postCommentDTO){
+
+        commentService.modify(postCommentDTO);
+
+        return new ResponseEntity<>(commentId, HttpStatus.OK);
+    }
+
+   
+    @DeleteMapping("/{poid}/{commentId}") // 댓글 삭제 
+    public ResponseEntity<Long> removeComment(@PathVariable Long commentId){
+
+        commentService.remove(commentId);
+
+        return new ResponseEntity<>(commentId, HttpStatus.OK);
+    }
+
 }
