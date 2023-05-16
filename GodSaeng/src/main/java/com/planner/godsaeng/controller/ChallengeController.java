@@ -130,7 +130,7 @@ public class ChallengeController {
 	
 	//인증 페이지로 이동 시에 페이지 매핑
 	@GetMapping("/zepidverify")
-	public String ZepidVerifyView(String uid){
+	public String ZepidVerifyView(@RequestParam("uid") String uid){
 		return userService.FindZepidByuID(uid);
 			
 		}

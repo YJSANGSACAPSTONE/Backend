@@ -112,7 +112,7 @@ public class UserService {
    }
    
    public String FindZepidByuID(String uid) {
-	   return userRepository.findUzepidByUid("sanghee_ok@navr.com");
+	   return userRepository.findUzepidByUid(uid);
    }
    
    public Boolean VerifyZepid(ZepIdVerifyDTO m,String uid) {
