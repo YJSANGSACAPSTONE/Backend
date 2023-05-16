@@ -13,12 +13,12 @@ import com.planner.godsaeng.repository.UserRepository;
 
 @Service
 public class UserService {
-   
+
    @Autowired
    UserRepository userRepository;
-   
+
    User user = null;
-   
+
    //유저 회원가입(INSERT)
    public boolean InsertUser(UserDTO u) {
 	  Random r = new Random();
@@ -33,7 +33,7 @@ public class UserService {
             .ucontent(u.getU_content())
             .usuccessedchallenge(u.getU_successedchallenge())
             .build();
-      
+
       try {
          userRepository.save(user);
          return true;
@@ -42,13 +42,13 @@ public class UserService {
          return false;
       }
    }
-   
+
    //유저 정보 목록
    public UserDTO ReadUser(String uid){
-     
+
       UserDTO userinfo = null;
       Optional<User> result = userRepository.findById(uid);
-       
+
       if(result.isPresent()) {
           userinfo = UserDTO.builder()
          .u_id(result.get().getUid())
@@ -66,10 +66,10 @@ public class UserService {
       } else {
          return null;
       }
-        
+
    }
 
-   
+
    //유저 정보 수정
    public boolean UpdateUser(UserDTO u) {
       user = User.builder()
@@ -90,7 +90,7 @@ public class UserService {
          return false;
       }
    }
-   
+
    //유저 정보 삭제
    public boolean DeleteUser(String u_id) {
       try {
@@ -101,22 +101,21 @@ public class UserService {
          return false;
       }
    }
-   
+
    public void AddDeposit(String uid, int newDeposit) {
 	   userRepository.addDeposit(uid, newDeposit);
    }
-   
+
    public Optional<User> SearchId(String uid) {
 	   Optional<User> userEntity = userRepository.findById(uid);
 	   return userEntity;
    }
-   
+
    public String FindZepidByuID(String uid) {
-	   return userRepository.findUzepidByUid("sanghee_ok@naver.com");
+	   return userRepository.findUzepidByUid(uid);
    }
    
    public int VerifyZepid(ZepIdVerifyDTO m,String uid) {
-	   
 	   String currentVerifykey = userRepository.findUzepidByUid(uid);
 	   System.out.println(m.getVerifykey() + "들어왔나?");
 	   System.out.println(currentVerifykey);
@@ -135,8 +134,9 @@ public class UserService {
 			   System.out.println("인증 코드가 잘못되었습니다.");
 			   return 3;
 		   }
-	   
+
    }
-   
-   
+
+
 }
+
