@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.entity.User;
 
 @Repository
@@ -36,6 +37,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Modifying
 	@Query(value = "UPDATE Godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uid = :uid", nativeQuery = true)
 	void updateZepid(@Param("uid") String uid, @Param("newZepid") String newZepid);
+	
+	@Query(value = "SELECT uverifiedornot, uzepid FROM Godsaeng_user WHERE uid = ?1", nativeQuery = true)
+	User findUzepidAndUverifiedornotByUid(@Param("uid") String uid);
 	
 //	@Query(value = "SELECT uid FROM godsaeng_user", nativeQuery = true)
 //    Optional<User> findByUid(String uid);

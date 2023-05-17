@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planner.godsaeng.dto.SaveResponseDTO;
 import com.planner.godsaeng.dto.UserDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.service.UserService;
 
 @RestController
@@ -105,6 +107,33 @@ public class UserController {
     	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
       }
    }
+   
+	//인증 페이지로 이동 시에 페이지 매핑
+	@GetMapping("/zepidverify")
+	public ResponseEntity<ZepIdVerifyViewDTO> ZepidVerifyView(@RequestParam("uid") String uid) {
+	    ZepIdVerifyViewDTO result = service.CheckZepidAndVerified(uid);
+	    if (result != null) {
+	        return ResponseEntity.ok(result);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
+	
+	@PostMapping("/zepidverify")
+	public ResponseEntity<String>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
+		int isVerifySuccessed = service.VerifyZepid(m, "sanghee_ok@naver.com");
+		if(isVerifySuccessed == 1) {
+			return ResponseEntity.ok("인증 성공");
+		}else if(isVerifySuccessed == 2){
+			return ResponseEntity.ok("이미 인증된 계정입니다.");
+		}else if(isVerifySuccessed == 3) {
+			return ResponseEntity.ok("인증 코드가 틀렸습니다.");
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 에러");
+		}
+		
+		
+	}
  
 //   예치금 업데이트
 //	@PostMapping("/finddeposit")

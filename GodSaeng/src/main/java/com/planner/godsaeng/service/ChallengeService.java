@@ -50,6 +50,15 @@ public class ChallengeService {
 
 		return true;
 	}
+	public List<ChallengeDTO>ReadAllChallenge(){
+		List<Challenge>allListEntity = challengeRepository.findAll();
+		List<ChallengeDTO>allList = new ArrayList<>();
+		for(Challenge e: allListEntity) {
+			ChallengeDTO dto = entityToDto(e);
+			allList.add(dto);
+		}
+		return allList;
+	}
 
 	public List<ChallengeDTO> ReadPopularChallenge() {
 		List<Challenge> popularListEntity = challengeRepository.findAllByOrderByCnumberofparticipantsDesc();
