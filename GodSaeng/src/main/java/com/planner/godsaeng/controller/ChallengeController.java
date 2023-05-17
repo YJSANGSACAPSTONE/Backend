@@ -30,6 +30,7 @@ import com.planner.godsaeng.dto.ChallengeParticipateDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.repository.ChallengeRepository;
 import com.planner.godsaeng.service.ChallengeParticipateService;
@@ -85,6 +86,16 @@ public class ChallengeController {
 		return new ResponseEntity<>(lists,HttpStatus.OK);
 		
 	}
+	@GetMapping("/alllist")
+	public ResponseEntity<List<ChallengeDTO>>ReadAllChallenge(){
+		List<ChallengeDTO>allList = service.ReadAllChallenge();
+		if(!allList.isEmpty()) {
+			return ResponseEntity.ok(allList);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		
+	}
 	@PostMapping("/update")
 	public ResponseEntity<ChallengeDTO>UpdateChallenge(@RequestBody ChallengeDTO d){
 		boolean isSuccess = service.UpdateChallenge(d);
@@ -127,29 +138,6 @@ public class ChallengeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 		}
 	}
-	
-	//인증 페이지로 이동 시에 페이지 매핑
-	@GetMapping("/zepidverify")
-	public String ZepidVerifyView(@RequestParam("uid") String uid){
-		return userService.FindZepidByuID(uid);
-			
-		}
-	@PostMapping("/zepidverify")
-	public ResponseEntity<String>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
-		int isVerifySuccessed = userService.VerifyZepid(m, "sanghee_ok@naver.com");
-		if(isVerifySuccessed == 1) {
-			return ResponseEntity.ok("인증 성공");
-		}else if(isVerifySuccessed == 2){
-			return ResponseEntity.ok("이미 인증된 계정입니다.");
-		}else if(isVerifySuccessed == 3) {
-			return ResponseEntity.ok("인증 코드가 틀렸습니다.");
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 에러");
-		}
-		
-		
-	}
-	
 	
 	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
 	@PostMapping("/verify")

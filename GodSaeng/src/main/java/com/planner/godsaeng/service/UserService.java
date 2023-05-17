@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
+import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
 
@@ -113,6 +114,17 @@ public class UserService {
 
    public String FindZepidByuID(String uid) {
 	   return userRepository.findUzepidByUid(uid);
+   }
+   
+   public ZepIdVerifyViewDTO CheckZepidAndVerified(String uid) {
+	   User userEntity = userRepository.findUzepidAndUverifiedornotByUid(uid);
+	   ZepIdVerifyViewDTO list = null;
+	   list = ZepIdVerifyViewDTO.builder()
+			   .uzepid(userEntity.getUzepid())
+			   .uverifiedornot(userEntity.getUverifiedornot())
+			   .build();
+	   return list;
+	   
    }
    
    public int VerifyZepid(ZepIdVerifyDTO m,String uid) {
