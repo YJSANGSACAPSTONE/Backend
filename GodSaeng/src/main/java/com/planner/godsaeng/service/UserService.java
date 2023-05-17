@@ -117,6 +117,7 @@ public class UserService {
    }
    
    public ZepIdVerifyViewDTO CheckZepidAndVerified(String uid) {
+	   System.out.println("uid잘들어옴?" + uid);
 	   User userEntity = userRepository.findUzepidAndUverifiedornotByUid(uid);
 	   ZepIdVerifyViewDTO list = null;
 	   list = ZepIdVerifyViewDTO.builder()

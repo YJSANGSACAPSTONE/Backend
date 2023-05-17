@@ -21,5 +21,5 @@ public class PaymentDTO {
 	private String kp_methodtype;
 	private String kp_date;
 	private int kp_amount;
-	private User user;
+//	private User user;
 }
