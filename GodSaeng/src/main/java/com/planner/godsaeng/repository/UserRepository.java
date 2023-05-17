@@ -38,7 +38,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Query(value = "UPDATE Godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uid = :uid", nativeQuery = true)
 	void updateZepid(@Param("uid") String uid, @Param("newZepid") String newZepid);
 	
-	@Query(value =  "SELECT uverifiedornot, uzepid FROM godsaeng_user WHERE uid= :uid", nativeQuery = true)
+	@Query(value = "SELECT uverifiedornot, uzepid FROM Godsaeng_user WHERE uid = ?1", nativeQuery = true)
 	User findUzepidAndUverifiedornotByUid(@Param("uid") String uid);
 	
 //	@Query(value = "SELECT uid FROM godsaeng_user", nativeQuery = true)
