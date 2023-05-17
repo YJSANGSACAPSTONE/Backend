@@ -126,7 +126,7 @@ public class KakaoPayService {
     			.kp_methodtype(p.getKpmethodtype())
     			.kp_date(p.getKpdate())
     			.kp_amount(p.getKpamount())
-    			.user(p.getUser())
+//    			.user(p.getUser())
     			.build();
     }
     
@@ -136,7 +136,7 @@ public class KakaoPayService {
     			.kpmethodtype(p.getKp_methodtype())
     			.kpdate(p.getKp_date())
     			.kpamount(p.getKp_amount())
-    			.user(p.getUser())
+//    			.user(p.getUser())
     			.build();
     }
 //    public PaymentDTO ReadPayment(String uid) {

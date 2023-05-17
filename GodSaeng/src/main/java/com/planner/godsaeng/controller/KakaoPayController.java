@@ -107,6 +107,7 @@ public class KakaoPayController {
     }
     
     @GetMapping("/search")
+    @ResponseBody
     public ResponseEntity<List<PaymentDTO>> getPaymentsByUid(@RequestParam("uid") String uid) {
         List<PaymentDTO> paymentDTOList = kakaoPayService.readPayment(uid);
         return ResponseEntity.ok(paymentDTOList);
