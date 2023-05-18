@@ -114,7 +114,7 @@ public class UserService {
 	   Optional<User> userEntity = userRepository.findById(uid);
 	   return userEntity;
    }
-
+   
    public String FindZepidByuID(String uid) {
 	   return userRepository.findUzepidByUid(uid);
    }
