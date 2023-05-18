@@ -78,7 +78,7 @@ public class ChallengeController {
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
-		List<UserRankDTO>userranklist = userService.ReadUsersRank();
+//		List<UserRankDTO>userranklist = userService.ReadUsersRank();
 		Map<String,List<ChallengeDTO>>lists = new HashMap<>();
 		lists.put("recentlist", recentlist);
 		lists.put("popularlist", popularlist);
