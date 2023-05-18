@@ -1,6 +1,7 @@
 package com.planner.godsaeng.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.repository.search.SearchPostRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredicateExecutor<Post>, SearchPostRepository {
-
+	Optional<Post> findByPoid(Long poid);
 				
 	
 //	@Query("DELETE FROM Post p WHERE p.pid = :pid")

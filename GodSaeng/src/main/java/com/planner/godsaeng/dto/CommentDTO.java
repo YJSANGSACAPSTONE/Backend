@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CommentDTO {
 	
 	// comment ID
-	private Long commentId;
+	private Long comm_id;
 	
 	// 게시판 id
 	private Long po_id;
@@ -22,7 +22,8 @@ public class CommentDTO {
 	// 유저 id
 	private String u_id;
 	
-	private String text;
+	private String comm_text;
 	
 	private LocalDateTime regDate, modDate;
 }
+

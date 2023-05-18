@@ -19,15 +19,15 @@ public interface CommentService {
 	void modify(CommentDTO postCommentDTO);
 	
 	// 댓글 삭제
-	void remove(Long commentId);
+	void remove(Long commId);
 	
 	default Comment dtoToEntity(CommentDTO postCommentDTO){
 
 		Comment postComment = Comment.builder()
-				.commentId(postCommentDTO.getCommentId())
+				.commid(postCommentDTO.getComm_id())
 				.post(Post.builder().poid(postCommentDTO.getPo_id()).build())
 				.user(User.builder().uid(postCommentDTO.getU_id()).build())
-				.text(postCommentDTO.getText())
+				.commtext(postCommentDTO.getComm_text())
 				.build();
 
 		return postComment;
@@ -36,12 +36,12 @@ public interface CommentService {
 	default CommentDTO entityToDto(Comment postComment){
 
 		CommentDTO postCommentDTO = CommentDTO.builder()
-				.commentId(postComment.getCommentId())
+				.comm_id(postComment.getCommid())
 				.po_id(postComment.getPost().getPoid())
 				.u_id(postComment.getUser().getUid())
-				.text(postComment.getText())
+				.comm_text(postComment.getCommtext())
 				.regDate(postComment.getRegDateTime())
-				.modDate(postComment.getMoDateTime())
+				.modDate(postComment.getModDateTime())
 				.build();
 
 		return postCommentDTO;

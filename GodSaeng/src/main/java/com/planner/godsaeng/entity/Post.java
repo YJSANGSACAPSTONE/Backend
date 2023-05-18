@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,7 +27,7 @@ import lombok.ToString;
 @DynamicInsert
 public class Post extends BaseEntity {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY) 
 	private User user;				// 유저 ID
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -45,10 +44,10 @@ public class Post extends BaseEntity {
 	private String pocontent;		// 내용
 	
 	@Column(columnDefinition = "int default 0")
-	private int pohitCount;			// 조회수
+	private int pohitcount;			// 조회수
 	
-	@Column(columnDefinition = "int default 0")
-	private int polike;				// 추천수
+//	@Column(columnDefinition = "int default 0")
+//	private int polike;				// 추천수 // 수정 필요
 	
 	@Column(columnDefinition = "boolean default true")
 	private boolean posecret;		// 비밀글 여부
@@ -60,6 +59,10 @@ public class Post extends BaseEntity {
 	public void changeContent(String pocontent) {
 		this.pocontent = pocontent;
 	}
+
+	public void setPostHitCount(int pohitcount) {
+        this.pohitcount = pohitcount;
+    }
 	
 	
 	

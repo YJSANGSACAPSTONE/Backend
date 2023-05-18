@@ -21,9 +21,9 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 	
 	//List<Plan>findByUidAndPStartDateOrderByPStartTimeAsc(String u_id,LocalDateTime p_startdate);
 	
-	@Query(value = "SELECT * FROM godsaeng_plan p WHERE p.u_id = :u_id AND DATE(p.p_startdate) = :realtodaystime ORDER BY p.p_starttime ASC", nativeQuery = true)
-	List<Plan> findByUidAndPStartDateOrderByPStartTimeAsc(@Param("u_id") String u_id, @Param("realtodaystime") String realtodaystime);
-	
+	@Query(value = "SELECT * FROM godsaeng_plan p WHERE p.uid = :u_id AND DATE(p.pstartdate) = :realtodaystime ORDER BY p.pstarttime ASC", nativeQuery = true)
+	List<Plan> findByUidAndPStartDateOrderByPStartTimeAsc(@Param("u_id") String uid, @Param("realtodaystime") String realtodaystime);
+
 	
 	/* JPQL로 해결되지 않아서 그냥 NATIVE QUERY로 처리함 !
 	 * @Transactional

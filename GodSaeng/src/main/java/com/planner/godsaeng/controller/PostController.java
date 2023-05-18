@@ -1,14 +1,26 @@
 package com.planner.godsaeng.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
+
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
+import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.repository.PostRepository;
 import com.planner.godsaeng.service.PostService;
 
@@ -28,6 +41,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 public class PostController {
+	
+	private final PostRepository postRepository;
 	private final PostService postService;
 	
 //	@GetMapping("/list")
@@ -87,15 +102,21 @@ public class PostController {
 //	}
 	
 	// rest
-	// test: http://localhost:8070/post/read?pid=223 (GET)
+	// test: http://localhost:8070/post/read?poid=223 (GET)
 	@GetMapping({"/read", "/modify"})
-	public ResponseEntity<PostDTO> read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long poid) {
-		log.info("POID: " + poid);
-		PostDTO postDTO = postService.getPost(poid);
+	public ResponseEntity<PostDTO> read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long poid,
+	                                    HttpServletRequest request, HttpServletResponse response) {
+	    log.info("POID: " + poid);
 
-		log.info(postDTO);
+	    // 게시물 조회
+	    PostDTO postDTO = postService.getPost(poid);
 
-		return ResponseEntity.ok().body(postDTO);
+	    // 조회수 처리
+	    postService.viewCountValidation(postDTO, request, response);
+
+	    log.info(postDTO);
+
+	    return ResponseEntity.ok().body(postDTO);
 	}
 	
 //	@PostMapping("/remove")
@@ -109,10 +130,10 @@ public class PostController {
 	
 	// rest 
 	// test: http://localhost:8070/post/remove/222 (POST)
-	@PostMapping("/remove/{pid}")
+	@DeleteMapping("/remove/{poid}")
 	public ResponseEntity<String> remove(@PathVariable long poid) {
 		log.info("poid: " + poid);
-		postService.removeWithImages(poid);
+		postService.removeWithAll(poid);
 		return ResponseEntity.ok().body("Post with ID " + poid + " has been removed.");
 	}
 	
@@ -132,7 +153,7 @@ public class PostController {
 //		return "redirect:/post/read";
 //	}
 	
-	@PostMapping("/modify/{pid}")
+	@PutMapping("/modify/{poid}")
 	public ResponseEntity<String> modify(@PathVariable long poid, @RequestBody PostDTO dto) {
 		log.info("post modify.......................");
 		log.info("dto: " + dto);
@@ -140,4 +161,27 @@ public class PostController {
 
 		return ResponseEntity.ok().body("Post with ID " + poid + " has been modified.");
 	}
+	
+//	@GetMapping("/posts/{poid}")
+//    public String postInfo(@PathVariable("poid") Long poid,
+//                           HttpServletRequest request,
+//                           HttpServletResponse response,
+//                           Model model) {
+//		
+//		// poid에 해당하는 게시글을 조회
+//        Post post = postRepository.findByPoid(poid)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글이 존재하지 않습니다."));
+//        
+//        // viewCountValidation 메서드를 호출하여 조회수 관련 로직을 처리
+//        postService.viewCountValidation(post, request, response);
+//        
+//        // 조회된 게시글을 모델에 추가합니다.
+//        model.addAttribute("post", post);
+//        
+//        // post-info를 렌더링하기 위한 뷰 이름을 반환
+//        return "post/post-info";
+//    }
+
+	
+
 }

@@ -25,8 +25,7 @@ public class Board {
 	private int bid;				// 계시판 ID
 	private String bname;			// 게시판 이름
 	
-	@Column(length=20, nullable=false)
-	private String aid;				// 관리자 ID(임시 값: 업데이트 필요)
+	private String aid;				// 유저 ID
 	
 	
 

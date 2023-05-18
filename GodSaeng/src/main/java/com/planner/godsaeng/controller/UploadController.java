@@ -34,7 +34,11 @@ public class UploadController {
 
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResultDTO>> uploadFile(MultipartFile[] uploadFiles){
-
+    	if (uploadFiles == null) {
+            // 업로드 파일이 없는 경우에 대한 처리
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    	
         List<UploadResultDTO> resultDTOList = new ArrayList<>();
         for (MultipartFile uploadFile : uploadFiles) {
 
@@ -71,7 +75,7 @@ public class UploadController {
                 Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
 
                 resultDTOList.add(new UploadResultDTO(fileName, uuid, folderPath));
-            }catch (IOException e){
+            } catch (IOException e){
                 e.printStackTrace();
             }
         }

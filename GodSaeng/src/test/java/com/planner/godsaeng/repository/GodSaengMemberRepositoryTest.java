@@ -20,10 +20,10 @@ public class GodSaengMemberRepositoryTest {
 			User user = User.builder()
 					.uid("userID" + i)
 					.unickname("nickname" + i)
-					.uzepetoid("zepetoID" + i)
-					.uimg("img" + i)
+					.uzepid("zepetoID" + i)
 					.ugrade("grade0")
 					.uemail("user" + i + "@gmail.com")
+					.ucontent("content" + i)
 					.usuccessedchallenge("successCha" + i)
 					.build();
 			

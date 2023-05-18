@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
@@ -25,44 +28,25 @@ public interface PostService {
 	PostDTO getPost(Long poid);
 	
 	// 게시물 삭제
-	void removeWithImages(Long poid);
-	
+	void removeWithAll(Long poid);
 	
 	// 게시물 수정
 	void modify(PostDTO postDTO);
-
-//	default Post dtoToEntiy(PostDTO dto) {
-//		User user = User.builder()
-//				.uid(dto.getU_id()).build();
-//		
-//		Board board = Board.builder()
-//				.bid(dto.getB_id()).build();
-//				
-//		Post post = Post.builder()
-//				.uid(user)
-//				.bid(board)
-//				.pid(dto.getP_id())
-//				.ptitle(dto.getP_title())
-//				.pcontent(dto.getP_content())
-//				.phitCount(dto.getP_hitCount())
-//				.plike(dto.getP_like())
-//				.psecret(dto.isP_secret())
-//				.build();
-//		return post;
-//	}
-
+	
+	// 조회수 처리
+	void viewCountValidation(PostDTO postDTO, HttpServletRequest request, HttpServletResponse response);
+    
 	default PostDTO entityToDto(Post post, User user, List<PostImage> postImages, Long commentCnt) {
 		PostDTO postDTO = PostDTO.builder()
 				.u_id(user.getUid())
-//				.u_id(post.getUser().getUid())
 				.b_id(post.getBoard().getBid())
 				.po_id(post.getPoid())
 				.po_title(post.getPotitle())
 				.po_content(post.getPocontent())
 				.po_regDate(post.getRegDateTime())
-				.po_modDate(post.getMoDateTime())
-				.po_hitCount(post.getPohitCount())
-				.po_like(post.getPolike())
+				.po_modDate(post.getModDateTime())
+				.po_hitcount(post.getPohitcount())
+//				.po_like(post.getPolike())
 				.po_secret(post.isPosecret())
 				.build();
 		
@@ -96,8 +80,8 @@ public interface PostService {
 				.poid(postDTO.getPo_id())
 				.potitle(postDTO.getPo_title())
 				.pocontent(postDTO.getPo_content())
-				.pohitCount(postDTO.getPo_hitCount())
-				.polike(postDTO.getPo_like())
+				.pohitcount(postDTO.getPo_hitcount())
+//				.polike(postDTO.getPo_like())
 				.posecret(postDTO.isPo_secret())
 				.build();
 
@@ -125,4 +109,6 @@ public interface PostService {
 
         return entityMap;
     }
+
+	
 }

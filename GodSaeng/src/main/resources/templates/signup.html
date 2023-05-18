@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>[[${"유저id:" + session.userId + "님의 회원가입"}]]</h1>
+	<!-- 입력 폼 -->
+	<form method="post" action="http://localhost:8070/save">
+	  <input type="hidden" name="userId" value="${session.userId}">
+	  <label for="u_nickname">닉네임:</label>
+	  <input type="text" id="u_nickname" name="u_nickname">
+	  <label for="u_zepid">zep아이디:</label>
+	  <input type="text" id="u_zepid" name="u_zepid">
+	  <label for="u_grade">등급:</label>
+	  <input type="text" id="u_grade" name="u_grade">
+	  <label for="u_content">소개글:</label>
+	  <input type="text" id="u_content" name="u_content">
+	  <label for="u_successedchallenge">성공한 챌린지:</label>
+	  <input type="text" id="u_successedchallenge" name="u_successedchallenge">
+	  <button type="submit">저장</button>
+	</form>
+	  <a th:href="${session.profileImageUrl}">이미지</a>
+</body>
+</html>

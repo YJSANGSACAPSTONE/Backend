@@ -37,26 +37,26 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(postComment);
 
-        return postComment.getCommentId();
+        return postComment.getCommid();
     }
 
     @Override
     public void modify(CommentDTO postCommentDTO) {
 
-        Optional<Comment> result = commentRepository.findById(postCommentDTO.getCommentId());
+        Optional<Comment> result = commentRepository.findById(postCommentDTO.getComm_id());
 
         if(result.isPresent()){
             Comment postComment = result.get();
-            postComment.changeText(postCommentDTO.getText());
+            postComment.changeText(postCommentDTO.getComm_text());
             commentRepository.save(postComment);
         }
 
     }
 
     @Override
-    public void remove(Long commentId) {
+    public void remove(Long commid) {
 
-        commentRepository.deleteById(commentId);
+        commentRepository.deleteById(commid);
 
     }
 }

@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.planner.godsaeng.service.CommentService;
 import com.planner.godsaeng.dto.CommentDTO;
+import com.planner.godsaeng.service.CommentService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/comments/")
 @RequiredArgsConstructor
 public class CommentController {
 	@Autowired
     private final CommentService commentService;
 
-    @GetMapping("/{poid}/all") // 결과데이터 : CommentDTO 리스트, 해당게시물의 모든 리뷰 반환
+    @GetMapping("/{poid}/all") // 결과데이터 : CommentDTO 리스트, 해당게시물의 모든 댓글 반환
     public ResponseEntity<List<CommentDTO>> getList(@PathVariable("poid") Long poid){
 
         List<CommentDTO> commentDTOList = commentService.getListOfPost(poid);
@@ -58,4 +58,5 @@ public class CommentController {
 
         return new ResponseEntity<>(commentId, HttpStatus.OK);
     }
+
 }

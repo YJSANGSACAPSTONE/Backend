@@ -12,14 +12,11 @@ import com.planner.godsaeng.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
-@RequiredArgsConstructor
 public class BoardService {
-
-	   Board board = null;
-	   @Autowired
-	   BoardRepository boardRepository;
-	   
+		
+		Board board = new Board();
+		BoardRepository boardRepository;
+		
 	   // 게시판 작성 (Insert)
 	   public boolean InsertBoard(BoardDTO b) {
 	      board = Board.builder()
@@ -70,5 +67,5 @@ public class BoardService {
 	      }
 	   }
 	   
-	   
+
 }
