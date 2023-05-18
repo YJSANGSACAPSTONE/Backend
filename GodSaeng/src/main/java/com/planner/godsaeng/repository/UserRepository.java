@@ -1,5 +1,6 @@
 package com.planner.godsaeng.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -38,10 +39,12 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Query(value = "UPDATE Godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uid = :uid", nativeQuery = true)
 	void updateZepid(@Param("uid") String uid, @Param("newZepid") String newZepid);
 	
-	@Query(value = "SELECT uverifiedornot, uzepid FROM Godsaeng_user WHERE uid = ?1", nativeQuery = true)
-	User findUzepidAndUverifiedornotByUid(@Param("uid") String uid);
-	
+	@Query("SELECT u FROM User u WHERE u.uid = :uid")
+	Optional<User> findUserByUid(@Param("uid") String uid);
 //	@Query(value = "SELECT uid FROM godsaeng_user", nativeQuery = true)
 //    Optional<User> findByUid(String uid);
+	
+	@Query(value = "SELECT * FROM Godsaeng_user ORDER BY score DESC LIMIT 10", nativeQuery = true)
+	List<User> findTop10UsersByScoreDesc();
 
 }

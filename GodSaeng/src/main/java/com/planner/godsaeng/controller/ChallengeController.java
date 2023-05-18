@@ -29,6 +29,7 @@ import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
+import com.planner.godsaeng.dto.UserRankDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
@@ -77,7 +78,7 @@ public class ChallengeController {
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
-		
+		List<UserRankDTO>userranklist = userService.ReadUsersRank();
 		Map<String,List<ChallengeDTO>>lists = new HashMap<>();
 		lists.put("recentlist", recentlist);
 		lists.put("popularlist", popularlist);
