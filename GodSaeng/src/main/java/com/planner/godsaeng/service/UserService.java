@@ -1,5 +1,7 @@
 package com.planner.godsaeng.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.UserDTO;
+import com.planner.godsaeng.dto.UserRankDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.entity.User;
@@ -118,11 +121,11 @@ public class UserService {
    
    public ZepIdVerifyViewDTO CheckZepidAndVerified(String uid) {
 	   System.out.println("uid잘들어옴?" + uid);
-	   User userEntity = userRepository.findUzepidAndUverifiedornotByUid(uid);
+	   Optional<User> userEntity = userRepository.findUserByUid(uid);
 	   ZepIdVerifyViewDTO list = null;
 	   list = ZepIdVerifyViewDTO.builder()
-			   .uzepid(userEntity.getUzepid())
-			   .uverifiedornot(userEntity.getUverifiedornot())
+			   .uzepid(userEntity.get().getUzepid())
+			   .uverifiedornot(userEntity.get().getUverifiedornot())
 			   .build();
 	   return list;
 	   
@@ -148,6 +151,20 @@ public class UserService {
 			   return 3;
 		   }
 
+   }
+   public List<UserRankDTO>ReadUsersRank(){
+	   List<User>userListEntity = userRepository.findTop10UsersByScoreDesc();
+	   List<UserRankDTO>userList = new ArrayList<>();
+	   UserRankDTO list;
+	   for(User u:userListEntity) {
+		   list = UserRankDTO.builder()
+				   .ulevel(u.getUlevel())
+				   .unickname(u.getUnickname())
+				   .build();
+		   userList.add(list);
+				   
+	   }
+	   return userList;
    }
 
 
