@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.entity.Challenge;
+import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.ChallengeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -189,4 +190,9 @@ public class ChallengeService {
 				.cscore(d.getC_score())
 				.build();
 	}
+	
+	public Optional<Challenge> SearchCid(Long cid) {
+		   Optional<Challenge> challengeEntity = challengeRepository.findById(cid);
+		   return challengeEntity;
+	   }
 }
