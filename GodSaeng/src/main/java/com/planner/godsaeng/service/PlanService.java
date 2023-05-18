@@ -58,7 +58,7 @@ public class PlanService {
       String realtodaystime = todaystime.format(formatter);
       
       try {
-         List<Plan>planList = planRepository.findByUidAndPStartDateOrderByPStartTimeAsc(u_id, realtodaystime);
+         List<Plan>planList = planRepository.findByUidAndPStartDateOrderByPStartTimeAscc(u_id, realtodaystime);
          List<PlanDTO>userDailyPlanList = new ArrayList<>();
          //entity to dto
          for(Plan p: planList) {
