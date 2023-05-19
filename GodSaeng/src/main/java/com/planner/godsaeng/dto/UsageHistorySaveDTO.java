@@ -1,7 +1,5 @@
 package com.planner.godsaeng.dto;
 
-import com.planner.godsaeng.entity.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,11 +13,10 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentDTO {
+public class UsageHistorySaveDTO {
 	
-	private long kp_id;
-	private String kp_methodtype;
-	private String kp_date;
-	private int kp_amount;
-	
+	private int uh_amount;
+	private String uh_date;
+	private String uh_user;
+	private Long uh_challenge;
 }
