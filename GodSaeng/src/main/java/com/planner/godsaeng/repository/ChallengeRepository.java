@@ -67,7 +67,6 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 	
 	
-	
 //	boolean existsBySearchWord(String searchword);
 //	List<Challenge>findAllByOrderBySearchWordCntDesc();
 //	Challenge findBySearchword(String searchWord);
