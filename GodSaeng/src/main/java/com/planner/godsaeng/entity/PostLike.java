@@ -11,8 +11,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
-import com.querydsl.core.annotations.Generated;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,29 +18,36 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-@Table(name="godsaeng_post_image")
-@ToString(exclude = "post")
+@Table(name = "godsaeng_post_like")
+@ToString(exclude = {"user", "post"})
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
-public class PostImage {
-   
-   @Id
-   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-   private Long iid;         // 이미지 넘버(ID)
-   
-   @ManyToOne(fetch = FetchType.LAZY)
-   private Post post;         // 게시판 ID
- 
-   @Column(length = 200, nullable = true)
-   private String imgName;      // 원본 이미지 이름
-   
-   private String uuid;      // 변경된 파일 이름
-   
-   private String path;
-   
-   
-   
+public class PostLike {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long likeid;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Post post;
+
+	@Column(columnDefinition = "boolean default false")
+	private boolean liked;
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+	
+	public PostLike(Post post, User user) {
+	    this.post = post;
+	    this.user = user;
+	    this.liked = false;
+	}
+	
 }
