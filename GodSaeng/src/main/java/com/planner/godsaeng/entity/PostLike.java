@@ -43,4 +43,11 @@ public class PostLike {
 	public void setLiked(boolean liked) {
 		this.liked = liked;
 	}
+	
+	public PostLike(Post post, User user) {
+	    this.post = post;
+	    this.user = user;
+	    this.liked = false;
+	}
+	
 }

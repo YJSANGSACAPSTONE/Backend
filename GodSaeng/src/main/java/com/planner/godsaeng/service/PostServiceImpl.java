@@ -6,11 +6,14 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,7 +29,9 @@ import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.entity.PostImage;
+import com.planner.godsaeng.entity.PostLike;
 import com.planner.godsaeng.repository.PostRepository;
+import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.repository.CommentRepository;
 import com.planner.godsaeng.repository.FileRepository;
 import com.planner.godsaeng.repository.PostImageRepository;
@@ -46,6 +51,8 @@ public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
 	private final PostImageRepository imageRepository;
 	private final CommentRepository commentRepository;
+	private final PostLikeRepository postLikeRepository;
+	private final UserRepository userRepository;
 	
 	@Transactional
 	@Override
@@ -65,7 +72,7 @@ public class PostServiceImpl implements PostService {
 
 		return post.getPoid();
 	}
-
+	
 	@Override
 	public PageResultDTO<PostDTO, Object[]> getList(PageRequestDTO pageRequestDTO) {
 		log.info("getList +++++" + pageRequestDTO);
@@ -90,7 +97,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PostDTO getPost(Long poid) {
 	    List<Object[]> result = postRepository.getPostWithAll(poid);
-
+	    
 	    Post post = (Post) result.get(0)[0];    // Post 엔티티는 가장 앞에 존재 - 모든 Row가 동일한 값이다
 
 	    // 조회수 업데이트
@@ -179,5 +186,36 @@ public class PostServiceImpl implements PostService {
 		
 		postRepository.save(post);
 	}
+	
+	@Override
+	public void likePost(Long poid, String uid) {
+	    Optional<Post> optionalPost = postRepository.findById(poid);
+	    if (optionalPost.isPresent()) {
+	        Post post = optionalPost.get();
+	        
+	        User user = userRepository.findByUid(uid).orElseThrow(() ->
+	            new RuntimeException("User not found with ID: " + uid)
+	        );
+	        
+	        Optional<PostLike> optionalPostLike = postLikeRepository.findByPostAndUser(post, user);
+	        if (optionalPostLike.isPresent()) {
+	            // 이미 좋아요한 경우, 좋아요 취소
+	            postLikeRepository.delete(optionalPostLike.get());
+	            post.setPostLike(post.getPolike() - 1);
+	        } else {
+	            // 좋아요 처리
+	            PostLike postLike = new PostLike(post, user);
+	            postLikeRepository.save(postLike);
+	            post.setPostLike(post.getPolike() + 1);
+	        }
+	        
+	        postRepository.save(post);
+	    } else {
+	        // 게시물이 존재하지 않을 때 처리
+	        // 처리 방법에 따라 변경 가능
+	        throw new RuntimeException("Post not found with ID: " + poid);
+	    }
+	}
+
 
 }

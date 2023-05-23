@@ -2,6 +2,7 @@ package com.planner.godsaeng.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,9 @@ public interface PostService {
 	
 	// 조회수 처리
 	void viewCountValidation(PostDTO postDTO, HttpServletRequest request, HttpServletResponse response);
+	
+	// 게시물 좋아요
+	void likePost(Long poid, String uid);
     
 	default PostDTO entityToDto(Post post, User user, List<PostImage> postImages, Long commentCnt) {
 		PostDTO postDTO = PostDTO.builder()
@@ -50,17 +54,21 @@ public interface PostService {
 				.po_secret(post.isPosecret())
 				.build();
 		
-		List<PostImageDTO> postImageDTOList = postImages.stream().map(postImage -> { 
-			return PostImageDTO.builder()
-					.imgName(postImage.getImgName())
-					.path(postImage.getPath())
-					.uuid(postImage.getUuid())
-					.build();
+		List<PostImageDTO> postImageDTOList = postImages.stream().map(postImage -> {
+		    if (postImage != null) {
+		        return PostImageDTO.builder()
+		            .imgName(postImage.getImgName())
+		            .path(postImage.getPath())
+		            .uuid(postImage.getUuid())
+		            .build();
+		    } else {
+		        return null;
+		    }
 		}).collect(Collectors.toList());
-
+		
 		postDTO.setImageDTOList(postImageDTOList);
 		postDTO.setCommentCnt(commentCnt);
-		
+
 		return postDTO;
 	}
 
