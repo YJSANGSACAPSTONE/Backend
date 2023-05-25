@@ -13,7 +13,6 @@ import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
 import com.planner.godsaeng.dto.PostImageDTO;
-import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.PostImage;
@@ -40,9 +39,9 @@ public interface PostService {
 	// 게시물 좋아요
 	void likePost(Long poid, String uid);
     
-	default PostDTO entityToDto(Post post, User user, List<PostImage> postImages, Long commentCnt) {
+	default PostDTO entityToDto(Post post, List<PostImage> postImages, Long commentCnt, Long likeCnt) {
 		PostDTO postDTO = PostDTO.builder()
-				.u_id(user.getUid())
+				.u_id(post.getUser().getUid())
 				.b_id(post.getBoard().getBid())
 				.po_id(post.getPoid())
 				.po_title(post.getPotitle())
@@ -50,26 +49,31 @@ public interface PostService {
 				.po_regDate(post.getRegDateTime())
 				.po_modDate(post.getModDateTime())
 				.po_hitcount(post.getPohitcount())
-//				.po_like(post.getPolike())
 				.po_secret(post.isPosecret())
 				.build();
 		
-		List<PostImageDTO> postImageDTOList = postImages.stream().map(postImage -> {
-		    if (postImage != null) {
-		        return PostImageDTO.builder()
-		            .imgName(postImage.getImgName())
-		            .path(postImage.getPath())
-		            .uuid(postImage.getUuid())
-		            .build();
-		    } else {
-		        return null;
-		    }
-		}).collect(Collectors.toList());
-		
-		postDTO.setImageDTOList(postImageDTOList);
-		postDTO.setCommentCnt(commentCnt);
+	    if (postImages != null) { // postImages가 null이 아닌 경우에만 처리
+	        List<PostImageDTO> postImageDTOList = postImages.stream().map(postImage -> {
+	            if (postImage != null) {
+	                return PostImageDTO.builder()
+	                        .imgName(postImage.getImgName())
+	                        .path(postImage.getPath())
+	                        .uuid(postImage.getUuid())
+	                        .build();
+	            } else {
+	                return null;
+	            }
+	        }).collect(Collectors.toList());
 
-		return postDTO;
+	        postDTO.setImageDTOList(postImageDTOList);
+	    }
+
+	    postDTO.setCommentCnt(commentCnt);
+	    postDTO.setLikeCnt(likeCnt);
+
+	    System.out.println("commentCnt value: " + commentCnt);
+
+	    return postDTO;
 	}
 
 	default Map<String, Object> dtoToEntity(PostDTO postDTO) { //Map 타입으로 변환
@@ -89,7 +93,6 @@ public interface PostService {
 				.potitle(postDTO.getPo_title())
 				.pocontent(postDTO.getPo_content())
 				.pohitcount(postDTO.getPo_hitcount())
-//				.polike(postDTO.getPo_like())
 				.posecret(postDTO.isPo_secret())
 				.build();
 

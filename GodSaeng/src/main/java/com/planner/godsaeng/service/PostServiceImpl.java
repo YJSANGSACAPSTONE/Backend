@@ -81,14 +81,15 @@ public class PostServiceImpl implements PostService {
 				pageRequestDTO.getType(),
 				pageRequestDTO.getKeyword(),
 				pageRequestDTO.getPageable(Sort.by("poid").descending()));
-				
-		result.forEach(en -> System.out.println(en[3].getClass().getName()));
+		
+		result.forEach(en -> System.out.println(en[1].getClass().getName() + "<--------en[1]"));
+		result.forEach(en -> System.out.println(en[4].getClass().getName() + "<--------en[4]"));
 		
 		Function<Object[], PostDTO> fn = (en -> entityToDto(
 				(Post) en[0],
-				(User) en[1],
-				(List<PostImage>) (Arrays.asList((PostImage) en[2])),
-				Long.valueOf(en[3].toString()))	
+				null,
+				Long.valueOf(en[3].toString()),
+				Long.valueOf(en[4].toString()))	
 		);
 
 		return new PageResultDTO<>(result, fn);
@@ -113,8 +114,10 @@ public class PostServiceImpl implements PostService {
 	    User user = (User) result.get(0)[2];
 
 	    Long commentCnt = (Long) result.get(0)[3]; // 댓글 개수 - 모든 Row가 동일한 값
+	    
+	    Long likeCnt = (Long) result.get(0)[4]; // 좋아요 개수 - 모든 Row가 동일한 값
 
-	    PostDTO postDTO = entityToDto(post, user, postImageList, commentCnt);
+	    PostDTO postDTO = entityToDto(post, postImageList, commentCnt, likeCnt);
 
 	    // viewCountValidation 로직
 	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -201,15 +204,11 @@ public class PostServiceImpl implements PostService {
 	        if (optionalPostLike.isPresent()) {
 	            // 이미 좋아요한 경우, 좋아요 취소
 	            postLikeRepository.delete(optionalPostLike.get());
-	            post.setPostLike(post.getPolike() - 1);
 	        } else {
 	            // 좋아요 처리
 	            PostLike postLike = new PostLike(post, user);
 	            postLikeRepository.save(postLike);
-	            post.setPostLike(post.getPolike() + 1);
 	        }
-	        
-	        postRepository.save(post);
 	    } else {
 	        // 게시물이 존재하지 않을 때 처리
 	        // 처리 방법에 따라 변경 가능

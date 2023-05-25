@@ -19,7 +19,6 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "godsaeng_post_like")
-@ToString(exclude = {"user", "post"})
 @Getter
 @Builder
 @AllArgsConstructor

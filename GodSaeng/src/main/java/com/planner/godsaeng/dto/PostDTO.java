@@ -2,6 +2,9 @@ package com.planner.godsaeng.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.planner.godsaeng.entity.User;
+
 import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +28,6 @@ public class PostDTO {
 	private String po_title;						// 제목
 	private String po_content;					// 내용
 	private int po_hitcount;						// 조회수
-	private int po_like;							// 추천수
 	private boolean po_secret;					// 비밀글 여부
 	
 	@Builder.Default
@@ -33,5 +35,8 @@ public class PostDTO {
 
 	// 댓글 수 jpa의 count()
     private Long commentCnt;
+    
+    // 좋아요 수 jap의 count()
+    private Long likeCnt;
 	
 }
