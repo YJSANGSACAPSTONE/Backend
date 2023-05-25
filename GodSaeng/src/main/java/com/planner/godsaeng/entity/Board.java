@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 
 public class Board {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long b_id;
