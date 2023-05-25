@@ -19,8 +19,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 	//최신순으로 정렬(최신챌린지 view)
 	List<Challenge>findAllByOrderByCstartdateDesc();
 	//참가금순으로 정렬(챌린지랭킹 view)
-	
-	
+	@Query(value = "SELECT * FROM godsaeng_challenge ORDER BY cnumberofparticipants*cfee DESC LIMIT 10",nativeQuery=true)
+	List<Challenge>findTop10ChallengesByFeeDesc();
 	
 	//Inner Join을 사용하여 challengeparticipate에서 어떤 챌린지에 참가중인 uid를대조한다.
 	//그 uid에 대조된 cid를 활용하여 현재 유저(세션에 담긴 uid)가 참가중인 challenge 정보를 challenge 테이블에서 가져온다.
