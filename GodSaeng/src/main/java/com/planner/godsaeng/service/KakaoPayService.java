@@ -126,7 +126,6 @@ public class KakaoPayService {
     			.kp_methodtype(p.getKpmethodtype())
     			.kp_date(p.getKpdate())
     			.kp_amount(p.getKpamount())
-//    			.user(p.getUser())
     			.build();
     }
     
@@ -136,54 +135,7 @@ public class KakaoPayService {
     			.kpmethodtype(p.getKp_methodtype())
     			.kpdate(p.getKp_date())
     			.kpamount(p.getKp_amount())
-//    			.user(p.getUser())
     			.build();
     }
-//    public PaymentDTO ReadPayment(String uid) {
-//   	
-//    	Optional<Payment> result = kakaoPayRepository.findByUid(uid);
-//    	
-//    	if(result.isPresent()) {
-//    		User userinfo = result.get().getUser();
-//    		Optional<User> userEntity = userRepository.findByUid(userinfo.getUid());
-//    		PaymentDTO userpayment = PaymentDTO.builder()
-//    				.kp_id(result.get().getKpid())
-//    				.kp_methodtype(result.get().getKpmethodtype())
-//    				.kp_date(result.get().getKpdate())
-//    				.kp_amount(result.get().getKpamount())
-//    				.user(userEntity)
-//    				.build();
-//    		return userpayment;
-//    	}
-//    			
-//    }
-    
-//    public PaymentDTO readPayment(String uid) {
-//        Optional<Payment> result = kakaoPayRepository.findByUid(uid);
-//        	
-//        if(result.isPresent()) {
-//            User userinfo = result.get().getUser();
-//            Optional<User> userEntity = userRepository.findByUid(userinfo.getUid());
-//            
-//            if(userEntity.isPresent()) { // userEntity가 존재할 경우에만 UserDTO 생성
-//                UserDTO userDto = UserDTO.builder()
-//                    .uid(userEntity.get().getUid())
-//                    .name(userEntity.get().getName())
-//                    .email(userEntity.get().getEmail())
-//                    .build();
-//                
-//                PaymentDTO userpayment = PaymentDTO.builder()
-//                    .kp_id(result.get().getKpid())
-//                    .kp_methodtype(result.get().getKpmethodtype())
-//                    .kp_date(result.get().getKpdate())
-//                    .kp_amount(result.get().getKpamount())
-//                    .user(userDto)
-//                    .build();
-//                
-//                return userpayment;
-//            }
-//        }
-//        
-//        return null; // Optional이 비어있을 경우 null 반환
-//    }
+
 }
