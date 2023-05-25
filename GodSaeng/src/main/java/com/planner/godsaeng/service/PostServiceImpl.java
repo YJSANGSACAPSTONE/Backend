@@ -1,5 +1,6 @@
 package com.planner.godsaeng.service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -123,7 +124,10 @@ public class PostServiceImpl implements PostService {
 	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 	    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 	    viewCountValidation(postDTO, request, response);
-
+	    
+	    // DB에 조회수 업데이트 반영
+	    postRepository.save(post);
+	    
 	    return postDTO;
 	}
 	
@@ -143,7 +147,7 @@ public class PostServiceImpl implements PostService {
 	            // cookie 변수에 저장
 	            cookie = cookies[i];
 	            // 만약 cookie 값에 현재 게시글 번호가 없을 때
-	            if (!cookie.getValue().contains("[" + poid + "]")) {
+	            if (!containsPoid(cookie.getValue(), poid)) {
 	                // 해당 게시글 조회수를 증가시키고, 쿠키 값에 해당 게시글 번호를 추가
 	                postHitCount++;
 	                cookie.setValue(cookie.getValue() + "[" + poid + "]");
@@ -159,14 +163,25 @@ public class PostServiceImpl implements PostService {
 	    }
 
 	    // 쿠키 유지시간을 오늘 하루 자정까지로 설정
-	    long todayEndSecond = LocalDate.now().atTime(LocalTime.MAX).toEpochSecond(ZoneOffset.UTC);
-	    long currentSecond = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+	    LocalDateTime todayEnd = LocalDate.now().atTime(LocalTime.MAX);
+	    Duration duration = Duration.between(LocalDateTime.now(), todayEnd);
+	    long secondsUntilTodayEnd = duration.getSeconds();
+	    cookie.setMaxAge((int) secondsUntilTodayEnd);
 	    cookie.setPath("/"); // 모든 경로에서 접근 가능
-	    cookie.setMaxAge((int) (todayEndSecond - currentSecond));
 	    response.addCookie(cookie);
 
 	    // 조회수 업데이트
 	    postDTO.setPo_hitcount(postHitCount);
+	}
+	
+	private boolean containsPoid(String cookieValue, Long poid) {
+	    String[] values = cookieValue.split("\\[|\\]");
+	    for (String value : values) {
+	        if (value.equals(poid.toString())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	@Transactional
