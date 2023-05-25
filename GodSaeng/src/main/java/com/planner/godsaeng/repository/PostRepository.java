@@ -34,12 +34,14 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
     Page<Object[]> getListPage(Pageable pageable); 
     
     // 특정 게시물 조회
-	@Query("SELECT p, pi, u, count(distinct c)"
-			+ " FROM Post p LEFT OUTER JOIN PostImage pi ON pi.post = p "
-			+ " JOIN User u ON p.user = u AND p.poid = :poid"
-			+ " LEFT OUTER JOIN Comment c on c.post = p "
-			+ " WHERE p.poid = :poid group by pi")
-	List<Object[]> getPostWithAll(@Param("poid") Long poid);	
+    @Query("SELECT p, pi, u, count(distinct c), count(distinct pl)"
+            + " FROM Post p LEFT OUTER JOIN PostImage pi ON pi.post = p"
+            + " JOIN User u ON p.user = u AND p.poid = :poid"
+            + " LEFT OUTER JOIN Comment c ON c.post = p"
+            + " LEFT OUTER JOIN PostLike pl ON pl.post = p"
+            + " WHERE p.poid = :poid"
+            + " GROUP BY pi")
+    List<Object[]> getPostWithAll(@Param("poid") Long poid);
 	
 //	@Query("SELECT b, p FROM Board b JOIN b.posts p WHERE p.pid = :pid AND b.bid = :bid")
 //	Object getPostWithBid(@Param("bid") Long pid);
