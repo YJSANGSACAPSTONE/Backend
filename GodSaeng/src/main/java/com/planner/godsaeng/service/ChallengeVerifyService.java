@@ -1,14 +1,19 @@
 package com.planner.godsaeng.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
+import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.entity.ChallengeParticipate;
 import com.planner.godsaeng.entity.ChallengeVerify;
 import com.planner.godsaeng.repository.ChallengeParticipateRepository;
@@ -55,5 +60,37 @@ public class ChallengeVerifyService {
 		}catch(Exception e) {
 			return false;
 		}
+	}
+	
+	public Boolean InsertNormalChallengeVerifyData(ChallengeVerifyDTO m, MultipartFile verifyphoto) throws IOException{
+		String path = ResourceUtils.getFile("src/main/resources/static/img/challengeverifyimg").getAbsolutePath();
+		if (!verifyphoto.isEmpty()) {
+			String fileName = verifyphoto.getOriginalFilename();
+			File dest = new File(path + File.separator + fileName);
+			verifyphoto.transferTo(dest);
+			m.setVerifyPhoto(verifyphoto);
+			m.setCvphoto("/img/challengeverifyimg/" + fileName);
+		}
+		ChallengeVerify entity = dtoToEntity(m);
+		challengeVerifyRepository.save(entity);
+		return true;
+		
+	}
+	public ChallengeVerifyDTO entityToDto(ChallengeVerify v) {
+		return ChallengeVerifyDTO.builder()
+				.cvid(v.getCvid())
+				.cvphoto(v.getCvphoto())
+				.cvsuccessornot(v.getCvsuccessornot())
+				.cvtime(v.getCvtime())
+				.build();
+	}
+	public ChallengeVerify dtoToEntity(ChallengeVerifyDTO v) {
+		return ChallengeVerify.builder()
+				.cvid(v.getCvid())
+				.cvphoto(v.getCvphoto())
+				.cvsuccessornot(v.getCvsuccessornot())
+				.cvtime(v.getCvtime())
+				.cvzepid(null)
+				.build();
 	}
 }

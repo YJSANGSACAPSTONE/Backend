@@ -2,6 +2,8 @@ package com.planner.godsaeng.dto;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +15,8 @@ import lombok.Setter;
 public class ChallengeVerifyDTO {
 	private long cvid;
 	private ChallengeParticipateDTO ChallengeParticipate;
+	private MultipartFile verifyPhoto;
 	private String cvphoto;
-	private String cvzepid;
 	private Date cvtime;
 	private int cvsuccessornot;
 }

@@ -141,9 +141,18 @@ public class ChallengeController {
 	}
 	
 	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
-	@PostMapping("/verify")
+	@PostMapping("/adminverify")
 	public ResponseEntity<Boolean>VerifyChallenge(@ModelAttribute ChallengeParticipateDTO m){
 		boolean isVerifySuccessed = true;
+		if(isVerifySuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
+	@PostMapping("/verify")
+	public ResponseEntity<Boolean>VerifyNormalChallenge(@RequestBody ChallengeVerifyDTO v, MultipartFile verifyphoto)throws IOException{
+		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyphoto);
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
 		}else {
