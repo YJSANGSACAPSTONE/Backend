@@ -122,7 +122,7 @@ public class ChallengeController {
 	}
 	@GetMapping("/{cid}/signUp")
 	public ResponseEntity<List<ChallengeDTO>>signUpView(@PathVariable("cid")Long cid){
-		
+		//
 		return ResponseEntity.ok(service.ReadChallenge(cid));
 	}
 	

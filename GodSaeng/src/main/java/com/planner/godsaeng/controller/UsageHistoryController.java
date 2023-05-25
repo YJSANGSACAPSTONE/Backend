@@ -38,7 +38,9 @@ public class UsageHistoryController {
 	
 	@RequestMapping("/search")
 	public ResponseEntity<List<UsageHistoryDTO>> search(@RequestParam("uid") String uid){
-		List<UsageHistoryDTO> usageHistoryDTOList = usageHistoryService.readUsageHistory(uid);
+
+		List<UsageHistoryDTO> usageHistoryDTOList =usageHistoryService.readUsageHistory(uid);
+
 		return ResponseEntity.ok(usageHistoryDTOList);
 	}
 }
