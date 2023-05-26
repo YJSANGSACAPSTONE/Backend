@@ -113,8 +113,4 @@ public class KakaoPayController {
         return ResponseEntity.ok(paymentDTOList);
     }
     
-//    @GetMapping("/save")
-//    public ResponseEntity<Boolean> savepayment(){
-//    	
-//    }
 }
