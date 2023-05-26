@@ -190,6 +190,7 @@ public class PostServiceImpl implements PostService {
 		postRepository.deleteById(poid);
 		imageRepository.deleteByPoid(poid);
 		commentRepository.deleteByPoid(poid);
+		postLikeRepository.deleteByPoid(poid);
 	}
 
 	@Transactional
