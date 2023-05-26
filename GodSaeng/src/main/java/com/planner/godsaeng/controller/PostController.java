@@ -78,7 +78,7 @@ public class PostController {
 
 	    return ResponseEntity.ok(poid);
 	}
-	
+	////
 //	@PostMapping("/register")
 //	public String registerPost(PostDTO dto, RedirectAttributes redirectAttributes) {
 //		log.info("dto...................." + dto);
