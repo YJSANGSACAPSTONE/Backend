@@ -190,6 +190,7 @@ public class PostServiceImpl implements PostService {
 		postRepository.deleteById(poid);
 		imageRepository.deleteByPoid(poid);
 		commentRepository.deleteByPoid(poid);
+		postLikeRepository.deleteByPoid(poid);
 	}
 
 	@Transactional
@@ -230,6 +231,14 @@ public class PostServiceImpl implements PostService {
 	        throw new RuntimeException("Post not found with ID: " + poid);
 	    }
 	}
+	
+	@Override
+    public List<Post> getPopularPosts(int limit) {
+        // 좋아요 수가 많은 순으로 인기 게시물 조회
+        List<Post> popularPosts = postRepository.getPopularPosts(limit);
+
+        return popularPosts;
+    }
 
 
 }
