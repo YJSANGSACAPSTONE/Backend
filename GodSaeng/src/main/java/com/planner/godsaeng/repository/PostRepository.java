@@ -17,7 +17,10 @@ import com.planner.godsaeng.repository.SearchPostRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredicateExecutor<Post>, SearchPostRepository {
 	Optional<Post> findByPoid(Long poid);
-				
+	
+	// 인기글 검색
+    @Query("SELECT p.post FROM PostLike p GROUP BY p.post ORDER BY COUNT(p.post) DESC")
+    List<Post> getPopularPosts(int limit);
 	
 //	@Query("DELETE FROM Post p WHERE p.pid = :pid")
 //	void deleteByBid(Long pid);
