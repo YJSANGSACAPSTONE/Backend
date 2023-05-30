@@ -2,7 +2,6 @@ package com.planner.godsaeng.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,6 +81,10 @@ public class ChallengeService {
 	        recentList.add(dto);
 	    }
 	    return recentList;
+	}
+	public List<ChallengeDTO>RankChallenge(){
+//		List<Challenge>rankListEntity = challengeRepository.find
+		return null;
 	}
 
 	

@@ -36,7 +36,7 @@ public class PostImage {
    @ManyToOne(fetch = FetchType.LAZY)
    private Post post;         // 게시판 ID
  
-   @Column(length = 200, nullable = false)
+   @Column(length = 200, nullable = true)
    private String imgName;      // 원본 이미지 이름
    
    private String uuid;      // 변경된 파일 이름

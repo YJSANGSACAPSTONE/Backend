@@ -23,6 +23,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteByUser(@Param("user") User user);
     
     @Modifying
-   @Query("DELETE FROM Comment c WHERE c.post.poid =:poid")
-   void deleteByPoid(Long poid);
+    @Query("DELETE FROM Comment c WHERE c.post.poid =:poid")
+    void deleteByPoid(Long poid);
 }
