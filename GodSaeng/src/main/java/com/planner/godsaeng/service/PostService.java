@@ -38,6 +38,9 @@ public interface PostService {
 	
 	// 게시물 좋아요
 	void likePost(Long poid, String uid);
+	
+	// 인기글
+	List<Post> getPopularPosts(int limit);
     
 	default PostDTO entityToDto(Post post, List<PostImage> postImages, Long commentCnt, Long likeCnt) {
 		PostDTO postDTO = PostDTO.builder()
