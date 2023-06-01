@@ -34,7 +34,16 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
 	@Query("select p, pi, count(distinct c) from Post p " +
             "left outer join PostImage pi on pi.post = p " +
             "left outer join Comment c on c.post = p group by p ")
-    Page<Object[]> getListPage(Pageable pageable); 
+    Page<Object[]> getListPage(Pageable pageable);
+    
+    // bid에 대한 post리스트 가져옴
+    @Query("SELECT p, pi, COUNT(DISTINCT c) FROM Post p " +
+    	       "LEFT OUTER JOIN PostImage pi ON pi.post = p " +
+    	       "LEFT OUTER JOIN Comment c ON c.post = p " +
+    	       "WHERE p.board.bid = :bid " +
+    	       "GROUP BY p")
+    Page<Object[]> getListPageByBoardId(@Param("bid") int bid, Pageable pageable);
+
     
     // 특정 게시물 조회
     @Query("SELECT p, pi, u, count(distinct c), count(distinct pl)"

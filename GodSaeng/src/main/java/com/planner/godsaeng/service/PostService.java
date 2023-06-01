@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.annotations.Until;
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
@@ -24,6 +25,9 @@ public interface PostService {
 	
 	// 목록처리
 	PageResultDTO<PostDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
+	
+	// bid에 대한 목록처리
+	PageResultDTO<PostDTO, Object[]> getListByBoard(PageRequestDTO pageRequestDTO, int bid);
 	
 	// 게시물 조회
 	PostDTO getPost(Long poid);

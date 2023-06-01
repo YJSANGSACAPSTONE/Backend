@@ -44,6 +44,15 @@ public class PostController {
 	    return ResponseEntity.ok(postList);
 	}
 	
+	@GetMapping("/list/{bid}")
+	public ResponseEntity<?> listByBoard(PageRequestDTO pageRequestDTO, @PathVariable int bid) {
+	    log.info("listByBoard - bid: {}", bid);
+
+	    PageResultDTO<PostDTO, Object[]> postList = postService.getListByBoard(pageRequestDTO, bid);
+
+	    return ResponseEntity.ok(postList);
+	}
+	
 	@GetMapping("/register")
 	public void regiser() {
 		log.info("register get............");

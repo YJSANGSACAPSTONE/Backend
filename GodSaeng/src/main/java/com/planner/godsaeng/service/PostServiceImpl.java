@@ -89,6 +89,29 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public PageResultDTO<PostDTO, Object[]> getListByBoard(PageRequestDTO pageRequestDTO, int bid) {
+		log.info("getListByBoard +++++" + pageRequestDTO);
+
+		Page<Object[]> result = postRepository.searchPageByBoard (
+				pageRequestDTO.getType(),
+				pageRequestDTO.getKeyword(),
+				pageRequestDTO.getPageable(Sort.by("poid").descending()),
+				bid);
+
+		result.forEach(en -> System.out.println(en[1].getClass().getName() + "<--------en[1]"));
+		result.forEach(en -> System.out.println(en[4].getClass().getName() + "<--------en[4]"));
+
+		Function<Object[], PostDTO> fn = (en -> entityToDto(
+				(Post) en[0],
+				null,
+				Long.valueOf(en[3].toString()),
+				Long.valueOf(en[4].toString()))
+		);
+
+		return new PageResultDTO<>(result, fn);
+	}
+	
+	@Override
 	public PostDTO getPost(Long poid) {
 	    List<Object[]> result = postRepository.getPostWithAll(poid);
 	    
