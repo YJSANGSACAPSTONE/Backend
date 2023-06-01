@@ -2,17 +2,12 @@ package com.planner.godsaeng.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.planner.godsaeng.entity.User;
-
 import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @NoArgsConstructor
 @AllArgsConstructor

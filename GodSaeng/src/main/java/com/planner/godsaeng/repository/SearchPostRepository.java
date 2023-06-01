@@ -9,4 +9,6 @@ public interface SearchPostRepository {
    Post search1();
    
    Page<Object[]> searchPage(String type, String keyword, Pageable pageable);
+   
+   Page<Object[]> searchPageByBoard(String type, String keyword, Pageable pageable, int bid);
 }
