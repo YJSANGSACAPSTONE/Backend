@@ -1,5 +1,10 @@
 package com.planner.godsaeng.security.jwt.exception;
 
-public class JWTInvalidException {
+import com.planner.godsaeng.error.exception.ErrorCode;
 
+public class JWTInvalidException extends JWTException {
+
+	public JWTInvalidException() {
+		super(ErrorCode.TOKEN_INVALID);
+	}
 }
