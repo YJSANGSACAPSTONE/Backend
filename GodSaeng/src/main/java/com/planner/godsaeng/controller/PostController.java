@@ -66,7 +66,7 @@ public class PostController {
 
 	    return ResponseEntity.ok(poid);
 	}
-	
+
 	@GetMapping({"/read", "/modify"})
 	public ResponseEntity<PostDTO> read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long poid,
 	                                    HttpServletRequest request, HttpServletResponse response) {

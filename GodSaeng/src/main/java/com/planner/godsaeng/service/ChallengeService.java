@@ -2,7 +2,6 @@ package com.planner.godsaeng.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.entity.Challenge;
+import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.ChallengeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -189,4 +187,9 @@ public class ChallengeService {
 				.cscore(d.getC_score())
 				.build();
 	}
+	
+	public Optional<Challenge> SearchCid(Long cid) {
+		   Optional<Challenge> challengeEntity = challengeRepository.findById(cid);
+		   return challengeEntity;
+	   }
 }

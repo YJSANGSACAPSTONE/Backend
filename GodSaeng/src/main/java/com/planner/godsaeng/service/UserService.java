@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.UserDTO;
@@ -15,11 +14,13 @@ import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-   @Autowired
-   UserRepository userRepository;
+   private final UserRepository userRepository;
 
    User user = null;
 
@@ -58,15 +59,14 @@ public class UserService {
          .u_id(result.get().getUid())
          .u_nickname(result.get().getUnickname())
          .u_zepid(result.get().getUzepid())
-
-
          .u_deposit(result.get().getUdeposit())
          .u_grade(result.get().getUgrade())
          .u_level(result.get().getUlevel())
          .u_content(result.get().getUcontent())
          .u_successedchallenge(result.get().getUsuccessedchallenge())
          .build();
-            return userinfo;
+           
+          return userinfo;
       } else {
          return null;
       }
@@ -76,16 +76,7 @@ public class UserService {
 
    //유저 정보 수정
    public boolean UpdateUser(UserDTO u) {
-      user = User.builder()
-            .uid(u.getU_id())
-            .unickname(u.getU_nickname())
-            .uzepid(u.getU_zepid())
-            .udeposit(u.getU_deposit())
-            .ugrade(u.getU_grade())
-            .ulevel(u.getU_level())
-            .ucontent(u.getU_content())
-            .usuccessedchallenge(u.getU_successedchallenge())
-            .build();
+      User user = dtoToEntity(u);
       try {
          userRepository.save(user);
          return true;
@@ -114,7 +105,7 @@ public class UserService {
 	   Optional<User> userEntity = userRepository.findById(uid);
 	   return userEntity;
    }
-
+   
    public String FindZepidByuID(String uid) {
 	   return userRepository.findUzepidByUid(uid);
    }
@@ -167,6 +158,31 @@ public class UserService {
 	   return userList;
    }
 
+   public UserDTO entityToDto(User u) {
+	   return UserDTO.builder()
+			   .u_id(u.getUid())
+			   .u_nickname(u.getUnickname())
+			   .u_zepid(u.getUzepid())
+			   .u_deposit(u.getUdeposit())
+			   .u_grade(u.getUgrade())
+			   .u_level(u.getUlevel())
+			   .u_content(u.getUcontent())
+			   .u_successedchallenge(u.getUsuccessedchallenge())
+			   .build();
+   }
+   
+   public User dtoToEntity(UserDTO u) {
+	   return User.builder()
+			   .uid(u.getU_id())
+			   .unickname(u.getU_nickname())
+			   .uzepid(u.getU_zepid())
+			   .udeposit(u.getU_deposit())
+			   .ugrade(u.getU_grade())
+			   .ulevel(u.getU_level())
+			   .ucontent(u.getU_content())
+			   .usuccessedchallenge(u.getU_successedchallenge())
+			   .build();
+   }
 
 }
 

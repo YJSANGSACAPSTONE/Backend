@@ -33,7 +33,6 @@ public class PlanController {
    
    @PostMapping("/addplan")
    public ResponseEntity<Boolean> addPlan(@RequestBody PlanDTO d) {
-      logger.info("addPlan 요청 도착: {}", d.getU_id());
       boolean isAddSuccessed = service.InsertPlan(d);
       if(isAddSuccessed) {
          return ResponseEntity.ok(true);
@@ -78,12 +77,5 @@ public class PlanController {
                    .body(false);
        }
    }
-//  다른 방법 고민중.   
-//   @RequestMapping(value = "/deleteplan/{p_id}", method = RequestMethod.DELETE)
-//   public Boolean deletePlan(@PathVariable Long p_id) {
-//      return service.DeletePlan(p_id);
-//      
-//   }
-//   
 
 }
