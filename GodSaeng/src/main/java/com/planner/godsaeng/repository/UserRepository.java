@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
+import com.planner.godsaeng.entity.Provider;
 import com.planner.godsaeng.entity.User;
 
 @Repository
@@ -46,5 +47,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 	
 	@Query(value = "SELECT * FROM Godsaeng_user ORDER BY score DESC LIMIT 10", nativeQuery = true)
 	List<User> findTop10UsersByScoreDesc();
+	
+	@Query(value = "SELECT * FROM Godsaeng_user WHERE uid = :uid AND Provider = :provider")
+	Optional<User>findByProviderAndUid(Provider provider, String uid);
 
 }

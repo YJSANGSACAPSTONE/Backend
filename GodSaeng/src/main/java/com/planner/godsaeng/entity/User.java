@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -54,6 +56,9 @@ public class User {
    
    @Column(nullable= false, columnDefinition = "int default 0")
    private int uverifiedornot;
+   
+   @Enumerated(EnumType.STRING)
+   private Role role;
    
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
    private List<ChallengeParticipate> challengeParticipateList = new ArrayList<>();

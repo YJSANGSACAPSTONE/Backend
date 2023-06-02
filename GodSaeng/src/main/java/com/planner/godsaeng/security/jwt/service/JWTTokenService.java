@@ -1,5 +1,6 @@
 package com.planner.godsaeng.security.jwt.service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +23,27 @@ import com.planner.godsaeng.security.jwt.repository.JWTRefreshTokenRepository;
 import com.planner.godsaeng.util.CookieUtils;
 
 import io.jsonwebtoken.Claims;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class JWTTokenService {
+	
+	private final JwtTokenProvider jwtTokenProvider;
+	private final JWTRefreshTokenRepository refreshTokenRepository;
+	private final UserRepository userRepository;
+	
+	@Value("${jwt.expire-seconds.access-token}")
+	int accessTokenExpireSeconds;
+	
+	@Value("${jwt.expire-seconds.refresh.token}")
+	int refreshTokenExpireSeconds;
+	
+	@Transactional
+	public TokenRefreshResponseDTO reFreshTokens(String token) {
+		return null;
+	}
 
 	private final JwtTokenProvider jwtTokenProvider;
 	private final JWTRefreshTokenRepository refreshTokenRepository;

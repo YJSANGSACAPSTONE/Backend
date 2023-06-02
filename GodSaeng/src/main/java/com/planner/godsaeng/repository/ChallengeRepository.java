@@ -8,9 +8,10 @@ import org.springframework.data.repository.query.Param;
 
 import com.planner.godsaeng.dto.ChallengeStatusDTO;
 import com.planner.godsaeng.entity.Challenge;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
-	
+		
 	//인풋받아서 그 값을 기반으로 cid 찾기
 	List<Challenge> findByCid(Long cid);
 	

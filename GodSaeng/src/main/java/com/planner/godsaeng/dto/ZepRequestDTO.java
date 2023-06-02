@@ -1,6 +1,7 @@
 package com.planner.godsaeng.dto;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ public class ZepRequestDTO {
 	
 	private Long cid;
 	private String cvzepid;
-	private Date cvtime;
+	private LocalDateTime cvtime;
 	private Integer cvsuccessornot;
 
 }
