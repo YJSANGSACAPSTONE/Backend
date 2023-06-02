@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RefreshTokenCreateRequestDto {
-	private long userId;
+	private String userId;
 	private String refreshToken;
 	
 	@Builder
-	public RefreshTokenCreateRequestDto(long userId, String refreshToken) {
+	public RefreshTokenCreateRequestDto(String userId, String refreshToken) {
 		this.userId = userId;
 		this.refreshToken = refreshToken;
 	}

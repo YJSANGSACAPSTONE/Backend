@@ -1,22 +1,48 @@
 spring:
-  profiles:
-    active: ${ACTIVE_PROFILE}
-
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false
 
   jpa:
-    database: mysql
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
-      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
       hibernate.format_sql: true
-      hibernate.show_sql: true
-      hibernate.globally_quoted_identifiers: true
+    show-sql: true
+    globally_quoted_identifiers: true
+
+  datasource:
+    dbcp2:
+      driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/godsaeng
+    username: root
+    password: root
+
+  servlet:
+    multipart:
+      location: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+      enabled: true
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+server:
+  port: 8070
+
+spring:
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+com:
+  planner:
+    godsaeng:
+      upload:
+        path: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+
+frontend:
+  base:
+    url: http://localhost:3000
+
+
   security:
     oauth2:
       client:
@@ -52,37 +78,11 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
   expire-seconds:
     access-token: 3600
-    refresh-token: 604800
+    refresh-token: 30240000
   header:
     access-token: Authorization
     refresh-token: Authorization-refresh
 
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    operations-sorter: alpha
-    display-operation-id: true
-    supported-submit-methods: ""
-
-sentry:
-  dsn: ${SENTRY_DSN}
-  traces-sample-rate: 1.0
-  logging:
-    minimum-event-level: info
-    minimum-breadcrumb-level: info
 
 
-cloud:
-  aws:
-    s3:
-      bucket: ${AWS_IMAGE_BUCKET}
-    credentials:
-      access-key: ${AWS_IMAGE_BUCKET_ACCESS_KEY_ID}
-      secret-key: ${AWS_IMAGE_BUCKET_SECRET_KEY_ID}
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
+

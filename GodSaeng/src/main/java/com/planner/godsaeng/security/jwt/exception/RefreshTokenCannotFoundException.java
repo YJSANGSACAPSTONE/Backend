@@ -1,8 +1,11 @@
 package com.planner.godsaeng.security.jwt.exception;
 
-public class RefreshTokenCannotFoundException {
+import com.planner.godsaeng.error.exception.BusinessException;
+import com.planner.godsaeng.error.exception.ErrorCode;
+
+public class RefreshTokenCannotFoundException extends BusinessException {
 	public RefreshTokenCannotFoundException() {
-		super();
+		super(ErrorCode.REFRESH_TOKEN_NOT_FOUND);
 	}
 
 }
