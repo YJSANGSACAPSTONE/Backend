@@ -20,7 +20,7 @@ public class RefreshToken {
 	private String refreshToken;
 	
 	@Builder
-	public RefreshToken(Long userId, String refreshToken) {
+	public RefreshToken(long userId, String refreshToken) {
 		this.userId = userId;
 		this.refreshToken = refreshToken;
 	}

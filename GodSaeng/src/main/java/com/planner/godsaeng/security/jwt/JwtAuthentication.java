@@ -18,9 +18,6 @@ public class JwtAuthentication {
 		if (userId <= 0 || userId == null) {
 			throw new JWTInvalidException();
 		}
-		if (userId <= 0 || userId == null) {
-			throw new JWTInvalidException();
-		}
 		this.accessToken = accessToken;
 		this.userId = userId;
 		this.role = role;
