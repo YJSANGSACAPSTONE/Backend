@@ -2,13 +2,13 @@ package com.planner.godsaeng.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.annotations.Until;
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
@@ -19,10 +19,15 @@ import com.planner.godsaeng.entity.PostImage;
 import com.planner.godsaeng.entity.User;
 
 public interface PostService {
+	
+	// 게시글 등록
 	Long register(PostDTO postDTO);
 	
 	// 목록처리
 	PageResultDTO<PostDTO, Object[]> getList(PageRequestDTO pageRequestDTO);
+	
+	// bid에 대한 목록처리
+	PageResultDTO<PostDTO, Object[]> getListByBoard(PageRequestDTO pageRequestDTO, int bid);
 	
 	// 게시물 조회
 	PostDTO getPost(Long poid);

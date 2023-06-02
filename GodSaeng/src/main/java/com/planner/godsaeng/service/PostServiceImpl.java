@@ -4,29 +4,21 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
-import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.entity.PostImage;
@@ -34,7 +26,6 @@ import com.planner.godsaeng.entity.PostLike;
 import com.planner.godsaeng.repository.PostRepository;
 import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.repository.CommentRepository;
-import com.planner.godsaeng.repository.FileRepository;
 import com.planner.godsaeng.repository.PostImageRepository;
 import com.planner.godsaeng.repository.PostLikeRepository;
 
@@ -49,6 +40,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+	
 	private final PostRepository postRepository;
 	private final PostImageRepository imageRepository;
 	private final CommentRepository commentRepository;
@@ -96,6 +88,29 @@ public class PostServiceImpl implements PostService {
 		return new PageResultDTO<>(result, fn);
 	}
 
+	@Override
+	public PageResultDTO<PostDTO, Object[]> getListByBoard(PageRequestDTO pageRequestDTO, int bid) {
+		log.info("getListByBoard +++++" + pageRequestDTO);
+
+		Page<Object[]> result = postRepository.searchPageByBoard (
+				pageRequestDTO.getType(),
+				pageRequestDTO.getKeyword(),
+				pageRequestDTO.getPageable(Sort.by("poid").descending()),
+				bid);
+
+		result.forEach(en -> System.out.println(en[1].getClass().getName() + "<--------en[1]"));
+		result.forEach(en -> System.out.println(en[4].getClass().getName() + "<--------en[4]"));
+
+		Function<Object[], PostDTO> fn = (en -> entityToDto(
+				(Post) en[0],
+				null,
+				Long.valueOf(en[3].toString()),
+				Long.valueOf(en[4].toString()))
+		);
+
+		return new PageResultDTO<>(result, fn);
+	}
+	
 	@Override
 	public PostDTO getPost(Long poid) {
 	    List<Object[]> result = postRepository.getPostWithAll(poid);
