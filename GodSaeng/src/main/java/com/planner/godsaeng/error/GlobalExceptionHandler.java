@@ -56,31 +56,6 @@ public class GlobalExceptionHandler {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 
-		//없는 API 요청
-		@ExceptionHandler(NoHandlerFoundException.class)
-		public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
-			log.info("NoHandlerFoundException : {}", ex.getMessage());
-			final ErrorResponse response = ErrorResponse.of(ErrorCode.NOT_EXIST_API);
-			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		}
-
-		//잘못된 HttpMethod 요청
-		@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-		public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
-			HttpRequestMethodNotSupportedException ex) {
-			log.info("HttpRequestMethodNotSupportedException : {}", ex.getMessage());
-			final ErrorResponse response = ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED);
-			return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
-		}
-
-		//권한 미보유
-		@ExceptionHandler(AccessDeniedException.class)
-		public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
-			log.info("AccessDeniedException : {}", ex.getMessage());
-			final ErrorResponse response = ErrorResponse.of(ErrorCode.HANDLE_ACCESS_DENIED);
-			return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-		}
-
 		//정의되지 않은 모든 에러
 		@ExceptionHandler(Exception.class)
 		public ResponseEntity<ErrorResponse> handleInternalServerException(Exception ex) {

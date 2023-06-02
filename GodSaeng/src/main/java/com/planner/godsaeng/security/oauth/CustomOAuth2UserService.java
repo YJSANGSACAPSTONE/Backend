@@ -56,7 +56,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 			return Provider.KAKAO;
 		}
 	private User getUser(Provider provider, OAuth2Attributes attributes) {
-		User findUser = userRepository.findByProviderAndOauthId(provider,
+		User findUser = userRepository.findByProviderAndUid(provider,
 			attributes.getOauth2UserInfo().getId()).orElse(null);
 
 		if (findUser == null) {
