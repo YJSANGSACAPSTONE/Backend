@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.planner.godsaeng.entity.Provider;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
+import com.planner.godsaeng.security.oauth.dto.OAuth2Attributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				.getUserInfoEndpoint().getUserNameAttributeName();
 		Map<String,Object>attributes = oAuth2User.getAttributes();
 		
-		OAuthAttributes extractAttributes = OAuthAttributes.of(provider, userNameAttributeName, attributes);
+		OAuth2Attributes extractAttributes = OAuth2Attributes.of(provider, userNameAttributeName, attributes);
 		
 		User user = getUser(provider,extractAttributes);
 		
@@ -48,13 +49,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				attributes,
 				extractAttributes.getNameAttributeKey(),
 				user.getUid(),
-				user.getRole())
+				user.getRole());
 	}
 	
 	private Provider getProvider(String registrationId) {
 			return Provider.KAKAO;
 		}
-	private User getUser(Provider provider, OAuthAttributes attributes) {
+	private User getUser(Provider provider, OAuth2Attributes attributes) {
 		User findUser = userRepository.findByProviderAndOauthId(provider,
 			attributes.getOauth2UserInfo().getId()).orElse(null);
 
@@ -64,10 +65,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		return findUser;
 	}
 
-	private User saveUser(Provider provider, OAuthAttributes attributes) {
+	private User saveUser(Provider provider, OAuth2Attributes attributes) {
 		User user = attributes.toEntity(provider, attributes.getOauth2UserInfo());
 		return userRepository.save(user);
 	}
 
 }
-}
+
