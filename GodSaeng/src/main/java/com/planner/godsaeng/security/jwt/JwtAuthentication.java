@@ -8,14 +8,15 @@ import lombok.ToString;
 public class JwtAuthentication {
 
 	public final String accessToken;
-	public final Long userId;
+	public final String userId;
 	public final String role;
 	
-	public JwtAuthentication(String accessToken, Long userId, String role) {
+	public JwtAuthentication(String accessToken, String userId, String role) {
 		if(accessToken.isEmpty() || accessToken.isBlank()) {
 			throw new JWTInvalidException();
 		}
-		if (userId <= 0 || userId == null) {
+//		if (userId <= 0 || userId == null) {
+		if (userId == null) {
 			throw new JWTInvalidException();
 		}
 		this.accessToken = accessToken;

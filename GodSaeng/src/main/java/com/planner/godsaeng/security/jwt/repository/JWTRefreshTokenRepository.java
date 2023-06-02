@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.planner.godsaeng.security.jwt.entity.RefreshToken;
 
-public interface JWTRefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+public interface JWTRefreshTokenRepository extends JpaRepository<RefreshToken, String> {
 
-	Optional<RefreshToken> findByUserId(Long userId);
+	Optional<RefreshToken> findByUserId(String userId);
 	
 	Optional<RefreshToken> findByRefreshToken(String refreshToken);
 }

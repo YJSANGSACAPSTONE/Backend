@@ -48,8 +48,8 @@ public class JWTTokenService {
 		User user = userRepository.findByUid(refreshToken.getUserId())
 			.orElseThrow(() -> new UserNotFoundException());
 
-		String reIssuedAccessToken = reIssueAccessToken(user.getUserId(), user.getRole().name());
-		String reIssuedRefreshToken = reIssueRefreshToken(user.getUserId());
+		String reIssuedAccessToken = reIssueAccessToken(user.getUid(), user.getRole().name());
+		String reIssuedRefreshToken = reIssueRefreshToken(user.getUid());
 
 		String accessTokenCookie = createAccessTokenCookie(reIssuedAccessToken);
 		String refreshTokenCookie = createRefreshTokenCookie(reIssuedRefreshToken);
@@ -58,12 +58,12 @@ public class JWTTokenService {
 
 	}
 
-	public String reIssueAccessToken(Long userId, String role) {
+	public String reIssueAccessToken(String userId, String role) {
 		return jwtTokenProvider.createAccessToken(userId, role);
 	}
 
 	@Transactional
-	public String reIssueRefreshToken(Long userId) {
+	public String reIssueRefreshToken(String userId) {
 		String token = jwtTokenProvider.createRefreshToken();
 		RefreshToken reIssuedRefreshToken = new RefreshToken(userId, token);
 
@@ -90,7 +90,7 @@ public class JWTTokenService {
 
 		Claims claims = jwtTokenProvider.getClaims(accessToken);
 
-		Long userId = claims.get("userId", Long.class);
+		String userId = claims.get("userId", String.class);
 		String role = claims.get("role", String.class);
 
 		JwtAuthentication principal = new JwtAuthentication(accessToken, userId, role);

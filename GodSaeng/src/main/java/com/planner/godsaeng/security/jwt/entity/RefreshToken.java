@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 public class RefreshToken {
 	
 	@Id
-	private long userId;
+	private String userId;
 	
 	@Column(nullable = false, unique = true)
 	private String refreshToken;
 	
 	@Builder
-	public RefreshToken(long userId, String refreshToken) {
+	public RefreshToken(String userId, String refreshToken) {
 		this.userId = userId;
 		this.refreshToken = refreshToken;
 	}

@@ -48,7 +48,7 @@ public class JwtTokenProvider {
 			this.refreshTokenRepository = refreshTokenRepository;
 	}
 	
-	public String createAccessToken(Long userId, String role) {
+	public String createAccessToken(String userId, String role) {
 		Map<String, Object> claims = Map.of("userId", userId, "role", role);
 		Date now = new Date();
 		Date expiredDate = new Date(now.getTime() + accessTokenExpireSeconds * 1000L);
@@ -86,7 +86,7 @@ public class JwtTokenProvider {
 	}
 	
 	@Transactional
-	public void updateRefreshToken(Long userId, String refreshToken) {
+	public void updateRefreshToken(String userId, String refreshToken) {
 		refreshTokenRepository.findByUserId(userId)
 			.ifPresentOrElse(
 					token -> token.update(refreshToken),
@@ -95,7 +95,7 @@ public class JwtTokenProvider {
 	}
 	
 	@Transactional
-	public void saveRefreshToken(Long userId, String refreshToken) {
+	public void saveRefreshToken(String userId, String refreshToken) {
 		RefreshTokenCreateRequestDto refreshTokenCreateRequestDto = RefreshTokenCreateRequestDto.builder()
 				.userId(userId)
 				.refreshToken(refreshToken)
