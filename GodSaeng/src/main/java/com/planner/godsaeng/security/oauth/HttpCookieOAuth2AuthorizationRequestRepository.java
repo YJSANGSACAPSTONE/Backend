@@ -1,6 +1,5 @@
 package com.planner.godsaeng.security.oauth;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

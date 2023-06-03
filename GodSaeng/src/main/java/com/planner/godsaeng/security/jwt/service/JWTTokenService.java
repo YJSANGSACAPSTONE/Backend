@@ -20,10 +20,10 @@ import com.planner.godsaeng.security.jwt.dto.TokenReIssueResponseDto;
 import com.planner.godsaeng.security.jwt.entity.RefreshToken;
 import com.planner.godsaeng.security.jwt.exception.RefreshTokenCannotFoundException;
 import com.planner.godsaeng.security.jwt.repository.JWTRefreshTokenRepository;
+import com.planner.godsaeng.user.exception.UserNotFoundException;
 import com.planner.godsaeng.util.CookieUtils;
 
 import io.jsonwebtoken.Claims;
-
 import lombok.RequiredArgsConstructor;
 
 @Service

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.planner.godsaeng.security.jwt.JwtAuthenticationToken;
+import com.planner.godsaeng.security.jwt.service.JWTTokenService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
