@@ -29,21 +29,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class JWTTokenService {
-	
-	private final JwtTokenProvider jwtTokenProvider;
-	private final JWTRefreshTokenRepository refreshTokenRepository;
-	private final UserRepository userRepository;
-	
-	@Value("${jwt.expire-seconds.access-token}")
-	int accessTokenExpireSeconds;
-	
-	@Value("${jwt.expire-seconds.refresh.token}")
-	int refreshTokenExpireSeconds;
-	
-	@Transactional
-	public TokenRefreshResponseDTO reFreshTokens(String token) {
-		return null;
-	}
 
 	private final JwtTokenProvider jwtTokenProvider;
 	private final JWTRefreshTokenRepository refreshTokenRepository;
