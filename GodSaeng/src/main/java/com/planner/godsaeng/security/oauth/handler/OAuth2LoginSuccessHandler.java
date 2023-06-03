@@ -14,11 +14,15 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+
 
 import com.planner.godsaeng.security.jwt.JwtTokenProvider;
 import com.planner.godsaeng.security.oauth.CustomOAuth2User;
 import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.planner.godsaeng.util.CookieUtils;
+
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +48,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 		loginSuccess(response,oAuth2User);
 		response.sendRedirect(determineTargetUrl(request, response, authentication));
-		
+			
 		
 	}
 	private void setAccessTokenInCookie(HttpServletResponse response, String accessToken) {
@@ -81,7 +85,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	}
 	protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) {
-			Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+			Optional<String> redirectUri = CookieUtils.getCookie(request,REDIRECT_URI_PARAM_COOKIE_NAME)
 				.map(Cookie::getValue);
 			String targetUrl;
 			targetUrl = redirectUri.orElse(getDefaultTargetUrl())
