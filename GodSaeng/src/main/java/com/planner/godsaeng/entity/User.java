@@ -60,6 +60,10 @@ public class User {
    @Enumerated(EnumType.STRING)
    private Role role;
    
+   @Enumerated(EnumType.STRING)
+   @Column(nullable = false)
+   private Provider provider;
+   
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
    private List<ChallengeParticipate> challengeParticipateList = new ArrayList<>();
    
