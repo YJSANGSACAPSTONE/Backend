@@ -48,7 +48,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Query(value = "SELECT * FROM Godsaeng_user ORDER BY score DESC LIMIT 10", nativeQuery = true)
 	List<User> findTop10UsersByScoreDesc();
 	
-	@Query(value = "SELECT * FROM Godsaeng_user WHERE uid = :uid AND Provider = :provider")
-	Optional<User>findByProviderAndUid(Provider provider, String uid);
+	Optional<User> findByProviderAndUid(Provider provider, String uid);
+
 
 }
