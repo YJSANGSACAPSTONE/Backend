@@ -1,4 +1,4 @@
-package com.planner.godsaeng.error.exception;
+package com.planner.godsaeng.global.error.exception;
 
 public class BusinessException extends RuntimeException {
 

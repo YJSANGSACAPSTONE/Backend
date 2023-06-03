@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.planner.godsaeng.security.jwt.dto.TokenReIssueResponseDto;
 import com.planner.godsaeng.security.jwt.service.JWTTokenService;
-import com.planner.godsaeng.security.oauth.dto.TokenRefreshResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ public class JWTController {
 	public ResponseEntity<Void>reFreshTokens(
 			@RequestHeader("Authorization-refresh")String refreshToken){
 		
-		TokenRefreshResponseDTO tokenResponse = jwtTokenService.reFreshTokens(refreshToken);
+		TokenReIssueResponseDto tokenResponse = jwtTokenService.reIssueTokens(refreshToken);
 		
 		HttpHeaders headers = new HttpHeaders();
 		

@@ -1,5 +1,8 @@
 package com.planner.godsaeng.security.oauth.handler;
 
+import static com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.*;
+
+import java.io.IOException;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
@@ -9,16 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.security.jwt.JwtTokenProvider;
 import com.planner.godsaeng.security.oauth.CustomOAuth2User;
 import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.planner.godsaeng.util.CookieUtils;
 
-import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
