@@ -42,7 +42,9 @@ public interface PostService {
 	void viewCountValidation(PostDTO postDTO, HttpServletRequest request, HttpServletResponse response);
 	
 	// 게시물 좋아요
-	void likePost(Long poid, String uid);
+	boolean likePost(Long poid, String uid);
+	
+	boolean isPostLikedByUser(Long poid, String uid);
 	
 	// 인기글
 	List<Post> getPopularPosts(int limit);

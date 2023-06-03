@@ -222,7 +222,7 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	@Override
-	public void likePost(Long poid, String uid) {
+	public boolean likePost(Long poid, String uid) {
 	    Optional<Post> optionalPost = postRepository.findById(poid);
 	    if (optionalPost.isPresent()) {
 	        Post post = optionalPost.get();
@@ -235,14 +235,32 @@ public class PostServiceImpl implements PostService {
 	        if (optionalPostLike.isPresent()) {
 	            // 이미 좋아요한 경우, 좋아요 취소
 	            postLikeRepository.delete(optionalPostLike.get());
+	            return false; // 좋아요 취소된 상태
 	        } else {
 	            // 좋아요 처리
 	            PostLike postLike = new PostLike(post, user);
 	            postLikeRepository.save(postLike);
+	            return true; // 좋아요 처리된 상태
 	        }
 	    } else {
 	        // 게시물이 존재하지 않을 때 처리
-	        // 처리 방법에 따라 변경 가능
+	        throw new RuntimeException("Post not found with ID: " + poid);
+	    }
+	}
+	
+	@Override
+	public boolean isPostLikedByUser(Long poid, String uid) {
+	    Optional<Post> optionalPost = postRepository.findById(poid);
+	    if (optionalPost.isPresent()) {
+	        Post post = optionalPost.get();
+	        
+	        User user = userRepository.findByUid(uid).orElseThrow(() ->
+	            new RuntimeException("User not found with ID: " + uid)
+	        );
+	        
+	        return postLikeRepository.existsByPostAndUser(post, user);
+	    } else {
+	        // 게시물이 존재하지 않을 때 처리
 	        throw new RuntimeException("Post not found with ID: " + poid);
 	    }
 	}
