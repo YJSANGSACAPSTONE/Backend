@@ -1,6 +1,9 @@
 spring:
   thymeleaf:
     cache: false
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
   jpa:
     hibernate:
@@ -23,14 +26,6 @@ spring:
       enabled: true
       max-request-size: 30MB
       max-file-size: 10MB
-
-server:
-  port: 8070
-
-spring:
-  jackson:
-    serialization:
-      FAIL_ON_EMPTY_BEANS: false
 
 com:
   planner:
@@ -71,11 +66,10 @@ frontend:
 server:
   frontEnd: ${FRONT_END}
   backEnd: ${BACK_END}
-  machineLearning: ${MACHINE_LEARNING}
-  port: 8080
+  port: 8070
 
 jwt:
-  secret-key: ${JWT_SECRET_KEY}
+  secret-key: ssh34kyh19jhj77
   expire-seconds:
     access-token: 3600
     refresh-token: 30240000
