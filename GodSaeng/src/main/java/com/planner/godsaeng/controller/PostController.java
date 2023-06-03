@@ -98,12 +98,18 @@ public class PostController {
 
 		return ResponseEntity.ok().body("Post with ID " + poid + " has been modified.");
 	}
+	
+	@GetMapping("/liked/{poid}/{uid}")
+	public ResponseEntity<Boolean> isPostLikedByUser(@PathVariable Long poid, @PathVariable String uid) {
+	    boolean liked = postService.isPostLikedByUser(poid, uid);
+	    return ResponseEntity.ok().body(liked);
+	}
 
 	@PostMapping("/like/{poid}")
-	public ResponseEntity<String> likePost(@PathVariable Long poid, @RequestBody Map<String, String> requestBody) {
+	public ResponseEntity<Boolean> likePost(@PathVariable Long poid, @RequestBody Map<String, String> requestBody) {
 	    String uid = requestBody.get("uid");
-	    postService.likePost(poid, uid);
-	    return ResponseEntity.ok().body("Post with ID " + poid + " has been liked.");
+	    boolean liked = postService.likePost(poid, uid);
+	    return ResponseEntity.ok().body(liked);
 	}
 	
 	// test: http://localhost:8080/post/popular?limit=10
