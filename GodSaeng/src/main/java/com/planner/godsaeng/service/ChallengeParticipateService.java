@@ -55,6 +55,7 @@ public class ChallengeParticipateService {
 	}
 	
 	public Boolean LeftChallenge(ChallengeParticipateDTO m) {
+		
 		return false;
 	}
 	
