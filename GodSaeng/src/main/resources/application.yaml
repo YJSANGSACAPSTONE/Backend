@@ -26,7 +26,7 @@ spring:
       enabled: true
       max-request-size: 30MB
       max-file-size: 10MB
-
+      
   security:
     oauth2:
       client:
@@ -39,7 +39,7 @@ spring:
           kakao:
             client-id: 87c054c34eca4ca3541ab083e086cd12
             client-secret: vh89sp3zQwctgfvWcWM7ZTxPGhvhNnSh
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: "http://localhost:8070/login/oauth2/code/kakao"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -62,7 +62,6 @@ frontend:
   base:
     url: http://localhost:3000
 
-  
 server:
   frontEnd: ${FRONT_END}
   backEnd: ${BACK_END}
