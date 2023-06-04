@@ -92,6 +92,7 @@ public class PostController {
 	
 	@PutMapping("/modify/{poid}")
 	public ResponseEntity<String> modify(@PathVariable long poid, @RequestBody PostDTO dto) {
+		
 		log.info("post modify.......................");
 		log.info("dto: " + dto);
 		postService.modify(dto);
@@ -101,6 +102,8 @@ public class PostController {
 	
 	@GetMapping("/liked/{poid}/{uid}")
 	public ResponseEntity<Boolean> isPostLikedByUser(@PathVariable Long poid, @PathVariable String uid) {
+		System.out.println(poid);
+		System.out.println(uid);
 	    boolean liked = postService.isPostLikedByUser(poid, uid);
 	    return ResponseEntity.ok().body(liked);
 	}
