@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
+	
    @Autowired
     private final CommentRepository commentRepository;
 
