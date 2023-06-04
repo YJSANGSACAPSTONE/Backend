@@ -75,7 +75,6 @@ public class PostServiceImpl implements PostService {
 				pageRequestDTO.getKeyword(),
 				pageRequestDTO.getPageable(Sort.by("poid").descending()));
 		
-		result.forEach(en -> System.out.println(en[1].getClass().getName() + "<--------en[1]"));
 		result.forEach(en -> System.out.println(en[4].getClass().getName() + "<--------en[4]"));
 		
 		Function<Object[], PostDTO> fn = (en -> entityToDto(

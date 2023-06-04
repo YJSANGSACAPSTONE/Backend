@@ -1,6 +1,5 @@
 package com.planner.godsaeng.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,8 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Builder
@@ -40,6 +37,5 @@ public class Comment extends BaseEntity {
         this.commtext = commtext;
    
    }
-
    
 }
