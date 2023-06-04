@@ -24,6 +24,7 @@ import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestR
 import com.planner.godsaeng.security.oauth.handler.OAuth2LoginFailureHandler;
 import com.planner.godsaeng.security.oauth.handler.OAuth2LoginSuccessHandler;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
 	
+
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final CustomOAuth2UserService customOAuth2UserService;
@@ -43,32 +45,49 @@ public class SecurityConfig {
 		return new HttpCookieOAuth2AuthorizationRequestRepository();
 	}
 	
+
 	@Bean
-	public SecurityFilterChain httpSecurity(HttpSecurity http)throws Exception{
-		return http
-				.csrf().disable()
-				.cors()
-				
+	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+	    return http
+	            .csrf().disable()
+	            .cors()
+	            
+	            .and()
+	            .authorizeHttpRequests()
+	            .antMatchers("/","/challenge/zepverify").permitAll()
+	            .antMatchers(
+	                    "/plan/**","/board/**","/comments/**",
+	                    "/kakaopay/**","/post/**","/user/**","/usage/**"
+	            )
+	            .hasRole("USER")
+	            
+	            .antMatchers(
+	                    "/challenge/addchallenge","/challenge/update",
+	                    "/challenge/delete","/challenge/adminverify"
+	            )
+	            .hasRole("CHALLENGEMANAGER")
+	            
+	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
+	            .antMatchers("/admin/**").hasRole("ADMIN")
+	            .anyRequest().authenticated()
+	            
+	            .and()
+	            .oauth2Login()
+				.authorizationEndpoint().baseUri("/login")
+				//.authorizationRequestRepository(HttpCookieOAuth2AuthorizationRequestRepository())
+				.and()
+				.redirectionEndpoint().baseUri("/login/oauth2/code/**")
+				.and()
+				.userInfoEndpoint().userService(customOAuth2UserService)
+				.and()
+				.successHandler(oAuth2LoginSuccessHandler)
+				.failureHandler(oAuth2LoginFailureHandler)
 				.and()
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				
 				.and()
-				.authorizeHttpRequests()
-				.antMatchers("/").permitAll()
-				.antMatchers
-				("/challenge/**","/plan/**","/board/**","/comments/**"
-						,"/kakaopay/**","/post/**","/user/**","/usage/**")
-				.hasRole("USER")
-				
-				.antMatchers
-				("/challenge/addchallenge","/challenge/update",
-						"/challenge/delete","/challenge/adminverify")
-				.hasRole("CHALLENGEMANAGER")
-				
-				.antMatchers("/library/**").hasRole("LIBRARYMANAGER")
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				.anyRequest().authenticated()
+				.exceptionHandling()
+				//.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
@@ -90,7 +109,7 @@ public class SecurityConfig {
 				.addFilterBefore(jwtAuthenticationFilter, OAuth2AuthorizationRequestRedirectFilter.class)
 				.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
 				.build();
-				
+
 	}
 	
 	@Bean

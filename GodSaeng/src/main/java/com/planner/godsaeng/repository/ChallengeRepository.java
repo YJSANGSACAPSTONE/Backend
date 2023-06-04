@@ -48,24 +48,45 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 	//챌린지 카테고리별로 검색
 	List<Challenge> findByCcategoryContaining(String keyword);
 	
+//	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, " +
+//	        "cenddate - cstartdate + 1 AS datediff, " +
+//	        "CASE " +
+//	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +
+//	        "    WHEN ctypeoffrequency = 1 THEN (cenddate - cstartdate + 1) * cfrequency " +
+//	        "END AS totalcount, " +
+//	        "godsaeng_challengeparticipate.cpid, " +
+//	        "COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccesscount " +
+//	        "FROM godsaeng_challenge " +
+//	        "JOIN godsaeng_challengeparticipate " +
+//	        "    ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
+//	        "LEFT JOIN godsaeng_challengeverify " +
+//	        "    ON godsaeng_challengeparticipate.cpid = godsaeng_challengeverify.cpid " +
+//	        "    AND godsaeng_challengeverify.cvsuccessornot = 1 " +
+//	        "WHERE godsaeng_challengeparticipate.uid = ?1 " +
+//	        "    AND godsaeng_challengeparticipate.cpfinalsuccess = 0 " +
+//	        "GROUP BY godsaeng_challengeparticipate.cpid", nativeQuery = true)
+//	List<Object[]> myChallengeProgress(@Param("uid") String uid);
+//	
 	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, " +
 	        "cenddate - cstartdate + 1 AS datediff, " +
 	        "CASE " +
 	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +
 	        "    WHEN ctypeoffrequency = 1 THEN (cenddate - cstartdate + 1) * cfrequency " +
 	        "END AS totalcount, " +
-	        "godsaeng_challengeparticipate.cpid, " +
+	        "godsaeng_challengeparticipate.cid AS cid, godsaeng_challengeparticipate.uid AS uid, " +
 	        "COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccesscount " +
 	        "FROM godsaeng_challenge " +
 	        "JOIN godsaeng_challengeparticipate " +
 	        "    ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
 	        "LEFT JOIN godsaeng_challengeverify " +
-	        "    ON godsaeng_challengeparticipate.cpid = godsaeng_challengeverify.cpid " +
+	        "    ON godsaeng_challengeparticipate.cid = godsaeng_challengeverify.cid " +
+	        "    AND godsaeng_challengeparticipate.uid = godsaeng_challengeverify.uid " +
 	        "    AND godsaeng_challengeverify.cvsuccessornot = 1 " +
 	        "WHERE godsaeng_challengeparticipate.uid = ?1 " +
 	        "    AND godsaeng_challengeparticipate.cpfinalsuccess = 0 " +
-	        "GROUP BY godsaeng_challengeparticipate.cpid", nativeQuery = true)
+	        "GROUP BY godsaeng_challengeparticipate.cid, godsaeng_challengeparticipate.uid", nativeQuery = true)
 	List<Object[]> myChallengeProgress(@Param("uid") String uid);
+
 	
 	
 //	boolean existsBySearchWord(String searchword);

@@ -65,7 +65,6 @@ frontend:
 server:
   frontEnd: ${FRONT_END}
   backEnd: ${BACK_END}
-
   port: 8070
 
 jwt:

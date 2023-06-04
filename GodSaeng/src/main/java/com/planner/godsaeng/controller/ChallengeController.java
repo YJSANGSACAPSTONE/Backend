@@ -55,12 +55,7 @@ public class ChallengeController {
 	@Autowired
 	UserService userService;
 	
-	@GetMapping("/addchallenge")
-	public RedirectView AddChallengeView(@RequestBody ChallengeDTO d) {
-		return null;
-		
-	}
-	
+	//챌린지추가
 	@PostMapping("/addchallenge")
 	public ResponseEntity<Boolean> AddChallenge(@RequestParam("thumbnail") MultipartFile thumbnail,
 	                                             @ModelAttribute ChallengeDTO d) throws IOException {
@@ -105,10 +100,6 @@ public class ChallengeController {
 		}else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-	}
-	@GetMapping("/update")
-	public RedirectView UpdateChallengeView() {
-		return null;
 	}
 	
 	@PostMapping("/delete")
