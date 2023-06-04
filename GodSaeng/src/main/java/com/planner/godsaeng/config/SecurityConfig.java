@@ -15,7 +15,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.planner.godsaeng.security.oauth.handler.OAuth2LoginFailureHandler;
+import com.planner.godsaeng.security.jwt.filter.ExceptionHandlerFilter;
+import com.planner.godsaeng.security.jwt.filter.JwtAuthenticationFilter;
+import com.planner.godsaeng.security.oauth.CustomOAuth2UserService;
+import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +26,18 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+//	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//	private final CustomOAuth2UserService customOAuth2UserService;
+//	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+//	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+//	private final ExceptionHandlerFilter exceptionHandlerFilter;
+	
+	@Bean
+	public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
+		return new HttpCookieOAuth2AuthorizationRequestRepository();
+	}
 	
 	@Bean
 	public SecurityFilterChain httpSecurity(HttpSecurity http)throws Exception{
