@@ -44,9 +44,9 @@ public class SecurityConfig {
 	            
 	            .and()
 	            .authorizeHttpRequests()
-	            .antMatchers("/").permitAll()
+	            .antMatchers("/","/challenge/zepverify").permitAll()
 	            .antMatchers(
-	                    "/challenge/**","/plan/**","/board/**","/comments/**",
+	                    "/plan/**","/board/**","/comments/**",
 	                    "/kakaopay/**","/post/**","/user/**","/usage/**"
 	            )
 	            .hasRole("USER")
