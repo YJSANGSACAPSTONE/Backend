@@ -13,12 +13,16 @@ import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.planner.godsaeng.security.jwt.filter.ExceptionHandlerFilter;
+import com.planner.godsaeng.security.jwt.filter.JwtAuthenticationEntryPoint;
 import com.planner.godsaeng.security.jwt.filter.JwtAuthenticationFilter;
 import com.planner.godsaeng.security.oauth.CustomOAuth2UserService;
 import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.planner.godsaeng.security.oauth.handler.OAuth2LoginFailureHandler;
+import com.planner.godsaeng.security.oauth.handler.OAuth2LoginSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,12 +31,12 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
 	
-//	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-//	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//	private final CustomOAuth2UserService customOAuth2UserService;
-//	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-//	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-//	private final ExceptionHandlerFilter exceptionHandlerFilter;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final CustomOAuth2UserService customOAuth2UserService;
+	private final OAuth2LoginSuccessHandler oAuth2AuthenticationSuccessHandler;
+	private final OAuth2LoginFailureHandler oAuth2AuthenticationFailureHandler;
+	private final ExceptionHandlerFilter exceptionHandlerFilter;
 	
 	@Bean
 	public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
@@ -66,27 +70,26 @@ public class SecurityConfig {
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				.and()
+				.oauth2Login()
+				.authorizationEndpoint().baseUri("/oauth2/authorize")
+				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
+				.and()
+				.redirectionEndpoint().baseUri("/login/oauth2/code/**")
+				.and()
+				.userInfoEndpoint().userService(customOAuth2UserService)
+				.and()
+				.successHandler(oAuth2AuthenticationSuccessHandler)
+				.failureHandler(oAuth2AuthenticationFailureHandler)
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.and()
+				.addFilterBefore(jwtAuthenticationFilter, OAuth2AuthorizationRequestRedirectFilter.class)
+				.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
 				.build();
-//				.and()
-//				.oauth2Login()
-//				.authorizationEndpoint().baseUri("/oauth2/authorize")
-//				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
-//				.and()
-//				.redirectionEndpoint().baseUri("/login/oauth2/code/**")
-//				.and()
-//				.userInfoEndpoint().userService(customOAuth2UserService)
-//				.and()
-//				.successHandler(oAuth2AuthenticationSuccessHandler)
-//				.failureHandler(oAuth2AuthenticationFailureHandler)
-//				.and()
-//				.sessionManagement()
-//				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//				.and()
-//				.exceptionHandling()
-//				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//				.and()
-//				.addFilterBefore(jwtAuthenticationFilter, OAuth2AuthorizationRequestRedirectFilter.class)
-//				.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
 				
 	}
 	

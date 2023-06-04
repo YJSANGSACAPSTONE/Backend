@@ -26,18 +26,7 @@ spring:
       enabled: true
       max-request-size: 30MB
       max-file-size: 10MB
-
-com:
-  planner:
-    godsaeng:
-      upload:
-        path: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
-
-frontend:
-  base:
-    url: http://localhost:3000
-
-
+      
   security:
     oauth2:
       client:
@@ -48,9 +37,9 @@ frontend:
             scope:
               - profile
           kakao:
-            client-id: ${KAKAO_CLIENT_ID}
-            client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-id: 87c054c34eca4ca3541ab083e086cd12
+            client-secret: vh89sp3zQwctgfvWcWM7ZTxPGhvhNnSh
+            redirect-uri: "http://localhost:8070/login/oauth2/code/kakao"
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -62,6 +51,16 @@ frontend:
             token_uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user_name_attribute: id
+
+com:
+  planner:
+    godsaeng:
+      upload:
+        path: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+
+frontend:
+  base:
+    url: http://localhost:3000
 
 server:
   frontEnd: ${FRONT_END}
