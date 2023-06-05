@@ -42,13 +42,10 @@ public class User {
    @Column(length=20, columnDefinition = "int default 0")
    private int udeposit;
    
-   @Column(length=20, columnDefinition = "VARCHAR(20) DEFAULT ''")
-   private String ugrade;
-   
    @Column(length=20, columnDefinition = "int default 0")
    private int ulevel;
    
-   @Column(length=100, nullable=false)
+   @Column(length=100, nullable=true)
    private String ucontent;
    
    @Column(length=20, nullable=true)
