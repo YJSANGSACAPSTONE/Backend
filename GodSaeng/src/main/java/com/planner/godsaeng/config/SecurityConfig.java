@@ -67,6 +67,8 @@ public class SecurityConfig {
 	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
 	            .antMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
+
+
 				.and()
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
