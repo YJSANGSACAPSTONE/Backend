@@ -51,7 +51,6 @@ public class SecurityConfig {
 	    return http
 	            .csrf().disable()
 	            .cors()
-	            
 	            .and()
 	            .authorizeHttpRequests()
 	            .antMatchers("/","/challenge/zepverify").permitAll()
@@ -60,13 +59,11 @@ public class SecurityConfig {
 	                    "/kakaopay/**","/post/**","/user/**","/usage/**"
 	            )
 	            .hasRole("USER")
-	            
 	            .antMatchers(
 	                    "/challenge/addchallenge","/challenge/update",
 	                    "/challenge/delete","/challenge/adminverify"
 	            )
 	            .hasRole("CHALLENGEMANAGER")
-	            
 	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
 	            .antMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()

@@ -33,7 +33,7 @@ public class User {
    @Column(length=100, nullable=false)
    private String uid;
    
-   @Column(length=20, nullable=false)
+   @Column(length=20, nullable=true)
    private String unickname;
    
    @Column(length=100, nullable=true)

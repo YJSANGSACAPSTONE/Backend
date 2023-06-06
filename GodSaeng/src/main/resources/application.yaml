@@ -44,7 +44,7 @@ spring:
             authorization-grant-type: authorization_code
             scope:
               - account_email
-              - profile_nickname
+              - profile_image
             client-name: Kakao
         provider:
           kakao:
@@ -69,10 +69,11 @@ server:
   port: 8070
 
 jwt:
-  secret-key: ssh34kyh19jhj77
+  secret-key: ssh34kss05kyh19jhj77ntg99lmh02yj
   expire-seconds:
     access-token: 3600
     refresh-token: 30240000
   header:
     access-token: Authorization
     refresh-token: Authorization-refresh
+    
