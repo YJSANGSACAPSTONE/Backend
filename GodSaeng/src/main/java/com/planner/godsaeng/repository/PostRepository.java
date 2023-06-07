@@ -16,15 +16,12 @@ import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.repository.SearchPostRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredicateExecutor<Post>, SearchPostRepository {
+	
 	Optional<Post> findByPoid(Long poid);
 	
 	// 인기글 검색
     @Query("SELECT p.post FROM PostLike p GROUP BY p.post ORDER BY COUNT(p.post) DESC")
     List<Post> getPopularPosts(int limit);
-	
-//	@Query("DELETE FROM Post p WHERE p.pid = :pid")
-//	void deleteByBid(Long pid);
-	
 	
 	@Query("SELECT p, u"
 			+ " FROM Post p JOIN User u ON p.user = u AND p.poid = :poid")
@@ -34,7 +31,16 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
 	@Query("select p, pi, count(distinct c) from Post p " +
             "left outer join PostImage pi on pi.post = p " +
             "left outer join Comment c on c.post = p group by p ")
-    Page<Object[]> getListPage(Pageable pageable); 
+    Page<Object[]> getListPage(Pageable pageable);
+    
+    // bid에 대한 post리스트 가져옴
+    @Query("SELECT p, pi, COUNT(DISTINCT c) FROM Post p " +
+    	       "LEFT OUTER JOIN PostImage pi ON pi.post = p " +
+    	       "LEFT OUTER JOIN Comment c ON c.post = p " +
+    	       "WHERE p.board.bid = :bid " +
+    	       "GROUP BY p")
+    Page<Object[]> getListPageByBoardId(@Param("bid") int bid, Pageable pageable);
+
     
     // 특정 게시물 조회
     @Query("SELECT p, pi, u, count(distinct c), count(distinct pl)"
@@ -45,26 +51,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredi
             + " WHERE p.poid = :poid"
             + " GROUP BY pi")
     List<Object[]> getPostWithAll(@Param("poid") Long poid);
-	
-//	@Query("SELECT b, p FROM Board b JOIN b.posts p WHERE p.pid = :pid AND b.bid = :bid")
-//	Object getPostWithBid(@Param("bid") Long pid);
-	
-//	@Query("SELECT b, r FROM Board b LEFT JOIN Reply r ON r.board = b WHERE b.bno = :bno")
-//	List<Object[]> getBoardWithReply(@Param("bno") Long bno);
-//	
-//	@Query(value = "SELECT b, w, count(r) " +
-//				   " FROM Board b " +
-//				   " LEFT JOIN b.writer w " +
-//				   " LEFT JOIN Reply r ON r.board = b" +	
-//				   " GROUP BY b ",
-//				   countQuery = "SELECT count(b) FROM Board b")
-//	Page<Object[]> getBoardWithReplyCount(Pageable pageable);
-//	
-//	@Query("SELECT p, u, b " +
-//		   " FROM Post p LEFT JOIN p.uid u " +
-//		   " LEFT JOIN Board b ON b.post = b " +
-//		   " WHERE p.pid = :pid")
-//	Object getPostByPid(@Param("pid") Long pid);
 
 }
 
