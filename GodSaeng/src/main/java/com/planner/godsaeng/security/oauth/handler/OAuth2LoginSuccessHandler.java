@@ -111,5 +111,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			return targetUrl;
 		}
 	
+	 protected String getCustomDefaultTargetUrl() {
+	       return "http://localhost:3000/signUp";
+	   }
 		
 }
