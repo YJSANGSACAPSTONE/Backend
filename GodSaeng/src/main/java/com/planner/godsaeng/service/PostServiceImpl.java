@@ -1,34 +1,31 @@
 package com.planner.godsaeng.service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
-import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.entity.PostImage;
+import com.planner.godsaeng.entity.PostLike;
 import com.planner.godsaeng.repository.PostRepository;
+import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.repository.CommentRepository;
-import com.planner.godsaeng.repository.FileRepository;
 import com.planner.godsaeng.repository.PostImageRepository;
 import com.planner.godsaeng.repository.PostLikeRepository;
 
@@ -43,9 +40,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+	
 	private final PostRepository postRepository;
 	private final PostImageRepository imageRepository;
 	private final CommentRepository commentRepository;
+	private final PostLikeRepository postLikeRepository;
+	private final UserRepository userRepository;
 	
 	@Transactional
 	@Override
@@ -65,7 +65,7 @@ public class PostServiceImpl implements PostService {
 
 		return post.getPoid();
 	}
-
+	
 	@Override
 	public PageResultDTO<PostDTO, Object[]> getList(PageRequestDTO pageRequestDTO) {
 		log.info("getList +++++" + pageRequestDTO);
@@ -74,23 +74,46 @@ public class PostServiceImpl implements PostService {
 				pageRequestDTO.getType(),
 				pageRequestDTO.getKeyword(),
 				pageRequestDTO.getPageable(Sort.by("poid").descending()));
-				
-		result.forEach(en -> System.out.println(en[3].getClass().getName()));
+		
+		result.forEach(en -> System.out.println(en[4].getClass().getName() + "<--------en[4]"));
 		
 		Function<Object[], PostDTO> fn = (en -> entityToDto(
 				(Post) en[0],
-				(User) en[1],
-				(List<PostImage>) (Arrays.asList((PostImage) en[2])),
-				Long.valueOf(en[3].toString()))	
+				null,
+				Long.valueOf(en[3].toString()),
+				Long.valueOf(en[4].toString()))	
 		);
 
 		return new PageResultDTO<>(result, fn);
 	}
 
 	@Override
+	public PageResultDTO<PostDTO, Object[]> getListByBoard(PageRequestDTO pageRequestDTO, int bid) {
+		log.info("getListByBoard +++++" + pageRequestDTO);
+
+		Page<Object[]> result = postRepository.searchPageByBoard (
+				pageRequestDTO.getType(),
+				pageRequestDTO.getKeyword(),
+				pageRequestDTO.getPageable(Sort.by("poid").descending()),
+				bid);
+
+		result.forEach(en -> System.out.println(en[1].getClass().getName() + "<--------en[1]"));
+		result.forEach(en -> System.out.println(en[4].getClass().getName() + "<--------en[4]"));
+
+		Function<Object[], PostDTO> fn = (en -> entityToDto(
+				(Post) en[0],
+				null,
+				Long.valueOf(en[3].toString()),
+				Long.valueOf(en[4].toString()))
+		);
+
+		return new PageResultDTO<>(result, fn);
+	}
+	
+	@Override
 	public PostDTO getPost(Long poid) {
 	    List<Object[]> result = postRepository.getPostWithAll(poid);
-
+	    
 	    Post post = (Post) result.get(0)[0];    // Post 엔티티는 가장 앞에 존재 - 모든 Row가 동일한 값이다
 
 	    // 조회수 업데이트
@@ -106,14 +129,19 @@ public class PostServiceImpl implements PostService {
 	    User user = (User) result.get(0)[2];
 
 	    Long commentCnt = (Long) result.get(0)[3]; // 댓글 개수 - 모든 Row가 동일한 값
+	    
+	    Long likeCnt = (Long) result.get(0)[4]; // 좋아요 개수 - 모든 Row가 동일한 값
 
-	    PostDTO postDTO = entityToDto(post, user, postImageList, commentCnt);
+	    PostDTO postDTO = entityToDto(post, postImageList, commentCnt, likeCnt);
 
 	    // viewCountValidation 로직
 	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 	    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 	    viewCountValidation(postDTO, request, response);
-
+	    
+	    // DB에 조회수 업데이트 반영
+	    postRepository.save(post);
+	    
 	    return postDTO;
 	}
 	
@@ -133,7 +161,7 @@ public class PostServiceImpl implements PostService {
 	            // cookie 변수에 저장
 	            cookie = cookies[i];
 	            // 만약 cookie 값에 현재 게시글 번호가 없을 때
-	            if (!cookie.getValue().contains("[" + poid + "]")) {
+	            if (!containsPoid(cookie.getValue(), poid)) {
 	                // 해당 게시글 조회수를 증가시키고, 쿠키 값에 해당 게시글 번호를 추가
 	                postHitCount++;
 	                cookie.setValue(cookie.getValue() + "[" + poid + "]");
@@ -149,14 +177,25 @@ public class PostServiceImpl implements PostService {
 	    }
 
 	    // 쿠키 유지시간을 오늘 하루 자정까지로 설정
-	    long todayEndSecond = LocalDate.now().atTime(LocalTime.MAX).toEpochSecond(ZoneOffset.UTC);
-	    long currentSecond = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
+	    LocalDateTime todayEnd = LocalDate.now().atTime(LocalTime.MAX);
+	    Duration duration = Duration.between(LocalDateTime.now(), todayEnd);
+	    long secondsUntilTodayEnd = duration.getSeconds();
+	    cookie.setMaxAge((int) secondsUntilTodayEnd);
 	    cookie.setPath("/"); // 모든 경로에서 접근 가능
-	    cookie.setMaxAge((int) (todayEndSecond - currentSecond));
 	    response.addCookie(cookie);
 
 	    // 조회수 업데이트
 	    postDTO.setPo_hitcount(postHitCount);
+	}
+	
+	private boolean containsPoid(String cookieValue, Long poid) {
+	    String[] values = cookieValue.split("\\[|\\]");
+	    for (String value : values) {
+	        if (value.equals(poid.toString())) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 	
 	@Transactional
@@ -165,6 +204,7 @@ public class PostServiceImpl implements PostService {
 		postRepository.deleteById(poid);
 		imageRepository.deleteByPoid(poid);
 		commentRepository.deleteByPoid(poid);
+		postLikeRepository.deleteByPoid(poid);
 	}
 
 	@Transactional
@@ -179,5 +219,58 @@ public class PostServiceImpl implements PostService {
 		
 		postRepository.save(post);
 	}
+	
+	@Override
+	public boolean likePost(Long poid, String uid) {
+	    Optional<Post> optionalPost = postRepository.findById(poid);
+	    if (optionalPost.isPresent()) {
+	        Post post = optionalPost.get();
+	        
+	        User user = userRepository.findByUid(uid).orElseThrow(() ->
+	            new RuntimeException("User not found with ID: " + uid)
+	        );
+	        
+	        Optional<PostLike> optionalPostLike = postLikeRepository.findByPostAndUser(post, user);
+	        if (optionalPostLike.isPresent()) {
+	            // 이미 좋아요한 경우, 좋아요 취소
+	            postLikeRepository.delete(optionalPostLike.get());
+	            return false; // 좋아요 취소된 상태
+	        } else {
+	            // 좋아요 처리
+	            PostLike postLike = new PostLike(post, user);
+	            postLikeRepository.save(postLike);
+	            return true; // 좋아요 처리된 상태
+	        }
+	    } else {
+	        // 게시물이 존재하지 않을 때 처리
+	        throw new RuntimeException("Post not found with ID: " + poid);
+	    }
+	}
+	
+	@Override
+	public boolean isPostLikedByUser(Long poid, String uid) {
+	    Optional<Post> optionalPost = postRepository.findById(poid);
+	    if (optionalPost.isPresent()) {
+	        Post post = optionalPost.get();
+	        
+	        User user = userRepository.findByUid(uid).orElseThrow(() ->
+	            new RuntimeException("User not found with ID: " + uid)
+	        );
+	        
+	        return postLikeRepository.existsByPostAndUser(post, user);
+	    } else {
+	        // 게시물이 존재하지 않을 때 처리
+	        throw new RuntimeException("Post not found with ID: " + poid);
+	    }
+	}
+	
+	@Override
+    public List<Post> getPopularPosts(int limit) {
+        // 좋아요 수가 많은 순으로 인기 게시물 조회
+        List<Post> popularPosts = postRepository.getPopularPosts(limit);
+
+        return popularPosts;
+    }
+
 
 }

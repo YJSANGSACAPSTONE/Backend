@@ -46,9 +46,6 @@ public class Post extends BaseEntity {
 	@Column(columnDefinition = "int default 0")
 	private int pohitcount;			// 조회수
 	
-//	@Column(columnDefinition = "int default 0")
-//	private int polike;				// 추천수 // 수정 필요
-	
 	@Column(columnDefinition = "boolean default true")
 	private boolean posecret;		// 비밀글 여부
 	
@@ -63,7 +60,5 @@ public class Post extends BaseEntity {
 	public void setPostHitCount(int pohitcount) {
         this.pohitcount = pohitcount;
     }
-	
-	
 	
 }

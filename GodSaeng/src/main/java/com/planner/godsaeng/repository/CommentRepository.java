@@ -13,6 +13,7 @@ import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.User;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+	
     // @EntityGraph : 엔티티의 특정한 속성을 같이 로딩하도록 표시하는 어노테이션
     // -> 특정 기능을 수행할 때만 EAGER 로딩을 하도록 지정할 수 있다
     @EntityGraph(attributePaths = {"user"},type = EntityGraph.EntityGraphType.FETCH) // Comment 처리시 @EntityGraph 적용해 User도 같이 로딩
@@ -23,6 +24,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteByUser(@Param("user") User user);
     
     @Modifying
-   @Query("DELETE FROM Comment c WHERE c.post.poid =:poid")
-   void deleteByPoid(Long poid);
+    @Query("DELETE FROM Comment c WHERE c.post.poid =:poid")
+    void deleteByPoid(Long poid);
+    
 }

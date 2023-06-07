@@ -20,10 +20,11 @@ import com.planner.godsaeng.service.CommentService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/comments/")
+@RequestMapping("/comments")
 @RequiredArgsConstructor
 public class CommentController {
-   @Autowired
+	
+	@Autowired
     private final CommentService commentService;
 
     @GetMapping("/{poid}/all") // 결과데이터 : CommentDTO 리스트, 해당게시물의 모든 댓글 반환
@@ -37,26 +38,26 @@ public class CommentController {
     @PostMapping("/{poid}") // 결과데이터 : 생성된 댓글 번호 , 새로운 댓글등록
     public ResponseEntity<Long> addComment(@RequestBody CommentDTO postCommentDTO){
 
-        Long commentId = commentService.register(postCommentDTO);
+        Long commid = commentService.register(postCommentDTO);
 
-        return new ResponseEntity<>(commentId, HttpStatus.OK);
+        return new ResponseEntity<>(commid, HttpStatus.OK);
     }
 
-    @PutMapping("/{poid}/{commentId}") // 결과데이터 : 댓글의 수정 성공 여부, 댓글 수정
-    public ResponseEntity<Long> modifyComment(@PathVariable Long commentId, @RequestBody CommentDTO postCommentDTO){
+    @PutMapping("/{poid}/{commid}") // 결과데이터 : 댓글의 수정 성공 여부, 댓글 수정
+    public ResponseEntity<Long> modifyComment(@PathVariable Long poid, @PathVariable Long commid, @RequestBody CommentDTO postCommentDTO){
+        postCommentDTO.setComm_id(commid); // commid 값을 CommentDTO에 설정
 
         commentService.modify(postCommentDTO);
 
-        return new ResponseEntity<>(commentId, HttpStatus.OK);
+        return new ResponseEntity<>(commid, HttpStatus.OK);
     }
-
    
-    @DeleteMapping("/{poid}/{commentId}") // 댓글 삭제 
-    public ResponseEntity<Long> removeComment(@PathVariable Long commentId){
+    @DeleteMapping("/{poid}/{commid}") // 댓글 삭제 
+    public ResponseEntity<Long> removeComment(@PathVariable Long commid){
 
-        commentService.remove(commentId);
+        commentService.remove(commid);
 
-        return new ResponseEntity<>(commentId, HttpStatus.OK);
+        return new ResponseEntity<>(commid, HttpStatus.OK);
     }
 
 }

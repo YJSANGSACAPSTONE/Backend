@@ -15,11 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Table(name = "godsaeng_post_like")
-@ToString(exclude = {"user", "post"})
 @Getter
 @Builder
 @AllArgsConstructor
@@ -36,11 +34,10 @@ public class PostLike {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Post post;
-
-	@Column(columnDefinition = "boolean default false")
-	private boolean liked;
-
-	public void setLiked(boolean liked) {
-		this.liked = liked;
+	
+	public PostLike(Post post, User user) {
+	    this.post = post;
+	    this.user = user;
 	}
+	
 }

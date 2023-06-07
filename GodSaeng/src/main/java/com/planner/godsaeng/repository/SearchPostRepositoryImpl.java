@@ -2,7 +2,6 @@ package com.planner.godsaeng.repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +10,10 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.QBoard;
+import com.planner.godsaeng.entity.QComment;
 import com.planner.godsaeng.entity.QPost;
 import com.planner.godsaeng.entity.QPostImage;
+import com.planner.godsaeng.entity.QPostLike;
 import com.planner.godsaeng.entity.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
@@ -37,14 +38,12 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
       QPost post = QPost.post;
       QUser user= QUser.user;
       QBoard board = QBoard.board;
-      QPostImage postImage = QPostImage.postImage;
       
       JPQLQuery<Post> jpqlQuery = from(post);
       jpqlQuery.leftJoin(user).on(post.user.eq(user));
       jpqlQuery.leftJoin(board).on(post.board.eq(board));
-      jpqlQuery.leftJoin(postImage).on(postImage.post.eq(post)); // 2. PostImage를 추가한 leftJoin
       
-      JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, postImage, board.bid);
+      JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, board.bid);
       tuple.groupBy(post);
       
       log.info("-------------------------------");
@@ -64,14 +63,16 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
       QPost post = QPost.post;
       QUser user= QUser.user;
       QBoard board = QBoard.board;
-      QPostImage postImage = QPostImage.postImage;
+      QComment comment = QComment.comment;
+      QPostLike postLike = QPostLike.postLike;
       
       JPQLQuery<Post> jpqlQuery = from(post);
-      jpqlQuery.leftJoin(user).on(post.user.eq(user));
-      jpqlQuery.leftJoin(board).on(post.board.eq(board));
-      jpqlQuery.leftJoin(postImage).on(postImage.post.eq(post)); // 2. PostImage를 추가한 leftJoin
+      jpqlQuery.leftJoin(post.user, user);
+      jpqlQuery.leftJoin(post.board, board);
+      jpqlQuery.leftJoin(comment).on(comment.post.eq(post));
+      jpqlQuery.leftJoin(postLike).on(postLike.post.eq(post));
       
-      JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user, postImage, board.bid);
+      JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user.unickname, board.bid, comment.count(), postLike.count()).groupBy(post);
 
       BooleanBuilder booleanBuilder = new BooleanBuilder();
       BooleanExpression expression = post.poid.gt(0L);
@@ -86,7 +87,7 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
          for (String t : typeArr) {
             switch (t) {
             case "t": conditionBuilder.or(post.potitle.contains(keyword)); break;
-            case "w": conditionBuilder.or(user.uid.contains(keyword)); break;
+            case "w": conditionBuilder.or(user.unickname.contains(keyword)); break;
             case "c": conditionBuilder.or(post.pocontent.contains(keyword)); break;
             }
          }
@@ -104,7 +105,72 @@ public class SearchPostRepositoryImpl extends QuerydslRepositorySupport implemen
          tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
       });
       
-      tuple.groupBy(board);
+      tuple.groupBy(post);
+      
+      tuple.offset(pageable.getOffset());
+      tuple.limit(pageable.getPageSize());
+      
+      List<Tuple> result = tuple.fetch();
+      log.info(result);
+      
+      long count = tuple.fetchCount();
+      log.info("COUNT: " + count);
+      
+      return new PageImpl<Object[]>(
+            result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
+   }
+   
+   @Override
+   public Page<Object[]> searchPageByBoard(String type, String keyword, Pageable pageable, int bid) {
+      log.info("searchPage...........................");
+      QPost post = QPost.post;
+      QUser user= QUser.user;
+      QBoard board = QBoard.board;
+      QComment comment = QComment.comment;
+      QPostLike postLike = QPostLike.postLike;
+      
+      JPQLQuery<Post> jpqlQuery = from(post);
+      jpqlQuery.leftJoin(post.user, user);
+      jpqlQuery.leftJoin(post.board, board);
+      jpqlQuery.leftJoin(comment).on(comment.post.eq(post));
+      jpqlQuery.leftJoin(postLike).on(postLike.post.eq(post));
+      
+      JPQLQuery<Tuple> tuple = jpqlQuery.select(post, user.unickname, board.bid, comment.count(), postLike.count()).groupBy(post);
+
+      BooleanBuilder booleanBuilder = new BooleanBuilder();
+      BooleanExpression expression = post.poid.gt(0L);
+      
+      booleanBuilder.and(expression);
+      
+      if(type != null) {
+         String[] typeArr = type.split("");
+         
+         BooleanBuilder conditionBuilder = new BooleanBuilder();
+         
+         for (String t : typeArr) {
+            switch (t) {
+            case "t": conditionBuilder.or(post.potitle.contains(keyword)); break;
+            case "w": conditionBuilder.or(user.unickname.contains(keyword)); break;
+            case "c": conditionBuilder.or(post.pocontent.contains(keyword)); break;
+            }
+         }
+         booleanBuilder.and(conditionBuilder);
+      }
+      
+      booleanBuilder.and(post.board.bid.eq(bid)); // 추가: bid 조건
+      
+      tuple.where(booleanBuilder);
+      
+      Sort sort = pageable.getSort();
+      
+      sort.stream().forEach(order -> {
+         Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+         String prop = order.getProperty();
+         PathBuilder orderByExpression = new PathBuilder(Post.class, "post");
+         tuple.orderBy(new OrderSpecifier(direction, orderByExpression.get(prop)));
+      });
+      
+      tuple.groupBy(post);
       
       tuple.offset(pageable.getOffset());
       tuple.limit(pageable.getPageSize());
