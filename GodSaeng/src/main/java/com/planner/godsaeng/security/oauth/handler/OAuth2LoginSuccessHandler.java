@@ -99,9 +99,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			String targetUrl;
 			
 			if (authentication.getAuthorities().toString().equals("[ROLE_TEMP]")) {
-				targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-			} else {
 				targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl());
+			} else {
+				targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 //					.substring(0, redirectUri.orElse(getDefaultTargetUrl()));
 			}
 			return targetUrl;
