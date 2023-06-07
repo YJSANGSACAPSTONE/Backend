@@ -47,7 +47,7 @@ public class OAuth2Attributes {
 		return User.builder()
 			.uid(oauth2UserInfo.getEmail())
 			.provider(provider)
-			.role(Role.USER)
+			.role(Role.TEMP)
 			.build();
 	}
 }
