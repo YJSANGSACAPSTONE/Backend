@@ -11,6 +11,7 @@ import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.UserRankDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
+import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
 
@@ -29,7 +30,7 @@ public class UserService {
 	  Random r = new Random();
 	  int randomnumber = r.nextInt(100000);
       user = User.builder()
-            .uid(u.getU_id())
+    		.role(Role.USER)
             .unickname(u.getU_nickname())
             .uzepid(u.getU_id() + randomnumber)
             .udeposit(u.getU_deposit())
