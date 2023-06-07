@@ -40,8 +40,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, 
-			HttpServletResponse response,Authentication authentication)throws IOException{
 		
+		HttpServletResponse response,Authentication authentication)throws IOException{
 		CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 		if (oAuth2User.getRole() == Role.TEMP) {
 			String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), oAuth2User.getRole().name());
@@ -57,6 +57,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			loginSuccess(response, oAuth2User);
 			response.sendRedirect(determineTargetUrl(request, response, authentication));
 		}
+
 	}
 	
 	private void setAccessTokenInCookie(HttpServletResponse response, String accessToken) {
