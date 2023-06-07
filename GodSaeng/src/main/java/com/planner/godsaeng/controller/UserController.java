@@ -30,13 +30,11 @@ public class UserController {
    @PostMapping("/adduser")
    public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo) {
 	   
-	  String u_id = userinfo.getU_id();
 	  String u_nickname = userinfo.getU_nickname();
 	  String u_content = userinfo.getU_content();
 	  String u_zepid = userinfo.getU_zepid();
 		  
 	  UserDTO dto = new UserDTO();
-	  dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
       dto.setU_zepid(u_zepid);
       dto.setU_deposit(0);
