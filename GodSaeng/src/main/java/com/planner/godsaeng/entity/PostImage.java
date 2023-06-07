@@ -11,8 +11,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
-import com.querydsl.core.annotations.Generated;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,7 +40,5 @@ public class PostImage {
    private String uuid;      // 변경된 파일 이름
    
    private String path;
-   
-   
    
 }
