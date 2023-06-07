@@ -1,7 +1,6 @@
 package com.planner.godsaeng.security.oauth.handler;
 
-import static com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.*;
-
+import static com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -21,7 +20,6 @@ import com.planner.godsaeng.security.jwt.JwtTokenProvider;
 import com.planner.godsaeng.security.oauth.CustomOAuth2User;
 import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.planner.godsaeng.util.CookieUtils;
-
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,23 +43,23 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		
 		HttpServletResponse response,Authentication authentication)throws IOException{
 		CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-		if(oAuth2User.getRole() == Role.TEMP) {
-			String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(),oAuth2User.getRole().name());
+		if (oAuth2User.getRole() == Role.TEMP) {
+			String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), oAuth2User.getRole().name());
 			String refreshToken = tokenProvider.createRefreshToken();
-			
-			setAccessTokenInCookie(response,accessToken);
+
+			setAccessTokenInCookie(response, accessToken);
 			setRefreshTokenInCookie(response, refreshToken);
-			
+
 			tokenProvider.updateRefreshToken(oAuth2User.getUid(), refreshToken);
-			response.sendRedirect(determineTargetUrl(request, response,authentication));
-		}else {
-			loginSuccess(response,oAuth2User);
 			response.sendRedirect(determineTargetUrl(request, response, authentication));
-			
+
+		} else {
+			loginSuccess(response, oAuth2User);
+			response.sendRedirect(determineTargetUrl(request, response, authentication));
 		}
-			
-		
+
 	}
+	
 	private void setAccessTokenInCookie(HttpServletResponse response, String accessToken) {
 		ResponseCookie token = ResponseCookie.from("accessTokenCookie", accessToken)
 			.path(getDefaultTargetUrl())
@@ -99,11 +97,18 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			Optional<String> redirectUri = CookieUtils.getCookie(request,REDIRECT_URI_PARAM_COOKIE_NAME)
 				.map(Cookie::getValue);
 			String targetUrl;
-			targetUrl = redirectUri.orElse(getDefaultTargetUrl())
-					.substring(0, redirectUri.orElse(getDefaultTargetUrl()).length() - 5);
 			
+			if (authentication.getAuthorities().toString().equals("[ROLE_TEMP]")) {
+				targetUrl = redirectUri.orElse(getDefaultTargetUrl());
+			} else {
+				targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl());
+//					.substring(0, redirectUri.orElse(getDefaultTargetUrl()));
+			}
 			return targetUrl;
 		}
-
+	
+	protected String getCustomDefaultTargetUrl() {
+	    return "http://localhost:3000/signUp";
+	}
 		
 }
