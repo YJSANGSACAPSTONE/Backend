@@ -15,6 +15,7 @@ import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.entity.ChallengeParticipate;
+import com.planner.godsaeng.entity.ChallengeParticipateId;
 import com.planner.godsaeng.entity.ChallengeVerify;
 import com.planner.godsaeng.repository.ChallengeParticipateRepository;
 import com.planner.godsaeng.repository.ChallengeRepository;
@@ -44,9 +45,8 @@ public class ChallengeVerifyService {
 		String uid = userRepository.findUidByUzepid(m.getCvzepid());
 		//가져온 uid와 cid를 토대로 cpid를 추정하여 저장함.
 		System.out.println("cid: " + cid + "uid: " + uid);
-		Long cpid = challengeparticipateRepository.findCpidByCidAndUid(cid, uid);
+		Optional<ChallengeParticipate> challengeparticipate = challengeparticipateRepository.findById(new ChallengeParticipateId(uid,cid));
 		
-		Optional<ChallengeParticipate> challengeparticipate = challengeparticipateRepository.findById(cpid);
 		challengeverify = ChallengeVerify.builder()
 				.challengeParticipate(challengeparticipate.get())
 				.cvphoto(null)

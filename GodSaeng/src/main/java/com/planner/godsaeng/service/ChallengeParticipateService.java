@@ -10,6 +10,7 @@ import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
 import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.entity.ChallengeParticipate;
+import com.planner.godsaeng.entity.ChallengeParticipateId;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.ChallengeParticipateRepository;
 import com.planner.godsaeng.repository.ChallengeRepository;
@@ -54,8 +55,12 @@ public class ChallengeParticipateService {
 		
 	}
 	
-	public Boolean LeftChallenge(ChallengeParticipateDTO m) {
-		return false;
+	public Boolean LeftChallenge(Long cid, String uid) {
+		
+		ChallengeParticipateId cpid = new ChallengeParticipateId(uid, cid);
+		challengeparticipateRepository.deleteById(cpid);
+		Optional<User>user = userRepository.findById(uid);
+		return true;
 	}
 	
 	

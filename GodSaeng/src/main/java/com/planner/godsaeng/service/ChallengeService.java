@@ -82,6 +82,10 @@ public class ChallengeService {
 	    }
 	    return recentList;
 	}
+	public List<ChallengeDTO>RankChallenge(){
+//		List<Challenge>rankListEntity = challengeRepository.find
+		return null;
+	}
 
 	
 	String uid = "hwangjoo";

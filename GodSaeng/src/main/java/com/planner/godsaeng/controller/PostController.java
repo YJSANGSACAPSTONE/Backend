@@ -104,6 +104,15 @@ public class PostController {
 	    boolean liked = postService.isPostLikedByUser(poid, uid);
 	    return ResponseEntity.ok().body(liked);
 	}
+	
+	// test: http://localhost:8080/post/popular?limit=10
+	// limit = 출력 개수
+    @GetMapping("/popular")
+    public ResponseEntity<List<Post>> getPopularPosts(@RequestParam int limit) {
+        List<Post> popularPosts = postService.getPopularPosts(limit);
+        return ResponseEntity.ok(popularPosts);
+    }
+    
 
 	@PostMapping("/like/{poid}")
 	public ResponseEntity<Boolean> likePost(@PathVariable Long poid, @RequestBody Map<String, String> requestBody) {
