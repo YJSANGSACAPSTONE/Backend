@@ -39,7 +39,7 @@ spring:
           kakao:
             client-id: 87c054c34eca4ca3541ab083e086cd12
             client-secret: vh89sp3zQwctgfvWcWM7ZTxPGhvhNnSh
-            redirect-uri: "http://localhost:8070/login/oauth2/code/kakao"
+            redirect-uri: http://localhost:8070/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -69,7 +69,7 @@ server:
   port: 8070
 
 jwt:
-  secret-key: ssh34kyh19jhj77
+  secret-key: ssh34kss05kyh19jhj77ntg99lmh02yjcorp
   expire-seconds:
     access-token: 3600
     refresh-token: 30240000

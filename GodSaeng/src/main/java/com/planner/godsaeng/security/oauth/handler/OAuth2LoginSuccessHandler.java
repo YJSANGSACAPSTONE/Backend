@@ -16,7 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-
+import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.security.jwt.JwtTokenProvider;
 import com.planner.godsaeng.security.oauth.CustomOAuth2User;
 import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
@@ -42,11 +42,23 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, 
-			HttpServletResponse response,Authentication authentication)throws IOException{
 		
+		HttpServletResponse response,Authentication authentication)throws IOException{
 		CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
-		loginSuccess(response,oAuth2User);
-		response.sendRedirect(determineTargetUrl(request, response, authentication));
+		if(oAuth2User.getRole() == Role.TEMP) {
+			String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(),oAuth2User.getRole().name());
+			String refreshToken = tokenProvider.createRefreshToken();
+			
+			setAccessTokenInCookie(response,accessToken);
+			setRefreshTokenInCookie(response, refreshToken);
+			
+			tokenProvider.updateRefreshToken(oAuth2User.getUid(), refreshToken);
+			response.sendRedirect(determineTargetUrl(request, response,authentication));
+		}else {
+			loginSuccess(response,oAuth2User);
+			response.sendRedirect(determineTargetUrl(request, response, authentication));
+			
+		}
 			
 		
 	}
