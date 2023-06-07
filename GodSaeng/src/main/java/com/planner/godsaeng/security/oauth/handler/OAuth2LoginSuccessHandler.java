@@ -100,11 +100,14 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			if (authentication.getAuthorities().toString().equals("[ROLE_TEMP]")) {
 				targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 			} else {
-				targetUrl = redirectUri.orElse(getDefaultTargetUrl())
-					.substring(0, redirectUri.orElse(getDefaultTargetUrl()).length() - 5);
+				targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl());
+//					.substring(0, redirectUri.orElse(getDefaultTargetUrl()));
 			}
 			return targetUrl;
 		}
-
+	
+	protected String getCustomDefaultTargetUrl() {
+	    return "http://localhost:3000/signUp";
+	}
 		
 }

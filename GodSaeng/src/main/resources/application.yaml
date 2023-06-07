@@ -48,10 +48,10 @@ spring:
             client-name: Kakao
         provider:
           kakao:
-            authorization_uri: https://kauth.kakao.com/oauth/authorize
-            token_uri: https://kauth.kakao.com/oauth/token
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
-            user_name_attribute: id
+            user-name-attribute: id
 
 com:
   planner:
@@ -64,8 +64,8 @@ frontend:
     url: http://localhost:3000
 
 server:
-  frontEnd: ${FRONT_END}
-  backEnd: ${BACK_END}
+  frontEnd: http://localhost:3000
+  backEnd: http://localhost:8070
   port: 8070
 
 jwt:
