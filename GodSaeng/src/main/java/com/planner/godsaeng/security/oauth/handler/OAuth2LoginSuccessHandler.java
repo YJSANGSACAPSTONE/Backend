@@ -94,27 +94,25 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
 		tokenProvider.updateRefreshToken(oAuth2User.getUid(), refreshToken);
 	}
+  
 	protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
-		 Authentication authentication) {
-		 Optional<String> redirectUri = CookieUtils.getCookie(request,REDIRECT_URI_PARAM_COOKIE_NAME)
-		      .map(Cookie::getValue);
-		      String targetUrl;
-		         
-		      if (authentication.getAuthorities().toString().equals("[ROLE_TEMP]")) {
-		            targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-		     }else {
-		            targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl());
-//		               .substring(0, redirectUri.orElse(getDefaultTargetUrl()));
-		         }
-		      return targetUrl;
-		      }        
-		   
-		   protected String getCustomDefaultTargetUrl() {
-		       return "http://localhost:3000/signUp";
-		   }
 
-				
+			Authentication authentication) {
+			Optional<String> redirectUri = CookieUtils.getCookie(request,REDIRECT_URI_PARAM_COOKIE_NAME)
+				.map(Cookie::getValue);
+			String targetUrl;
+			
+			if (authentication.getAuthorities().toString().equals("[ROLE_TEMP]")) {
+				targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl());
+			} else {
+				targetUrl = redirectUri.orElse(getDefaultTargetUrl());
+//					.substring(0, redirectUri.orElse(getDefaultTargetUrl()));
+			}
+			return targetUrl;
+		}
 	
-
+	 protected String getCustomDefaultTargetUrl() {
+	       return "http://localhost:3000/signUp";
+	   }
 		
 }
