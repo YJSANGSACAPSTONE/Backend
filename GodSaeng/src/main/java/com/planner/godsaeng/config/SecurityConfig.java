@@ -53,19 +53,20 @@ public class SecurityConfig {
 	            .cors()
 	            .and()
 	            .authorizeHttpRequests()
-	            .antMatchers("/","/challenge/zepverify").permitAll()
-	            .antMatchers(
-	                    "/plan/**","/board/**","/comments/**",
-	                    "/kakaopay/**","/post/**","/user/**","/usage/**"
-	            )
-	            .hasRole("USER")
-	            .antMatchers(
-	                    "/challenge/addchallenge","/challenge/update",
-	                    "/challenge/delete","/challenge/adminverify"
-	            )
-	            .hasRole("CHALLENGEMANAGER")
-	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
-	            .antMatchers("/admin/**").hasRole("ADMIN")
+	            .antMatchers("/**").permitAll()
+//	            .antMatchers("/","/challenge/zepverify").permitAll()
+//	            .antMatchers(
+//	                    "/plan/**","/board/**","/comments/**",
+//	                    "/kakaopay/**","/post/**","/user/**","/usage/**"
+//	            )
+//	            .hasRole("USER")
+//	            .antMatchers(
+//	                    "/challenge/addchallenge","/challenge/update",
+//	                    "/challenge/delete","/challenge/adminverify"
+//	            )
+//	            .hasRole("CHALLENGEMANAGER")
+//	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
+//	            .antMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
 
 
