@@ -49,8 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 				attributes,
 				extractAttributes.getNameAttributeKey(),
 				user.getUid(),
-				user.getRole(),
-				user.getProfileimage());
+				user.getRole());
 	}
 	
 	private Provider getProvider(String registrationId) {

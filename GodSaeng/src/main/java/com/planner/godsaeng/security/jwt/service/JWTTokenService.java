@@ -50,7 +50,7 @@ public class JWTTokenService {
 		User user = userRepository.findByUid(refreshToken.getUserId())
 			.orElseThrow(() -> new UserNotFoundException());
 
-		String reIssuedAccessToken = reIssueAccessToken(user.getUid(), user.getRole().name(), user.getProfileimage());
+		String reIssuedAccessToken = reIssueAccessToken(user.getUid(), user.getRole().name());
 		String reIssuedRefreshToken = reIssueRefreshToken(user.getUid());
 
 		String accessTokenCookie = createAccessTokenCookie(reIssuedAccessToken);
@@ -60,8 +60,8 @@ public class JWTTokenService {
 
 	}
 
-	public String reIssueAccessToken(String userId, String role, String profile_image) {
-		return jwtTokenProvider.createAccessToken(userId, role, profile_image);
+	public String reIssueAccessToken(String userId, String role) {
+		return jwtTokenProvider.createAccessToken(userId, role);
 	}
 
 	@Transactional

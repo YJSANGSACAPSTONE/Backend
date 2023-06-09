@@ -42,10 +42,11 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, 
+		
 		HttpServletResponse response,Authentication authentication)throws IOException{
 		CustomOAuth2User oAuth2User = (CustomOAuth2User)authentication.getPrincipal();
 		if(oAuth2User.getRole() == Role.TEMP) {
-			String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), oAuth2User.getRole().name(), oAuth2User.getProfileimage());
+			String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(),oAuth2User.getRole().name());
 			String refreshToken = tokenProvider.createRefreshToken();
 			
 			setAccessTokenInCookie(response,accessToken);
@@ -85,7 +86,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	
 	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
 
-		String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), oAuth2User.getRole().name(), oAuth2User.getProfileimage());
+		String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), oAuth2User.getRole().name());
 		String refreshToken = tokenProvider.createRefreshToken();
 
 		setAccessTokenInCookie(response, accessToken);
@@ -95,6 +96,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	}
   
 	protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
+
 			Authentication authentication) {
 			Optional<String> redirectUri = CookieUtils.getCookie(request,REDIRECT_URI_PARAM_COOKIE_NAME)
 				.map(Cookie::getValue);
@@ -103,7 +105,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 			if (authentication.getAuthorities().toString().equals("[ROLE_TEMP]")) {
 				targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl());
 			} else {
-				targetUrl = redirectUri.orElse(getCustomDefaultTargetUrl2());
+				targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 //					.substring(0, redirectUri.orElse(getDefaultTargetUrl()));
 			}
 			return targetUrl;
@@ -111,10 +113,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	
 	 protected String getCustomDefaultTargetUrl() {
 	       return "http://localhost:3000/signUp";
-	   }
-	 
-	 protected String getCustomDefaultTargetUrl2() {
-	       return "http://localhost:3000/planner";
 	   }
 		
 }
