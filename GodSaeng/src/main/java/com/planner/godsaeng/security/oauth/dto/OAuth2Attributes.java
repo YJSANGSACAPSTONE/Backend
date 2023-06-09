@@ -46,7 +46,6 @@ public class OAuth2Attributes {
 	public User toEntity(Provider provider, OAuth2UserInfo oauth2UserInfo) {
 		return User.builder()
 			.uid(oauth2UserInfo.getEmail())
-			.profileimage(oauth2UserInfo.getProfileImage())
 			.provider(provider)
 			.role(Role.TEMP)
 			.build();

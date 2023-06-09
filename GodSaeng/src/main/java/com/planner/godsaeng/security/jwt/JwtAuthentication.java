@@ -2,11 +2,9 @@ package com.planner.godsaeng.security.jwt;
 
 import com.planner.godsaeng.security.jwt.exception.JWTInvalidException;
 
-import lombok.Getter;
 import lombok.ToString;
 
 @ToString
-@Getter
 public class JwtAuthentication {
 
 	public final String accessToken;
