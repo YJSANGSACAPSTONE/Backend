@@ -44,7 +44,6 @@ spring:
             authorization-grant-type: authorization_code
             scope:
               - account_email
-              - profile_image
             client-name: Kakao
         provider:
           kakao:

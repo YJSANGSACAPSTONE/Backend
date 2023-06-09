@@ -57,6 +57,9 @@ public class User {
    @Enumerated(EnumType.STRING)
    private Role role;
    
+   @Column(length=100, nullable=true)
+   private String profileimage;
+   
    @Enumerated(EnumType.STRING)
    @Column(nullable = false)
    private Provider provider;
