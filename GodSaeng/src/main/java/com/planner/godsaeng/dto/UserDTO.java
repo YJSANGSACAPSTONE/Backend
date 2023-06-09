@@ -19,7 +19,6 @@ public class UserDTO {
    private String u_zepid;
    private String u_img;
    private int u_deposit;
-   private String u_grade;
    private int u_level;
    private String u_content;
    private String u_successedchallenge;
