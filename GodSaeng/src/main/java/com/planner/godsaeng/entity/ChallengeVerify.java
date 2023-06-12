@@ -57,6 +57,11 @@ public class ChallengeVerify {
 	@Column(nullable = false)
 	private int cvsuccessornot;
 	
+	public void changeSuccessData(int cvsuccessornot) {
+		this.cvsuccessornot = cvsuccessornot;
+		
+	}
+	
 	
 
 }

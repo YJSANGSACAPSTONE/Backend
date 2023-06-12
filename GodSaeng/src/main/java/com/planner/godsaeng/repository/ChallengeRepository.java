@@ -40,6 +40,9 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 //			.getResultList();
 	//***챌린지 검색 매서드**//
 	//챌린지 제목으로 검색
+	@Query("SELECT g FROM Challenge g WHERE g.cstartdate <= CURRENT_DATE AND g.cenddate >= CURRENT_DATE")
+	List<Challenge>findActiveChallenges();
+	
 	List<Challenge> findByCnameContaining(String keyword);
 	//챌린지 내용으로 검색
 	List<Challenge> findByCcontentContaining(String keyword);
