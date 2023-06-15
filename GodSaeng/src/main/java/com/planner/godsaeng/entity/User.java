@@ -57,14 +57,17 @@ public class User {
    @Enumerated(EnumType.STRING)
    private Role role;
    
+   @Column(length=100, nullable=true)
+   private String profileimage;
+   
    @Enumerated(EnumType.STRING)
    @Column(nullable = false)
    private Provider provider;
    
-   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)//, orphanRemoval = true)
    private List<ChallengeParticipate> challengeParticipateList = new ArrayList<>();
    
-   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL, orphanRemoval = true)
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)//, orphanRemoval = true)
    private List<Plan> plans;
    
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
