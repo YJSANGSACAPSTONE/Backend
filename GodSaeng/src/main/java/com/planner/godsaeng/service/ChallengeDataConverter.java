@@ -21,8 +21,7 @@ public class ChallengeDataConverter implements Converter<Object[], ChallengeStat
         convertedChallengeStatusDTO.setCenddate((Date) source[4]);
         convertedChallengeStatusDTO.setDatediff((BigInteger) source[5]);
         convertedChallengeStatusDTO.setTotalcount((BigInteger) source[6]);
-        convertedChallengeStatusDTO.setCpid((BigInteger) source[7]);
-        convertedChallengeStatusDTO.setCvsuccesscount(((BigInteger) source[8]));
+        convertedChallengeStatusDTO.setCvsuccesscount(((BigInteger) source[7]));
         return convertedChallengeStatusDTO;
     }
 }

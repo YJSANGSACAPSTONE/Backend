@@ -3,6 +3,7 @@ package com.planner.godsaeng.service;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -33,9 +34,14 @@ public class ChallengeParticipateService {
 		Integer participatefee = m.getC_fee();
 		
 		Optional<User>user = userRepository.findById(uid);
+		System.out.println(user.get().getUdeposit());
 		if(user.get().getUdeposit() - participatefee >=0) {
 		Optional<Challenge>challenge = challengeRepository.findById(m.getC_id());
+		
+		ChallengeParticipateId id = new ChallengeParticipateId(uid,m.getC_id());
+		
 		challengeparticipate = ChallengeParticipate.builder()
+				.challengeParticipateId(id)				
 				.user(user.get())
 				.challenge(challenge.get())
 				.cpfinalsuccess(0)

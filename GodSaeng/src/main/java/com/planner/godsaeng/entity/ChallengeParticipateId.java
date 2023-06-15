@@ -10,6 +10,10 @@ public class ChallengeParticipateId implements Serializable {
 	private Long cid;
 	private String uid;
 	
+	public ChallengeParticipateId() {
+	    // 기본 생성자 내용 추가 (필요한 경우)
+	}
+	
 	public ChallengeParticipateId(String uid, Long cid) {
 	    this.uid = uid;
 	    this.cid = cid;
