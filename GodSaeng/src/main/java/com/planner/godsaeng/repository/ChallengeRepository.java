@@ -77,7 +77,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 	        "    WHEN ctypeoffrequency = 1 THEN (cenddate - cstartdate + 1) * cfrequency " +
 	        "END AS totalcount, " +
 	        "godsaeng_challengeparticipate.cid AS cid, godsaeng_challengeparticipate.uid AS uid, " +
-	        "COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccesscount " +
+	        "COUNT(godsaeng_challengeverify.cvsuccessornot=1) AS cvsuccesscount " +
 	        "FROM godsaeng_challenge " +
 	        "JOIN godsaeng_challengeparticipate " +
 	        "    ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
