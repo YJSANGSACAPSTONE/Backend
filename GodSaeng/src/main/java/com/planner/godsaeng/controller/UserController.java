@@ -60,9 +60,9 @@ public class UserController {
 //   }
 
    @PostMapping("/adduser")
-   public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo , @AuthenticationPrincipal JwtAuthentication user) {
+   public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo, @AuthenticationPrincipal JwtAuthentication user) {
       
-     String u_id = userinfo.getU_id();
+     String u_id = user.userId;
      String u_nickname = userinfo.getU_nickname();
      String u_content = userinfo.getU_content();
      String u_zepid = userinfo.getU_zepid();
@@ -71,7 +71,7 @@ public class UserController {
      UserDTO dto = new UserDTO();
       dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
-      dto.setU_zepid(u_zepid);
+      dto.setU_zepid(null);
       dto.setU_deposit(0);
       dto.setU_level(1);
       dto.setU_content(u_content);
@@ -91,9 +91,8 @@ public class UserController {
 
    @GetMapping("/listuser")
    public ResponseEntity listUser(@RequestParam("uid") String uid) {
-//	  String sessionuser_id = (String)(session.getAttribute("u_id"));
-//	  sessionuser_id = "hwangjoo";
-      UserDTO userinfo = service.ReadUser(uid);
+
+	   UserDTO userinfo = service.ReadUser(uid);
 
       try {
           // DTO 객체를 JSON 형식으로 변환
@@ -106,7 +105,7 @@ public class UserController {
    }
 
    @PostMapping("/updateuser")
-   public ResponseEntity<Boolean> updateUser(@RequestBody SaveResponseDTO userinfo) {
+   public ResponseEntity<Boolean> updateUser(@RequestBody SaveResponseDTO userinfo, @AuthenticationPrincipal JwtAuthentication user) {
 
 	  String u_id = userinfo.getU_id();
 	  String u_nickname = userinfo.getU_nickname();
@@ -115,11 +114,11 @@ public class UserController {
 	  UserDTO dto = new UserDTO();
 	  dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
-//      dto.setU_zepid(null);
-//      dto.setU_deposit(0);
+      dto.setU_zepid(null);
+      dto.setU_deposit(0);
       dto.setU_level(1);
       dto.setU_content(u_content);
-//      dto.setU_successedchallenge(null);
+      dto.setU_successedchallenge(null);
       boolean isUdateSuccessed = service.UpdateUser(dto);
       if(isUdateSuccessed) {
     	  return ResponseEntity.ok(true);
