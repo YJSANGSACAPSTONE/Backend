@@ -67,6 +67,7 @@ public class UserService {
          .u_level(result.get().getUlevel())
          .u_content(result.get().getUcontent())
          .u_successedchallenge(result.get().getUsuccessedchallenge())
+         .profile_image(result.get().getProfileimage())
          .build();
            
           return userinfo;
