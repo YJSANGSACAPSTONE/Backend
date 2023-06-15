@@ -28,6 +28,7 @@ public class AdminService {
 	private final UserRepository userRepository;
 	private final BoardRepository boardRepository;
 	
+	//현재 진행중인 챌린지 리스트
 	public List<ChallengeDTO>findActiveChallenges(){
 		List<Challenge> activeListentity = challengeRepository.findActiveChallenges();
 		List<ChallengeDTO> activeList = new ArrayList<>();
@@ -45,6 +46,7 @@ public class AdminService {
 		}
 		return activeList;
 	}
+	//챌린지 리스트에서 챌린지명을 기반으로 도착한 인증정보들을 display
 	public List<ChallengeVerifyDTO>findVerifyLists(Long cid){
 		List<ChallengeVerify>verifyListentity = cvRepository.findByCid(cid);
 		List<ChallengeVerifyDTO>verifyList = new ArrayList<>();
@@ -61,7 +63,7 @@ public class AdminService {
 		}
 		return verifyList;
 	}
-	
+	//챌린지 참가 관련 사진 조회 후 인증
 	public Boolean verifyParticipate(Long cvid){
 		Optional<ChallengeVerify> verifyData = cvRepository.findById(cvid);
 		if (verifyData.isPresent()) { 
@@ -79,6 +81,7 @@ public class AdminService {
 //			
 //		}
 //	}
+	//관리자가 게시판 개설
 	public void CreateBoard(BoardDTO a, String uid) {
 		Optional<User> user = userRepository.findById(uid);
 		User userdata = user.get();
@@ -88,7 +91,5 @@ public class AdminService {
 				.user(userdata)
 				.build();
 		boardRepository.save(info);
-		
 	}	
-
 }

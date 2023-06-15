@@ -70,7 +70,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 //	        "GROUP BY godsaeng_challengeparticipate.cpid", nativeQuery = true)
 //	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 //	
-	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, " +
+	@Query(value = "SELECT godsaeng_challenge.cid AS challenge_cid, cname, cthumbnails, cstartdate, cenddate, " +
 	        "cenddate - cstartdate + 1 AS datediff, " +
 	        "CASE " +
 	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +

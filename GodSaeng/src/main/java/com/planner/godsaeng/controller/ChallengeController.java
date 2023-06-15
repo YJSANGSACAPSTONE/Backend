@@ -165,7 +165,8 @@ public class ChallengeController {
 	
 	//챌린지 참가 현황 눌렀을 시 데이터 출력 메서드
 	@GetMapping("/mychallenge")
-	public List<ChallengeStatusDTO>MyChallenge(String uid){
+	public List<ChallengeStatusDTO>MyChallenge(@AuthenticationPrincipal JwtAuthentication user, String uid){
+		System.out.println(uid + "------------");
 		return service.myChallengeProgress(uid);
 	}
 }
