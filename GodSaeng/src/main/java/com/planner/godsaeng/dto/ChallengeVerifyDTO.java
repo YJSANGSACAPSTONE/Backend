@@ -15,9 +15,10 @@ import lombok.Setter;
 
 public class ChallengeVerifyDTO {
 	private long cvid;
-	private ChallengeParticipateDTO ChallengeParticipate;
 	private MultipartFile verifyPhoto;
 	private String cvphoto;
 	private LocalDateTime cvtime;
 	private int cvsuccessornot;
+	private long cid;
+	private String uid;
 }
