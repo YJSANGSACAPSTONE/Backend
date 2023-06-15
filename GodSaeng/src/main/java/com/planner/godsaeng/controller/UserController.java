@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import com.planner.godsaeng.dto.SaveResponseDTO;
 import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
+import com.planner.godsaeng.security.jwt.JwtAuthentication;
 import com.planner.godsaeng.service.UserService;
 
 @RestController
@@ -28,13 +30,15 @@ public class UserController {
    UserService service;
    
    @PostMapping("/adduser")
-   public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo) {
+   public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo , @AuthenticationPrincipal JwtAuthentication user) {
 	   
+	  String u_id = userinfo.getU_id();
 	  String u_nickname = userinfo.getU_nickname();
 	  String u_content = userinfo.getU_content();
 	  String u_zepid = userinfo.getU_zepid();
 		  
 	  UserDTO dto = new UserDTO();
+	  dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
       dto.setU_zepid(u_zepid);
       dto.setU_deposit(0);

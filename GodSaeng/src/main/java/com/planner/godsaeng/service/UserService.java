@@ -11,6 +11,7 @@ import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.UserRankDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
+import com.planner.godsaeng.entity.Provider;
 import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
@@ -30,6 +31,7 @@ public class UserService {
 	  Random r = new Random();
 	  int randomnumber = r.nextInt(100000);
       user = User.builder()
+    		.uid(u.getU_id())
     		.role(Role.USER)
             .unickname(u.getU_nickname())
             .uzepid(u.getU_id() + randomnumber)
@@ -37,6 +39,7 @@ public class UserService {
             .ulevel(u.getU_level())
             .ucontent(u.getU_content())
             .usuccessedchallenge(u.getU_successedchallenge())
+            .provider(Provider.KAKAO)
             .build();
 
       try {
