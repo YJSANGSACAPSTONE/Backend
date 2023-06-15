@@ -70,6 +70,16 @@ public class ChallengeController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 	    }
 	}
+	//챌린지 참가 취소(나가기)
+	@GetMapping("/quitchallenge")
+	public ResponseEntity<Boolean>quitChallenge(@AuthenticationPrincipal JwtAuthentication user, Long cid){
+		boolean isQuitSuccessed = participateService.LeftChallenge(cid, user.getUserId());
+		if(isQuitSuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
 	@GetMapping("/list")
 	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(@AuthenticationPrincipal JwtAuthentication user, String uid){
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
