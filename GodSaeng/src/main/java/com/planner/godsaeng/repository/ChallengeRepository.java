@@ -40,6 +40,9 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 //			.getResultList();
 	//***챌린지 검색 매서드**//
 	//챌린지 제목으로 검색
+	@Query("SELECT g FROM Challenge g WHERE g.cstartdate <= CURRENT_DATE AND g.cenddate >= CURRENT_DATE")
+	List<Challenge>findActiveChallenges();
+	
 	List<Challenge> findByCnameContaining(String keyword);
 	//챌린지 내용으로 검색
 	List<Challenge> findByCcontentContaining(String keyword);
@@ -67,7 +70,7 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 //	        "GROUP BY godsaeng_challengeparticipate.cpid", nativeQuery = true)
 //	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 //	
-	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, " +
+	@Query(value = "SELECT godsaeng_challenge.cid AS challenge_cid, cname, cthumbnails, cstartdate, cenddate, " +
 	        "cenddate - cstartdate + 1 AS datediff, " +
 	        "CASE " +
 	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +

@@ -22,7 +22,7 @@ spring:
 
   servlet:
     multipart:
-      location: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+      location: C:\Users\sanghee\Desktop\캡스톤\Backend\GodSaeng\src\main\resources\static\img\challengeimg
       enabled: true
       max-request-size: 30MB
       max-file-size: 10MB
@@ -44,7 +44,6 @@ spring:
             authorization-grant-type: authorization_code
             scope:
               - account_email
-              - profile_image
             client-name: Kakao
         provider:
           kakao:
