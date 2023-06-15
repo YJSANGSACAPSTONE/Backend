@@ -22,4 +22,5 @@ public class UserDTO {
    private int u_level;
    private String u_content;
    private String u_successedchallenge;
+   private String profile_image;
 }
