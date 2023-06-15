@@ -71,7 +71,7 @@ public class UserController {
      UserDTO dto = new UserDTO();
       dto.setU_id(u_id);
       dto.setU_nickname(u_nickname);
-      dto.setU_zepid(null);
+      dto.setU_zepid(u_zepid);
       dto.setU_deposit(0);
       dto.setU_level(1);
       dto.setU_content(u_content);
