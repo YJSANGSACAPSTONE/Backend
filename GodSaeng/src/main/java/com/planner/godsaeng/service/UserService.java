@@ -40,6 +40,7 @@ public class UserService {
             .ucontent(u.getU_content())
             .usuccessedchallenge(u.getU_successedchallenge())
             .provider(Provider.KAKAO)
+            .profileimage(u.getProfile_image())
             .build();
 
       try {
