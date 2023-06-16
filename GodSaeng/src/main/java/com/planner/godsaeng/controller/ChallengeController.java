@@ -154,7 +154,8 @@ public class ChallengeController {
 		}
 	}
 	@PostMapping("/verify")
-	public ResponseEntity<Boolean>VerifyNormalChallenge(@RequestBody ChallengeVerifyDTO v, MultipartFile verifyPhoto)throws IOException{
+	public ResponseEntity<Boolean>VerifyNormalChallenge(@ModelAttribute ChallengeVerifyDTO v, @AuthenticationPrincipal JwtAuthentication user, @RequestParam("verifyPhoto") MultipartFile verifyPhoto)throws IOException{
+		System.out.println(v.getCid());
 		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyPhoto);
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
