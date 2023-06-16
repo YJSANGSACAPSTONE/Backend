@@ -12,7 +12,7 @@ public interface ChallengeVerifyRepository extends JpaRepository<ChallengeVerify
 	
 //	@Query("SELECT cv FROM ChallengeVerify cv WHERE cv.cid = :cid")
 //	List<ChallengeVerify> findByCid(@Param("cid") Long cid);
-	@Query(value = "SELECT * FROM godsaeng_challengeverify WHERE cid = :cid", nativeQuery = true)
-	List<ChallengeVerify> findByCid(@Param("cid") Long cid);	
+	@Query(value = "SELECT * FROM godsaeng_challengeverify WHERE cid = :cid AND cvsuccessornot = 0", nativeQuery = true)
+	List<ChallengeVerify> findByCid(@Param("cid") Long cid);
 
 }

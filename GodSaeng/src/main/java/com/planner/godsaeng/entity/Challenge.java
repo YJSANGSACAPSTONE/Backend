@@ -74,6 +74,9 @@ public class Challenge {
 	@Column(nullable = true)
 	private String cthumbnails;
 	
+	@Column(nullable = true, columnDefinition = "int DEFAULT 0")
+	private String cendornot;
+	
 	@OneToMany(mappedBy="challenge")
 	private List<ChallengeParticipate>participates = new ArrayList<>();
 }

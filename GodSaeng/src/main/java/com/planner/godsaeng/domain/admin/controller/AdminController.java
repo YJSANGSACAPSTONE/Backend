@@ -54,6 +54,15 @@ public class AdminController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	@RequestMapping("/verifythischallenge")
+	public ResponseEntity<Boolean>verifyThisChallenge(@AuthenticationPrincipal JwtAuthentication user, Long cvid){
+		boolean isVerifySuccessed = adminService.verifyParticipate(cvid);
+		if(isVerifySuccessed = true) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
 	
 	
 	
