@@ -54,6 +54,7 @@ public class SecurityConfig {
 	            .and()
 	            .authorizeHttpRequests()
 	            .antMatchers("/**").permitAll()
+//	            .antMatchers("/user/adduser").hasRole("ADMIN")
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
 //	                    "/plan/**","/board/**","/comments/**",
