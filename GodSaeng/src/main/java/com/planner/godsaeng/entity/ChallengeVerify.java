@@ -29,6 +29,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 
 
 //cv - challengeverify의 약자

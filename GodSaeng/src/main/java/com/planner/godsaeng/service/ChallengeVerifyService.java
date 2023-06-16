@@ -33,7 +33,6 @@ public class ChallengeVerifyService {
 	private final UserRepository userRepository;
 	private final ChallengeRepository challengeRepository;
 	private final ChallengeVerifyRepository challengeVerifyRepository;
-	
 
 	ChallengeVerify challengeverify;
 	
@@ -73,8 +72,12 @@ public class ChallengeVerifyService {
 			m.setCvtime(LocalDateTime.now());
 			m.setVerifyPhoto(verifyphoto);
 			m.setCvphoto("/img/challengeverifyimg/" + fileName);
+			
 		}
 		ChallengeVerify entity = dtoToEntity(m);
+		ChallengeParticipateId id = new ChallengeParticipateId(m.getUid(),m.getCid());
+		Optional<ChallengeParticipate> cp = challengeparticipateRepository.findById(id);
+		entity.setChallengeParticipate(cp.get());
 		challengeVerifyRepository.save(entity);
 		return true;
 		
@@ -89,7 +92,7 @@ public class ChallengeVerifyService {
 	}
 	public ChallengeVerify dtoToEntity(ChallengeVerifyDTO v) {
 		return ChallengeVerify.builder()
-				.cvid(v.getCvid())
+				
 				.cvphoto(v.getCvphoto())
 				.cvsuccessornot(v.getCvsuccessornot())
 				.cvtime(v.getCvtime())
