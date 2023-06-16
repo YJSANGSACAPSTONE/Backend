@@ -2,6 +2,7 @@ package com.planner.godsaeng.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -68,6 +69,8 @@ public class ChallengeVerifyService {
 			String fileName = verifyphoto.getOriginalFilename();
 			File dest = new File(path + File.separator + fileName);
 			verifyphoto.transferTo(dest);
+			m.setCvsuccessornot(0);
+			m.setCvtime(LocalDateTime.now());
 			m.setVerifyPhoto(verifyphoto);
 			m.setCvphoto("/img/challengeverifyimg/" + fileName);
 		}

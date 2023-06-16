@@ -154,8 +154,8 @@ public class ChallengeController {
 		}
 	}
 	@PostMapping("/verify")
-	public ResponseEntity<Boolean>VerifyNormalChallenge(@RequestBody ChallengeVerifyDTO v, MultipartFile verifyphoto)throws IOException{
-		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyphoto);
+	public ResponseEntity<Boolean>VerifyNormalChallenge(@RequestBody ChallengeVerifyDTO v, MultipartFile verifyPhoto)throws IOException{
+		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyPhoto);
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
 		}else {

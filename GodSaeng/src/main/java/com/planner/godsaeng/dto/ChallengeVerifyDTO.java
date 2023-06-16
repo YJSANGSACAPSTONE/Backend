@@ -14,11 +14,11 @@ import lombok.Setter;
 @Builder
 
 public class ChallengeVerifyDTO {
-	private long cvid;
+	private Long cvid;
 	private MultipartFile verifyPhoto;
 	private String cvphoto;
 	private LocalDateTime cvtime;
-	private int cvsuccessornot;
-	private long cid;
+	private Integer cvsuccessornot;
+	private Long cid;
 	private String uid;
 }
