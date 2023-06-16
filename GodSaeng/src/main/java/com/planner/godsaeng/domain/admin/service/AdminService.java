@@ -91,5 +91,6 @@ public class AdminService {
 				.user(userdata)
 				.build();
 		boardRepository.save(info);
-	}	
+	}
 }
+	
