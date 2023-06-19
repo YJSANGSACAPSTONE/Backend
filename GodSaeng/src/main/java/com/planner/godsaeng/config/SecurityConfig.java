@@ -24,7 +24,6 @@ import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestR
 import com.planner.godsaeng.security.oauth.handler.OAuth2LoginFailureHandler;
 import com.planner.godsaeng.security.oauth.handler.OAuth2LoginSuccessHandler;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -45,7 +44,8 @@ public class SecurityConfig {
 		return new HttpCookieOAuth2AuthorizationRequestRepository();
 	}
 	
-
+//    private final AccessDecisionManager accessDecisionManager;
+    
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 	    return http
@@ -54,6 +54,7 @@ public class SecurityConfig {
 	            .and()
 	            .authorizeHttpRequests()
 	            .antMatchers("/**").permitAll()
+//	            .antMatchers("/user/adduser").hasRole("ADMIN")
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
 //	                    "/plan/**","/board/**","/comments/**",
@@ -68,9 +69,9 @@ public class SecurityConfig {
 //	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
 //	            .antMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
-
-
+	            
 				.and()
+//				.accessDecisionManager(accessDecisionManager)
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
 				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
@@ -111,10 +112,10 @@ public class SecurityConfig {
 	        accessDecisionVoters.add(roleVoter()); // 계층 voter
 	        return accessDecisionVoters;
 	    }
+	
 	private AccessDecisionManager affirmativeBased() {
         AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecisionVoters());
         return affirmativeBased;
     }
 	
-
 }
