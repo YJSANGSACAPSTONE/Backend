@@ -18,6 +18,7 @@ import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.UserListDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
+import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.security.jwt.JwtAuthentication;
 import com.planner.godsaeng.service.UserService;
 
@@ -40,7 +41,7 @@ public class UserController {
      String u_zepid = userinfo.getU_zepid();
      String profile_image = userinfo.getProfile_image();
      
-     UserDTO dto = new UserDTO(u_id, u_nickname, u_zepid, 0, 1, u_content, null, profile_image);
+     UserDTO dto = new UserDTO(u_id, null, u_nickname, u_zepid, 0, 1, u_content, null, profile_image);
 
       boolean isAddSuccessed = service.InsertUser(dto);
       
@@ -73,12 +74,13 @@ public class UserController {
    public ResponseEntity<Boolean> updateUser(@RequestBody SaveResponseDTO userinfo, @AuthenticationPrincipal JwtAuthentication user) {
 
 	  String u_id = user.userId;
+	  String role = user.role;
 	  String u_nickname = userinfo.getU_nickname();
 	  String u_content = userinfo.getU_content();
 	  String u_zepid = userinfo.getU_zepid();
 	  String profile_image = userinfo.getProfile_image();
 
-	  UserDTO dto = new UserDTO(u_id, u_nickname, u_zepid, 0, 1, u_content, null, profile_image);
+	  UserDTO dto = new UserDTO(u_id, role, u_nickname, u_zepid, 0, 1, u_content, null, profile_image);
       
       boolean isUdateSuccessed = service.UpdateUser(dto);
       if(isUdateSuccessed) {

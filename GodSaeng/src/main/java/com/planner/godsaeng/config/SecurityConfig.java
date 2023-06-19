@@ -54,7 +54,7 @@ public class SecurityConfig {
 	            .and()
 	            .authorizeHttpRequests()
 	            .antMatchers("/**").permitAll()
-//	            .antMatchers("/user/adduser").hasRole("ADMIN")
+	            .antMatchers("/user/updateuser").hasRole("ADMIN")
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
 //	                    "/plan/**","/board/**","/comments/**",
@@ -118,4 +118,12 @@ public class SecurityConfig {
         return affirmativeBased;
     }
 	
+//	@Bean
+//    public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
+//        PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResources);
+//        permitAllFilter.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
+//        permitAllFilter.setAccessDecisionManager(affirmativeBased());
+//        permitAllFilter.setAuthenticationManager(authenticationManagerBean());
+//        return permitAllFilter;
+//    }
 }
