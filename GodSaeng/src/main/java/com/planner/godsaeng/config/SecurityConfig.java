@@ -71,7 +71,7 @@ public class SecurityConfig {
 	            .anyRequest().authenticated()
 	            
 				.and()
-//				.accessDecisionManager(accessDecisionManager)
+//				.accessDecisionManager(affirmativeBased())
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
 				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
