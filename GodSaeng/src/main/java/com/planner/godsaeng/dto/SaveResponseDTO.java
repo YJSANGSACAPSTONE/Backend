@@ -13,4 +13,5 @@ public class SaveResponseDTO {
 	private String u_nickname;
 	private String u_zepid;
 	private String u_content;
+	private String profile_image;
 }

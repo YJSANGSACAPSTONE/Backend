@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class ChallengeParticipateDTO {
 	
-	private Long cpid;
+	
 	private Long cid;
 	private String uid;
 	private int cpfinalsuccess;

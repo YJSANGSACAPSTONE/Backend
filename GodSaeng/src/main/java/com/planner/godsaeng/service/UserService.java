@@ -11,6 +11,8 @@ import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.UserRankDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
+import com.planner.godsaeng.entity.Provider;
+import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.UserRepository;
 
@@ -29,14 +31,16 @@ public class UserService {
 	  Random r = new Random();
 	  int randomnumber = r.nextInt(100000);
       user = User.builder()
-            .uid(u.getU_id())
+    		.uid(u.getU_id())
+    		.role(Role.USER)
             .unickname(u.getU_nickname())
             .uzepid(u.getU_id() + randomnumber)
             .udeposit(u.getU_deposit())
-            .ugrade(u.getU_grade())
             .ulevel(u.getU_level())
             .ucontent(u.getU_content())
             .usuccessedchallenge(u.getU_successedchallenge())
+            .provider(Provider.KAKAO)
+            .profileimage(u.getProfile_image())
             .build();
 
       try {
@@ -60,7 +64,6 @@ public class UserService {
          .u_nickname(result.get().getUnickname())
          .u_zepid(result.get().getUzepid())
          .u_deposit(result.get().getUdeposit())
-         .u_grade(result.get().getUgrade())
          .u_level(result.get().getUlevel())
          .u_content(result.get().getUcontent())
          .u_successedchallenge(result.get().getUsuccessedchallenge())
@@ -164,7 +167,6 @@ public class UserService {
 			   .u_nickname(u.getUnickname())
 			   .u_zepid(u.getUzepid())
 			   .u_deposit(u.getUdeposit())
-			   .u_grade(u.getUgrade())
 			   .u_level(u.getUlevel())
 			   .u_content(u.getUcontent())
 			   .u_successedchallenge(u.getUsuccessedchallenge())
@@ -177,7 +179,6 @@ public class UserService {
 			   .unickname(u.getU_nickname())
 			   .uzepid(u.getU_zepid())
 			   .udeposit(u.getU_deposit())
-			   .ugrade(u.getU_grade())
 			   .ulevel(u.getU_level())
 			   .ucontent(u.getU_content())
 			   .usuccessedchallenge(u.getU_successedchallenge())

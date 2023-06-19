@@ -1,6 +1,7 @@
 package com.planner.godsaeng.entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,6 +29,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 
 
 //cv - challengeverify의 약자
@@ -36,20 +39,29 @@ public class ChallengeVerify {
 	private long cvid;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cpid", nullable = false)
+	 @JoinColumns({
+	        @JoinColumn(name = "cid", referencedColumnName = "cid"),
+	        @JoinColumn(name = "uid", referencedColumnName = "uid")
+	    })
+
 	private ChallengeParticipate challengeParticipate;
 	
 	@Column(length=200, nullable=true)
 	private String cvphoto;
-	
+
 	@Column(length=50, nullable=false)
-	private Date cvtime;
+	private LocalDateTime cvtime;
 	
 	@Column(length=50, nullable=true)
 	private String cvzepid;
 
 	@Column(nullable = false)
 	private int cvsuccessornot;
+	
+	public void changeSuccessData(int cvsuccessornot) {
+		this.cvsuccessornot = cvsuccessornot;
+		
+	}
 	
 	
 

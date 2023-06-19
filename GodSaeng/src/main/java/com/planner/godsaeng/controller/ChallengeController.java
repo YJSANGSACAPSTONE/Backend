@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
 import com.planner.godsaeng.repository.ChallengeRepository;
+import com.planner.godsaeng.security.jwt.JwtAuthentication;
 import com.planner.godsaeng.service.ChallengeParticipateService;
 import com.planner.godsaeng.service.ChallengeService;
 import com.planner.godsaeng.service.ChallengeVerifyService;
@@ -55,14 +57,9 @@ public class ChallengeController {
 	@Autowired
 	UserService userService;
 	
-	@GetMapping("/addchallenge")
-	public RedirectView AddChallengeView(@RequestBody ChallengeDTO d) {
-		return null;
-		
-	}
-	
+	//챌린지추가
 	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean> AddChallenge(@RequestParam("thumbnail") MultipartFile thumbnail,
+	public ResponseEntity<Boolean> AddChallenge(@AuthenticationPrincipal JwtAuthentication user, @RequestParam("thumbnail") MultipartFile thumbnail,
 	                                             @ModelAttribute ChallengeDTO d) throws IOException {
 		
 	    boolean isAddSuccessed = service.InsertChallenge(d,thumbnail);
@@ -73,8 +70,18 @@ public class ChallengeController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 	    }
 	}
+	//챌린지 참가 취소(나가기)
+	@GetMapping("/quitchallenge")
+	public ResponseEntity<Boolean>quitChallenge(@AuthenticationPrincipal JwtAuthentication user, Long cid){
+		boolean isQuitSuccessed = participateService.LeftChallenge(cid, user.getUserId());
+		if(isQuitSuccessed) {
+			return ResponseEntity.ok(true);
+		}else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
 	@GetMapping("/list")
-	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(String uid){
+	public ResponseEntity<Map<String,List<ChallengeDTO>>>ReadChallengeList(@AuthenticationPrincipal JwtAuthentication user, String uid){
 		List<ChallengeDTO>popularlist = service.ReadPopularChallenge();
 		List<ChallengeDTO>recentlist = service.ReadRecentChallenge();
 		List<ChallengeDTO>mylist = service.ReadMyChallenge(uid);
@@ -88,7 +95,7 @@ public class ChallengeController {
 		
 	}
 	@GetMapping("/alllist")
-	public ResponseEntity<List<ChallengeDTO>>ReadAllChallenge(){
+	public ResponseEntity<List<ChallengeDTO>>ReadAllChallenge(@AuthenticationPrincipal JwtAuthentication user){
 		List<ChallengeDTO>allList = service.ReadAllChallenge();
 		if(!allList.isEmpty()) {
 			return ResponseEntity.ok(allList);
@@ -98,7 +105,7 @@ public class ChallengeController {
 		
 	}
 	@PostMapping("/update")
-	public ResponseEntity<ChallengeDTO>UpdateChallenge(@RequestBody ChallengeDTO d){
+	public ResponseEntity<ChallengeDTO>UpdateChallenge(@AuthenticationPrincipal JwtAuthentication user,@RequestBody ChallengeDTO d){
 		boolean isSuccess = service.UpdateChallenge(d);
 		if(isSuccess) {
 			return ResponseEntity.ok(d);
@@ -106,13 +113,9 @@ public class ChallengeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	@GetMapping("/update")
-	public RedirectView UpdateChallengeView() {
-		return null;
-	}
 	
 	@PostMapping("/delete")
-	public ResponseEntity<Boolean>DeleteChallenge(@RequestBody ChallengeDTO d){
+	public ResponseEntity<Boolean>DeleteChallenge(@AuthenticationPrincipal JwtAuthentication user,@RequestBody ChallengeDTO d){
 		boolean isDeleteSuccessed = service.DeleteChallenge(d.getC_id());
 		if(isDeleteSuccessed) {
 			return ResponseEntity.ok(true);
@@ -129,7 +132,7 @@ public class ChallengeController {
 	
 	//챌린지 참가 신청 시 실행 메서드
 	@PostMapping("/participate")
-	public ResponseEntity<Boolean>ParticipateChallenge(@RequestBody ChallengeDTO m, String uid){
+	public ResponseEntity<Boolean>ParticipateChallenge(@AuthenticationPrincipal JwtAuthentication user, @RequestBody ChallengeDTO m, String uid){
 		System.out.println("아이디는: " + uid);
 		System.out.println("챌린지 이름은: " + m.getC_name());
 		boolean isParticipateSuccessed = participateService.ParticipateChallenge(m, uid);
@@ -142,7 +145,7 @@ public class ChallengeController {
 	
 	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
 	@PostMapping("/adminverify")
-	public ResponseEntity<Boolean>VerifyChallenge(@ModelAttribute ChallengeParticipateDTO m){
+	public ResponseEntity<Boolean>VerifyChallenge(@AuthenticationPrincipal JwtAuthentication user, @ModelAttribute ChallengeParticipateDTO m){
 		boolean isVerifySuccessed = true;
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
@@ -151,8 +154,9 @@ public class ChallengeController {
 		}
 	}
 	@PostMapping("/verify")
-	public ResponseEntity<Boolean>VerifyNormalChallenge(@RequestBody ChallengeVerifyDTO v, MultipartFile verifyphoto)throws IOException{
-		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyphoto);
+	public ResponseEntity<Boolean>VerifyNormalChallenge(@ModelAttribute ChallengeVerifyDTO v, @AuthenticationPrincipal JwtAuthentication user, @RequestParam("verifyPhoto") MultipartFile verifyPhoto)throws IOException{
+		System.out.println(v.getCid());
+		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyPhoto);
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
 		}else {
@@ -172,7 +176,8 @@ public class ChallengeController {
 	
 	//챌린지 참가 현황 눌렀을 시 데이터 출력 메서드
 	@GetMapping("/mychallenge")
-	public List<ChallengeStatusDTO>MyChallenge(String uid){
+	public List<ChallengeStatusDTO>MyChallenge(@AuthenticationPrincipal JwtAuthentication user, String uid){
+		System.out.println(uid + "------------");
 		return service.myChallengeProgress(uid);
 	}
 }
