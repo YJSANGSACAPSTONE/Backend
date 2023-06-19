@@ -1,6 +1,6 @@
 package com.planner.godsaeng.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planner.godsaeng.dto.SaveResponseDTO;
 import com.planner.godsaeng.dto.UserDTO;
+import com.planner.godsaeng.dto.UserListDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.security.jwt.JwtAuthentication;
-import com.planner.godsaeng.security.oauth.handler.OAuth2LoginSuccessHandler;
 import com.planner.godsaeng.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,51 +31,17 @@ public class UserController {
    @Autowired
    UserService service;
 
-//   @PostMapping("/adduser")
-//   public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo) {
-//
-//	  String u_id = userinfo.getU_id();
-//	  String u_nickname = userinfo.getU_nickname();
-//	  String u_content = userinfo.getU_content();
-//	  String u_zepid = userinfo.getU_zepid();
-//
-//	  UserDTO dto = new UserDTO();
-//	  dto.setU_id(u_id);
-//      dto.setU_nickname(u_nickname);
-//      dto.setU_zepid(u_zepid);
-//      dto.setU_deposit(0);
-//      dto.setU_grade(null);
-//      dto.setU_level(1);
-//      dto.setU_content(u_content);
-//      dto.setU_successedchallenge(null);
-//
-//      boolean isAddSuccessed = service.InsertUser(dto);
-//
-//      if(isAddSuccessed) {
-//    	  return ResponseEntity.ok(true);
-//      }else {
-//    	  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
-//      }
-//   }
-
    @PostMapping("/adduser")
    public ResponseEntity<Boolean> addUser(@RequestBody SaveResponseDTO userinfo, @AuthenticationPrincipal JwtAuthentication user) {
-      
-     String u_id = user.userId;
+     
+	 String u_id = user.userId;
      String u_nickname = userinfo.getU_nickname();
      String u_content = userinfo.getU_content();
      String u_zepid = userinfo.getU_zepid();
      String profile_image = userinfo.getProfile_image();
      
-     UserDTO dto = new UserDTO();
-      dto.setU_id(u_id);
-      dto.setU_nickname(u_nickname);
-      dto.setU_zepid(u_zepid);
-      dto.setU_deposit(0);
-      dto.setU_level(1);
-      dto.setU_content(u_content);
-      dto.setU_successedchallenge(null);
-      dto.setProfile_image(profile_image);
+     UserDTO dto = new UserDTO(u_id, u_nickname, u_zepid, 0, 1, u_content, null, profile_image);
+
       boolean isAddSuccessed = service.InsertUser(dto);
       
       if(isAddSuccessed) {
@@ -89,10 +54,10 @@ public class UserController {
    @Autowired
    private ObjectMapper objectMapper;
 
-   @GetMapping("/listuser")
-   public ResponseEntity listUser(@RequestParam("uid") String uid) {
+   @GetMapping("/readuser")
+   public ResponseEntity<String> readUser(@AuthenticationPrincipal JwtAuthentication user) {
 
-	   UserDTO userinfo = service.ReadUser(uid);
+	   UserDTO userinfo = service.ReadUser(user.userId);
 
       try {
           // DTO 객체를 JSON 형식으로 변환
@@ -107,18 +72,14 @@ public class UserController {
    @PostMapping("/updateuser")
    public ResponseEntity<Boolean> updateUser(@RequestBody SaveResponseDTO userinfo, @AuthenticationPrincipal JwtAuthentication user) {
 
-	  String u_id = userinfo.getU_id();
+	  String u_id = user.userId;
 	  String u_nickname = userinfo.getU_nickname();
 	  String u_content = userinfo.getU_content();
+	  String u_zepid = userinfo.getU_zepid();
+	  String profile_image = userinfo.getProfile_image();
 
-	  UserDTO dto = new UserDTO();
-	  dto.setU_id(u_id);
-      dto.setU_nickname(u_nickname);
-      dto.setU_zepid(null);
-      dto.setU_deposit(0);
-      dto.setU_level(1);
-      dto.setU_content(u_content);
-      dto.setU_successedchallenge(null);
+	  UserDTO dto = new UserDTO(u_id, u_nickname, u_zepid, 0, 1, u_content, null, profile_image);
+      
       boolean isUdateSuccessed = service.UpdateUser(dto);
       if(isUdateSuccessed) {
     	  return ResponseEntity.ok(true);
@@ -128,9 +89,9 @@ public class UserController {
    }
 
    @GetMapping("/deleteuser")
-   public ResponseEntity<Boolean> deleteUser(@RequestParam("uid") String uid) {
+   public ResponseEntity<Boolean> deleteUser(@AuthenticationPrincipal JwtAuthentication user) {
 
-      boolean isDeleted = service.DeleteUser(uid);
+      boolean isDeleted = service.DeleteUser(user.userId);
       if(isDeleted) {
     	  return ResponseEntity.ok(true);
       }else {
@@ -140,8 +101,8 @@ public class UserController {
 
 	//인증 페이지로 이동 시에 페이지 매핑
 	@GetMapping("/zepidverify")
-	public ResponseEntity<ZepIdVerifyViewDTO> ZepidVerifyView(@RequestParam("uid") String uid) {
-	    ZepIdVerifyViewDTO result = service.CheckZepidAndVerified(uid);
+	public ResponseEntity<ZepIdVerifyViewDTO> ZepidVerifyView(@AuthenticationPrincipal JwtAuthentication user) {
+	    ZepIdVerifyViewDTO result = service.CheckZepidAndVerified(user.userId);
 	    if (result != null) {
 	        return ResponseEntity.ok(result);
 	    } else {
@@ -162,20 +123,12 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 에러");
 		}
 
-
 	}
 
-//   예치금 업데이트
-//	@PostMapping("/finddeposit")
-//	public ResponseEntity login(@RequestParam("uid") String uid) {
-//		String accessToken = kakaoLoginService.getAccessToken(code);
-//		HashMap<String, Object> userInfo = kakaoLoginService.getUserInfo(accessToken);
-//
-//
-//
-//		Map<String, Object> responseBody = new HashMap<>();
-//		responseBody.put("userId", userInfo.get("email"));
-//		responseBody.put("accessToken", accessToken);
-//		return ResponseEntity.ok(responseBody);
-//	}
+	//관리자 모드
+	@PostMapping("/userlist")
+	public ResponseEntity<List<UserListDTO>> getUserList(){
+		List<UserListDTO> userDTOList = service.getUserList();
+		return ResponseEntity.ok(userDTOList);
+	}
 }

@@ -45,5 +45,4 @@ public class RoleHierarchy implements Serializable {
     private Set<RoleHierarchy> roleHierarchy = new HashSet<>();
 	
 	
-
 }
