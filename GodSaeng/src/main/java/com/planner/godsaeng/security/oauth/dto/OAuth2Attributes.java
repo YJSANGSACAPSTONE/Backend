@@ -5,6 +5,7 @@ import java.util.Map;
 import com.planner.godsaeng.entity.Provider;
 import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.entity.User;
+import com.planner.godsaeng.hierarchy.entity.RoleHierarchy;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +52,7 @@ public class OAuth2Attributes {
 			.role(Role.TEMP)
 			.build();
 	}
+	
 }
 
 
