@@ -1,5 +1,7 @@
 package com.planner.godsaeng.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.planner.godsaeng.dto.SaveResponseDTO;
 import com.planner.godsaeng.dto.UserDTO;
+import com.planner.godsaeng.dto.UserListDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
 import com.planner.godsaeng.security.jwt.JwtAuthentication;
@@ -124,5 +126,9 @@ public class UserController {
 	}
 
 	//관리자 모드
-	
+	@PostMapping("/userlist")
+	public ResponseEntity<List<UserListDTO>> getUserList(){
+		List<UserListDTO> userDTOList = service.getUserList();
+		return ResponseEntity.ok(userDTOList);
+	}
 }
