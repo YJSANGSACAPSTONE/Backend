@@ -66,6 +66,9 @@ public class ChallengeParticipateService {
 		ChallengeParticipateId cpid = new ChallengeParticipateId(uid, cid);
 		challengeparticipateRepository.deleteById(cpid);
 		Optional<User>user = userRepository.findById(uid);
+//		user = User.builder()
+//				.udeposit(0)
+		
 		return true;
 	}
 	

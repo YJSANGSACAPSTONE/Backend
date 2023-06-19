@@ -70,14 +70,14 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 //	        "GROUP BY godsaeng_challengeparticipate.cpid", nativeQuery = true)
 //	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 //	
-	@Query(value = "SELECT godsaeng_challenge.cid AS challenge_cid, cname, cthumbnails, cstartdate, cenddate, " +
+	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, ctypeofverify, " +
 	        "cenddate - cstartdate + 1 AS datediff, " +
 	        "CASE " +
 	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +
 	        "    WHEN ctypeoffrequency = 1 THEN (cenddate - cstartdate + 1) * cfrequency " +
 	        "END AS totalcount, " +
-	        "godsaeng_challengeparticipate.cid AS cid, godsaeng_challengeparticipate.uid AS uid, " +
-	        "COUNT(godsaeng_challengeverify.cvsuccessornot) AS cvsuccesscount " +
+	        "godsaeng_challengeparticipate.uid AS uid, " +
+	        "COUNT(godsaeng_challengeverify.cvsuccessornot=1) AS cvsuccesscount " +
 	        "FROM godsaeng_challenge " +
 	        "JOIN godsaeng_challengeparticipate " +
 	        "    ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
@@ -89,6 +89,8 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 	        "    AND godsaeng_challengeparticipate.cpfinalsuccess = 0 " +
 	        "GROUP BY godsaeng_challengeparticipate.cid, godsaeng_challengeparticipate.uid", nativeQuery = true)
 	List<Object[]> myChallengeProgress(@Param("uid") String uid);
+	
+
 
 	
 	

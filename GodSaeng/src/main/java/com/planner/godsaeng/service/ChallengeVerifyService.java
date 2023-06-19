@@ -2,6 +2,12 @@ package com.planner.godsaeng.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +38,6 @@ public class ChallengeVerifyService {
 	private final UserRepository userRepository;
 	private final ChallengeRepository challengeRepository;
 	private final ChallengeVerifyRepository challengeVerifyRepository;
-	
 
 	ChallengeVerify challengeverify;
 	
@@ -68,14 +73,58 @@ public class ChallengeVerifyService {
 			String fileName = verifyphoto.getOriginalFilename();
 			File dest = new File(path + File.separator + fileName);
 			verifyphoto.transferTo(dest);
+			m.setCvsuccessornot(0);
+			m.setCvtime(LocalDateTime.now());
 			m.setVerifyPhoto(verifyphoto);
 			m.setCvphoto("/img/challengeverifyimg/" + fileName);
+			
 		}
 		ChallengeVerify entity = dtoToEntity(m);
+		ChallengeParticipateId id = new ChallengeParticipateId(m.getUid(),m.getCid());
+		Optional<ChallengeParticipate> cp = challengeparticipateRepository.findById(id);
+		entity.setChallengeParticipate(cp.get());
 		challengeVerifyRepository.save(entity);
 		return true;
 		
 	}
+	
+	public Map<String, Long> countVerifyByMonthRange() {
+	    LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1, 1); // January 1st of the current year
+	    LocalDate endDate = LocalDate.now().withDayOfMonth(1); // First day of the current month
+
+	    Map<String, Long> result = new HashMap<>();
+
+	    while (startDate.isBefore(endDate) || startDate.isEqual(endDate)) {
+	        LocalDateTime currentMonthEnd = startDate.atTime(23, 59, 59);
+
+	        Long count = challengeVerifyRepository.countVerifyByDateRange(
+	                startDate.atStartOfDay(), currentMonthEnd);
+
+	        result.put(startDate.getMonth().toString(), count);
+
+	        startDate = startDate.plusMonths(1);
+	    }
+
+	    return result;
+	}
+	
+	public Map<LocalDate, Long> countVerifyByRecentDays() {
+	    LocalDateTime startDate = LocalDateTime.now().minusDays(14); // 현재 날짜에서 14일 전까지의 시작 일시
+
+	    List<Object[]> data = challengeVerifyRepository.countVerifyByRecentDays(startDate);
+
+	    Map<LocalDate, Long> result = new LinkedHashMap<>();
+	    for (Object[] row : data) {
+	        LocalDateTime dateTime = (LocalDateTime) row[0];
+	        Long count = (Long) row[1];
+	        LocalDate date = dateTime.toLocalDate(); // LocalDateTime에서 LocalDate로 변환
+	        result.put(date, count);
+	    }
+
+	    return result;
+	}
+	
+	
 	public ChallengeVerifyDTO entityToDto(ChallengeVerify v) {
 		return ChallengeVerifyDTO.builder()
 				.cvid(v.getCvid())
@@ -86,7 +135,7 @@ public class ChallengeVerifyService {
 	}
 	public ChallengeVerify dtoToEntity(ChallengeVerifyDTO v) {
 		return ChallengeVerify.builder()
-				.cvid(v.getCvid())
+				
 				.cvphoto(v.getCvphoto())
 				.cvsuccessornot(v.getCvsuccessornot())
 				.cvtime(v.getCvtime())
