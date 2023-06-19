@@ -3,6 +3,7 @@ package com.planner.godsaeng.service;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeParticipateDTO;
 import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.entity.ChallengeParticipate;
+import com.planner.godsaeng.entity.ChallengeParticipateId;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.ChallengeParticipateRepository;
 import com.planner.godsaeng.repository.ChallengeRepository;
@@ -32,9 +34,14 @@ public class ChallengeParticipateService {
 		Integer participatefee = m.getC_fee();
 		
 		Optional<User>user = userRepository.findById(uid);
+		System.out.println(user.get().getUdeposit());
 		if(user.get().getUdeposit() - participatefee >=0) {
 		Optional<Challenge>challenge = challengeRepository.findById(m.getC_id());
+		
+		ChallengeParticipateId id = new ChallengeParticipateId(uid,m.getC_id());
+		
 		challengeparticipate = ChallengeParticipate.builder()
+				.challengeParticipateId(id)				
 				.user(user.get())
 				.challenge(challenge.get())
 				.cpfinalsuccess(0)
@@ -54,8 +61,15 @@ public class ChallengeParticipateService {
 		
 	}
 	
-	public Boolean LeftChallenge(ChallengeParticipateDTO m) {
-		return false;
+	public Boolean LeftChallenge(Long cid, String uid) {
+		
+		ChallengeParticipateId cpid = new ChallengeParticipateId(uid, cid);
+		challengeparticipateRepository.deleteById(cpid);
+		Optional<User>user = userRepository.findById(uid);
+//		user = User.builder()
+//				.udeposit(0)
+		
+		return true;
 	}
 	
 	
