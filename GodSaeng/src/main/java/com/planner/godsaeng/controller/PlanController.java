@@ -1,6 +1,8 @@
 package com.planner.godsaeng.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,16 +21,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.planner.godsaeng.dto.PlanDTO;
+import com.planner.godsaeng.dto.UserRankDTO;
+import com.planner.godsaeng.security.jwt.JwtAuthentication;
 import com.planner.godsaeng.service.PlanService;
+import com.planner.godsaeng.service.UserService;
+
+import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/plan")
 @CrossOrigin(origins = "http://localhost:3000") // React app URL
-
+@Log4j2
 public class PlanController {
    
    @Autowired
    PlanService service;
+   
+   @Autowired
+   UserService userService;
    
    private static final Logger logger = LogManager.getLogger(PlanController.class);
    
@@ -44,9 +55,14 @@ public class PlanController {
    
    //로그인 후 메인 화면에 보이는 오늘의 일정 출력 메서드
    @GetMapping("/dailyplan")
-   public ResponseEntity<List<PlanDTO>> listPlan(String uid) {
-      List<PlanDTO> list = service.ReadDailyPlan(uid);
-      return ResponseEntity.ok(list);
+   public ResponseEntity<Map<String, Object>> listPlan(@AuthenticationPrincipal JwtAuthentication user) {
+	  List<PlanDTO> list = service.ReadDailyPlan(user.userId);
+      List<UserRankDTO> rank = userService.ReadUsersRank();
+      
+      Map<String,Object>lists = new HashMap<>();
+      lists.put("list", list);
+      lists.put("ranklist", rank);
+      return ResponseEntity.ok(lists);
       
    }
    

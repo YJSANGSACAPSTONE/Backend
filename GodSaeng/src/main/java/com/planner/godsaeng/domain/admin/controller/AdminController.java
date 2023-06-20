@@ -58,6 +58,7 @@ public class AdminController {
 	
 	@GetMapping("/verifylist/{cid}")
 	public ResponseEntity<List<ChallengeVerifyDTO>>verifyNormalChallenge(@AuthenticationPrincipal JwtAuthentication user,@PathVariable Long cid){
+		System.out.println(cid);
 		List<ChallengeVerifyDTO>result = adminService.findVerifyLists(cid);
 		if(!result.isEmpty()) {
 			return ResponseEntity.ok(result);
