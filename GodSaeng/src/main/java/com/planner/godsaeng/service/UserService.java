@@ -8,6 +8,7 @@ import java.util.Random;
 import org.springframework.stereotype.Service;
 
 import com.planner.godsaeng.dto.UserDTO;
+import com.planner.godsaeng.dto.UserListDTO;
 import com.planner.godsaeng.dto.UserRankDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
@@ -67,6 +68,7 @@ public class UserService {
          .u_level(result.get().getUlevel())
          .u_content(result.get().getUcontent())
          .u_successedchallenge(result.get().getUsuccessedchallenge())
+         .profile_image(result.get().getProfileimage())
          .build();
            
           return userinfo;
@@ -160,6 +162,23 @@ public class UserService {
 	   }
 	   return userList;
    }
+   
+   public List<UserListDTO> getUserList(){
+	   List<User> userList = userRepository.findAll();
+	   List<UserListDTO> userListDTO = new ArrayList<>();
+	   UserListDTO list;
+	   
+	   for (User u : userList) {
+		   list = UserListDTO.builder()
+				   .u_id(u.getUid())
+				   .u_nickname(u.getUnickname())
+				   .u_zepid(u.getUzepid())
+				   .u_level(u.getUlevel())
+				   .build();
+		   userListDTO.add(list);
+	   }
+	   return userListDTO;
+   }
 
    public UserDTO entityToDto(User u) {
 	   return UserDTO.builder()
@@ -174,14 +193,18 @@ public class UserService {
    }
    
    public User dtoToEntity(UserDTO u) {
+	   Role role = Role.valueOf(u.getRole());
 	   return User.builder()
 			   .uid(u.getU_id())
+			   .role(role)
 			   .unickname(u.getU_nickname())
 			   .uzepid(u.getU_zepid())
 			   .udeposit(u.getU_deposit())
 			   .ulevel(u.getU_level())
 			   .ucontent(u.getU_content())
 			   .usuccessedchallenge(u.getU_successedchallenge())
+			   .provider(Provider.KAKAO)
+			   .profileimage(u.getProfile_image())
 			   .build();
    }
 
