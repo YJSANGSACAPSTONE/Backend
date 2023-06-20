@@ -55,6 +55,7 @@ public class SecurityConfig {
 	            .authorizeHttpRequests()
 	            .antMatchers("/**").permitAll()
 	            .antMatchers("/user/updateuser").hasRole("ADMIN")
+
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
 //	                    "/plan/**","/board/**","/comments/**",
@@ -72,6 +73,7 @@ public class SecurityConfig {
 	            
 				.and()
 //				.accessDecisionManager(affirmativeBased())
+
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
 				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
@@ -126,4 +128,5 @@ public class SecurityConfig {
 //        permitAllFilter.setAuthenticationManager(authenticationManagerBean());
 //        return permitAllFilter;
 //    }
+
 }
