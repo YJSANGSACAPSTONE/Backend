@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -30,7 +31,7 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Setter
 //매핑테이블입니다(챌린지와 유저 관계(참가))
 //cp = challengeparticipant(챌린지참가)
 public class ChallengeParticipate {

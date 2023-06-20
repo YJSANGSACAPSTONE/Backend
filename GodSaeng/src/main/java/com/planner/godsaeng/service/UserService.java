@@ -193,8 +193,10 @@ public class UserService {
    }
    
    public User dtoToEntity(UserDTO u) {
+	   Role role = Role.valueOf(u.getRole());
 	   return User.builder()
 			   .uid(u.getU_id())
+			   .role(role)
 			   .unickname(u.getU_nickname())
 			   .uzepid(u.getU_zepid())
 			   .udeposit(u.getU_deposit())
