@@ -21,6 +21,8 @@ import com.planner.godsaeng.dto.BoardDTO;
 import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.security.jwt.JwtAuthentication;
+import com.planner.godsaeng.service.BoardService;
+import com.planner.godsaeng.service.BoardServiceImpl;
 import com.planner.godsaeng.service.ChallengeService;
 import com.planner.godsaeng.service.ChallengeVerifyService;
 import com.planner.godsaeng.service.UserService;
@@ -39,6 +41,8 @@ public class AdminController {
 	private final ChallengeService challengeService;
 	private final UserService userService;
 	private final AdminService adminService;
+	private final BoardServiceImpl boardServiceImpl;
+
 	
 	//챌린지 인증내역에 들어갔을 때, 관리자가 볼 수 있는 페이지
 	@GetMapping("/challengelist")
@@ -61,7 +65,7 @@ public class AdminController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	@GetMapping("/verifythischallenge/{cid}")
+	@GetMapping("/verifythischallenge/{cvid}")
 	public ResponseEntity<Boolean>verifyThisChallenge(@AuthenticationPrincipal JwtAuthentication user,@PathVariable Long cvid){
 		boolean isVerifySuccessed = adminService.verifyParticipate(cvid);
 		if(isVerifySuccessed = true) {
@@ -100,19 +104,17 @@ public class AdminController {
 //		
 //	}
 	
-//	@GetMapping("/statistic")
-//	public ResponseEntity<Map<String,List<Object>>>adminMainPage(@AuthenticationPrincipal JwtAuthentication user){
-//		List<ChallengeDTO>challengeVerifyList = challengeService.ReadAllChallenge();
-//		List<BoardDTO>boardList;
-//		List<AdminResponseDTO>graphList;
-//		
-//		Map<String,List<AdminResponseDTO>>lists = new HashMap<>();
-//		lists.put("challengelist", challengeVerifyList);
-//		lists.put("boardList", boardList);
-//		lists.put("graphlist", graphList);
-//		
-//		return null;
-//	}
+	@GetMapping("/statistic")
+	public ResponseEntity<Map<String,Object>>adminMainPage(@AuthenticationPrincipal JwtAuthentication user){
+		List<Object[]>challengeVerifyList = adminService.adminChallengeInfo();
+		List<BoardDTO>boardList = boardServiceImpl.findByAll();
+		List<Object[]>graphList;
+		
+		Map<String,Object>lists = new HashMap<>();
+		lists.put("verifyList", challengeVerifyList);
+		
+		return ResponseEntity.ok(lists);
+	}
 	
 	
 	

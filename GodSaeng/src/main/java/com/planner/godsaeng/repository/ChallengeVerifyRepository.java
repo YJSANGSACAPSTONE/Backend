@@ -19,15 +19,26 @@ public interface ChallengeVerifyRepository extends JpaRepository<ChallengeVerify
 	
 	
 
-	@Query("SELECT COUNT(cv) " +
-	            "FROM ChallengeVerify cv " +
-	            "WHERE cv.cvtime >= :startDate AND cv.cvtime <= :endDate")
+	@Query("SELECT COUNT(cv.cvid) " +
+		       "FROM ChallengeVerify cv " +
+		       "WHERE cv.cvtime >= :startDate AND cv.cvtime < :endDate")
 	Long countVerifyByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 	
-	 @Query("SELECT cv.cvtime, COUNT(cv) " +
+	@Query("SELECT cv.cvtime, COUNT(cvid) " +
 	            "FROM ChallengeVerify cv " +
 	            "WHERE cv.cvtime >= :startDate " +
 	            "GROUP BY cv.cvtime " +
 	            "ORDER BY cv.cvtime DESC")
-	    List<Object[]> countVerifyByRecentDays(LocalDateTime startDate);
+	List<Object[]> countVerifyByRecentDays(LocalDateTime startDate);
+	
+	@Query(value = "SELECT c.cid, c.cname, c.cnumberofparticipants, COUNT(DISTINCT cp.uid)AS cpcount,"
+			+" COUNT(cv.cid)AS cvcount FROM godsaeng_challenge c, godsaeng_challengeparticipate cp, godsaeng_challengeverify cv"
+			+ " WHERE cp.cid = c.cid"
+			+ " AND cv.cid = cp.cid"
+			+ " GROUP BY cid;", nativeQuery = true)
+	List<Object[]> getChallengeStatistics();
+
+	
+	    
+	
 }

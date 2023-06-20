@@ -92,5 +92,11 @@ public class AdminService {
 				.build();
 		boardRepository.save(info);
 	}
+	
+	public List<Object[]>adminChallengeInfo(){
+		List<Object[]>a = cvRepository.getChallengeStatistics();
+		return a;
+		
+	}
 }
 	
