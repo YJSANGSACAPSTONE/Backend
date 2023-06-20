@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
+
 
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -38,14 +38,14 @@ public class SecurityConfig {
 	private final OAuth2LoginSuccessHandler oAuth2AuthenticationSuccessHandler;
 	private final OAuth2LoginFailureHandler oAuth2AuthenticationFailureHandler;
 	private final ExceptionHandlerFilter exceptionHandlerFilter;
-	
+
 	@Bean
 	public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
 		return new HttpCookieOAuth2AuthorizationRequestRepository();
 	}
-	
+
 //	private final AccessDecisionManager accessDecisionManager;
-    
+
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 	    return http
@@ -69,9 +69,10 @@ public class SecurityConfig {
 //	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
 //	            .antMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
-	            
+
 				.and()
 //				.accessDecisionManager(affirmativeBased())
+
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
 				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
@@ -94,7 +95,7 @@ public class SecurityConfig {
 				.build();
 
 	}
-	
+
 	@Bean
 	public RoleHierarchyImpl roleHierarchy() {
 		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -106,18 +107,18 @@ public class SecurityConfig {
         RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
         return roleHierarchyVoter;
     }
-	 
+
 	private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
 	        List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
 	        accessDecisionVoters.add(roleVoter()); // 계층 voter
 	        return accessDecisionVoters;
 	    }
-	
+
 	private AccessDecisionManager affirmativeBased() {
         AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecisionVoters());
         return affirmativeBased;
     }
-	
+
 //	@Bean
 //    public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
 //        PermitAllFilter permitAllFilter = new PermitAllFilter(permitAllResources);
@@ -126,4 +127,5 @@ public class SecurityConfig {
 //        permitAllFilter.setAuthenticationManager(authenticationManagerBean());
 //        return permitAllFilter;
 //    }
+
 }
