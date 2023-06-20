@@ -156,6 +156,7 @@ public class UserService {
 		   list = UserRankDTO.builder()
 				   .ulevel(u.getUlevel())
 				   .unickname(u.getUnickname())
+				   .uphoto(u.getProfileimage())
 				   .build();
 		   userList.add(list);
 				   

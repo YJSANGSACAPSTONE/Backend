@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -90,20 +91,24 @@ public class ChallengeVerifyService {
 	
 	public Map<String, Long> countVerifyByMonthRange() {
 	    LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1, 1); // January 1st of the current year
-	    LocalDate endDate = LocalDate.now().withDayOfMonth(1); // First day of the current month
+	    LocalDate endDate = LocalDate.now().plusMonths(1).withDayOfMonth(1); // First day of the next month
 
 	    Map<String, Long> result = new HashMap<>();
 
-	    while (startDate.isBefore(endDate) || startDate.isEqual(endDate)) {
-	        LocalDateTime currentMonthEnd = startDate.atTime(23, 59, 59);
+	    while (startDate.isBefore(endDate)) {
+	        YearMonth yearMonth = YearMonth.from(startDate);
+	        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+	        LocalDateTime currentMonthEnd = lastDayOfMonth.atTime(23, 59, 59);
+	        System.out.println(startDate.atStartOfDay() + "  ....  " + currentMonthEnd);
 
 	        Long count = challengeVerifyRepository.countVerifyByDateRange(
-	                startDate.atStartOfDay(), currentMonthEnd);
+	            startDate.atStartOfDay(), currentMonthEnd);
 
 	        result.put(startDate.getMonth().toString(), count);
 
 	        startDate = startDate.plusMonths(1);
 	    }
+	    
 
 	    return result;
 	}

@@ -11,6 +11,7 @@ import com.planner.godsaeng.dto.ChallengeDTO;
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Challenge;
+import com.planner.godsaeng.entity.ChallengeParticipate;
 import com.planner.godsaeng.entity.ChallengeVerify;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.repository.BoardRepository;
@@ -52,12 +53,15 @@ public class AdminService {
 		List<ChallengeVerifyDTO>verifyList = new ArrayList<>();
 		
 		for(ChallengeVerify a : verifyListentity) {
+	        ChallengeParticipate cp = a.getChallengeParticipate();
 			ChallengeVerifyDTO dto =
 					ChallengeVerifyDTO.builder()
 					.cvid(a.getCvid())
 					.cvphoto(a.getCvphoto())
 					.cvsuccessornot(a.getCvsuccessornot())
 					.cvtime(a.getCvtime())
+					.cid(cp.getCid())
+					.uid(cp.getUid())
 					.build();
 			verifyList.add(dto);
 		}
@@ -91,6 +95,12 @@ public class AdminService {
 				.user(userdata)
 				.build();
 		boardRepository.save(info);
+	}
+	
+	public List<Object[]>adminChallengeInfo(){
+		List<Object[]>a = cvRepository.getChallengeStatistics();
+		return a;
+		
 	}
 }
 	
