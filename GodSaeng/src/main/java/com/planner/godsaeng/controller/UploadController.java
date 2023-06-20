@@ -31,9 +31,14 @@ public class UploadController {
 
 	@Value("${com.planner.godsaeng.upload.additionalPath}") // application.yaml의 변수
     private String uploadPath;
-
+//
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResultDTO>> uploadFile(MultipartFile[] uploadFiles){
+    	 for (MultipartFile file : uploadFiles) {
+    	        System.out.println("업로드 파일 확인: " + file.getOriginalFilename());
+    	        // 파일의 다른 정보들을 출력하거나 필요한 처리를 수행할 수 있습니다.
+    	    }
+
        if (uploadFiles == null) {
             // 업로드 파일이 없는 경우에 대한 처리
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -58,10 +63,10 @@ public class UploadController {
 
             //UUID
             String uuid = UUID.randomUUID().toString();
-
+            
             //저장할 파일 이름 중간에 "_"를 이용해 구분
             String saveName = uploadPath + File.separator + folderPath + File.separator + uuid + "_" + fileName;
-
+            
             Path savePath = Paths.get(saveName);
 
             try {
