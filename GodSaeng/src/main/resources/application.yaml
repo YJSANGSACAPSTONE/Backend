@@ -23,7 +23,7 @@ spring:
   servlet:
     multipart:
 
-      location: C:\바탕 화면\YJSANGSACAPSTONE\Sources_MY\Backend\GodSaeng\src\main\resources\static\img\boardimgtemp
+      location: C:\Users\sanghee\Desktop\캡스톤\Backend\GodSaeng\src\main\resources\static\img\boardimgtemp
 
       enabled: true
       max-request-size: 30MB
@@ -60,7 +60,7 @@ com:
       upload:
 
         path: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\challengeimg
-        additionalPath: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\postimg
+        additionalPath: C:\Users\sanghee\Desktop\캡스톤\Backend\GodSaeng\src\main\resources\static\img\boardimgtemp
 
 
 frontend:
