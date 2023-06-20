@@ -64,6 +64,7 @@ public class User {
    @Column(nullable = false)
    private Provider provider;
    
+
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)// orphanRemoval = true)
    private List<ChallengeParticipate> challengeParticipateList = new ArrayList<>();
    
@@ -72,6 +73,7 @@ public class User {
    
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
    private List<Payment> payments;
+
 
 }
    
