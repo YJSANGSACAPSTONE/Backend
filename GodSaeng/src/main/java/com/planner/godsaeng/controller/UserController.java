@@ -1,11 +1,15 @@
 package com.planner.godsaeng.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +22,8 @@ import com.planner.godsaeng.dto.UserDTO;
 import com.planner.godsaeng.dto.UserListDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyDTO;
 import com.planner.godsaeng.dto.ZepIdVerifyViewDTO;
-import com.planner.godsaeng.entity.Role;
 import com.planner.godsaeng.security.jwt.JwtAuthentication;
+import com.planner.godsaeng.security.jwt.JwtAuthenticationToken;
 import com.planner.godsaeng.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +76,13 @@ public class UserController {
 
    @PostMapping("/updateuser")
    public ResponseEntity<Boolean> updateUser(@RequestBody SaveResponseDTO userinfo, @AuthenticationPrincipal JwtAuthentication user) {
-
+	  log.info("유저 롤:" + user.role);
+	  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	  if (authentication instanceof JwtAuthenticationToken) {
+	      JwtAuthenticationToken jwtToken = (JwtAuthenticationToken) authentication;
+	      Collection<? extends GrantedAuthority> authorities = jwtToken.getAuthorities();
+	      System.out.println("유저 권한 정보"+authorities);
+	  }
 	  String u_id = user.userId;
 	  String role = user.role;
 	  String u_nickname = userinfo.getU_nickname();

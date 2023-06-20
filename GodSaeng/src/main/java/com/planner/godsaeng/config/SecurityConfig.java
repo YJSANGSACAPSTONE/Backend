@@ -13,6 +13,9 @@ import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -53,8 +56,9 @@ public class SecurityConfig {
 	            .cors()
 	            .and()
 	            .authorizeHttpRequests()
-	            .antMatchers("/").permitAll()
-	            .antMatchers("/user/updateuser").hasRole("USER")
+//	            .antMatchers("/user/updateuser").hasAuthority("USER")
+//	            .antMatchers("/kakaopay/**").hasAuthority("USER")
+	            .antMatchers("/**").permitAll()
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
 //	                    "/plan/**","/board/**","/comments/**",
@@ -72,7 +76,6 @@ public class SecurityConfig {
 
 				.and()
 //				.accessDecisionManager(affirmativeBased())
-
 				.oauth2Login()
 				.authorizationEndpoint().baseUri("/oauth2/authorize")
 				.authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository())
@@ -93,6 +96,7 @@ public class SecurityConfig {
 				.addFilterBefore(jwtAuthenticationFilter, OAuth2AuthorizationRequestRedirectFilter.class)
 				.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
 				.build();
+
 
 	}
 
