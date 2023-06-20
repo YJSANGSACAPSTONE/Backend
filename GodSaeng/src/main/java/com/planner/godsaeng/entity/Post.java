@@ -1,5 +1,7 @@
 package com.planner.godsaeng.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -48,6 +51,12 @@ public class Post extends BaseEntity {
 	
 	@Column(columnDefinition = "boolean default true")
 	private boolean posecret;		// 비밀글 여부
+	
+	@OneToMany(mappedBy = "post", cascade = javax.persistence.CascadeType.ALL)
+	private List<PostImage> postimage;
+	
+	@OneToMany(mappedBy = "post", cascade = javax.persistence.CascadeType.ALL)
+	private List<PostImage> usagehistories;
 	
 	public void changeTitle(String potitle) {
 		this.potitle = potitle;

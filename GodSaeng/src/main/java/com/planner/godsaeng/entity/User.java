@@ -72,7 +72,20 @@ public class User {
    private List<Plan> plans;
    
    @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
+   private List<UsageHistory> usagehistories;
+   
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
    private List<Payment> payments;
+   
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
+   private List<Comment> comments;
+   
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
+   private List<Post> posts;
+   
+   @OneToMany(mappedBy = "user", cascade = javax.persistence.CascadeType.ALL)
+   private List<Board> boards;
+
 
 
 }
