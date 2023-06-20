@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import com.planner.godsaeng.dto.KakaoReadyResponse;
 import com.planner.godsaeng.dto.PaymentDTO;
 import com.planner.godsaeng.entity.Payment;
 import com.planner.godsaeng.entity.User;
+import com.planner.godsaeng.security.jwt.JwtAuthentication;
 import com.planner.godsaeng.service.KakaoPayService;
 import com.planner.godsaeng.service.UserService;
 
@@ -45,12 +47,12 @@ public class KakaoPayController {
      */
     @RequestMapping("/ready")
     @ResponseBody
-    public ResponseEntity readyToKakaoPay(@RequestParam("uid") String uid, @RequestParam("kpamount") int kpamount) {
+    public ResponseEntity readyToKakaoPay(@AuthenticationPrincipal JwtAuthentication user, @RequestParam("kpamount") int kpamount) {
 //    	HttpSession session_uid = request.getSession();
 //    	session.setAttribute("userid", "test1234");
 //    	
     	ModelAndView mv = new ModelAndView();
-    	KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(uid, kpamount);
+    	KakaoReadyResponse kakaoReady = kakaoPayService.kakaoPayReady(user.userId, kpamount);
     	String nextRedirectPcUrl = kakaoReady.getNext_redirect_pc_url();
 //    	mv.addObject("next_redirect_pc_url", nextRedirectPcUrl);
 //    	mv.setViewName("kakaopay/payment");
