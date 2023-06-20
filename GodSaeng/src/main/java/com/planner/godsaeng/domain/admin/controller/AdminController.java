@@ -106,15 +106,18 @@ public class AdminController {
 //	}
 	
 	@GetMapping("/statistic")
-	public ResponseEntity<Map<String,Object>>adminMainPage(@AuthenticationPrincipal JwtAuthentication user){
-		List<Object[]>challengeVerifyList = adminService.adminChallengeInfo();
-		List<BoardDTO>boardList = boardServiceImpl.findByAll();
-		List<Object[]>graphList;
-		
-		Map<String,Object>lists = new HashMap<>();
-		lists.put("verifyList", challengeVerifyList);
-		
-		return ResponseEntity.ok(lists);
+	public ResponseEntity<Map<String, Object>> adminMainPage(@AuthenticationPrincipal JwtAuthentication user) {
+	    List<Object[]> challengeVerifyList = adminService.adminChallengeInfo();
+	    List<BoardDTO> boardList = boardServiceImpl.findByAll();
+
+	    Map<String, Object> lists = new HashMap<>();
+	    lists.put("verifyList", challengeVerifyList);
+
+	    Map<String, Long> monthlylist = verifyService.countVerifyByMonthRange();
+	    lists.put("monthlyList", monthlylist);
+	    lists.put("boardList", boardList);
+
+	    return ResponseEntity.ok(lists);
 	}
 	
 	
