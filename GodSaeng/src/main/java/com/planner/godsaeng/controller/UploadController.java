@@ -29,7 +29,7 @@ import java.util.UUID;
 @RestController
 public class UploadController {
 
-    @Value("${com.planner.godsaeng.upload.path}") // application.properties의 변수
+	@Value("${com.planner.godsaeng.upload.additionalPath}") // application.yaml의 변수
     private String uploadPath;
 
     @PostMapping("/uploadAjax")

@@ -56,7 +56,8 @@ com:
   planner:
     godsaeng:
       upload:
-        path: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\postimg
+        path: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+        additionalPath: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\postimg
 
 frontend:
   base:
