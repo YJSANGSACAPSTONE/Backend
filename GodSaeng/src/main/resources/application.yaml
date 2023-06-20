@@ -22,7 +22,11 @@ spring:
 
   servlet:
     multipart:
-      location: C:\바탕 화면\YJSANGSACAPSTONE\Sources_MY\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+
+      location: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\postimg
+
+      // location: C:\바탕 화면\YJSANGSACAPSTONE\Sources_MY\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+
       enabled: true
       max-request-size: 30MB
       max-file-size: 10MB
@@ -56,7 +60,7 @@ com:
   planner:
     godsaeng:
       upload:
-        path: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+        path: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\postimg
 
 frontend:
   base:
@@ -70,7 +74,7 @@ server:
 jwt:
   secret-key: ssh34kss05kyh19jhj77ntg99lmh02yj
   expire-seconds:
-    access-token: 7200
+    access-token: 3600
     refresh-token: 30240000
   header:
     access-token: Authorization
