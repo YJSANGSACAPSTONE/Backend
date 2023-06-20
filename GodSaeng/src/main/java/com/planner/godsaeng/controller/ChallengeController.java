@@ -71,8 +71,8 @@ public class ChallengeController {
 	    }
 	}
 	//챌린지 참가 취소(나가기)
-	@GetMapping("/quitchallenge")
-	public ResponseEntity<Boolean>quitChallenge(@AuthenticationPrincipal JwtAuthentication user, Long cid){
+	@GetMapping("/quitchallenge/{cid}")
+	public ResponseEntity<Boolean>quitChallenge(@AuthenticationPrincipal JwtAuthentication user,@PathVariable Long cid){
 		boolean isQuitSuccessed = participateService.LeftChallenge(cid, user.getUserId());
 		if(isQuitSuccessed) {
 			return ResponseEntity.ok(true);
@@ -90,7 +90,7 @@ public class ChallengeController {
 		lists.put("recentlist", recentlist);
 		lists.put("popularlist", popularlist);
 		lists.put("mylist", mylist);
-		
+
 		return new ResponseEntity<>(lists,HttpStatus.OK);
 		
 	}

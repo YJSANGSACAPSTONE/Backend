@@ -5,6 +5,7 @@ import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.User;
 
 public interface BoardService {
+
 	
 	// 게시판 생성
 	int register(BoardDTO boardDTO);
@@ -36,4 +37,5 @@ public interface BoardService {
 		
 	}
       
+
 }
