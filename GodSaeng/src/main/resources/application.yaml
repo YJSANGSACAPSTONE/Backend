@@ -58,9 +58,8 @@ com:
   planner:
     godsaeng:
       upload:
-
-        path: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\challengeimg
-        additionalPath: C:\Users\sanghee\Desktop\캡스톤\Backend\GodSaeng\src\main\resources\static\img\boardimgtemp
+        path: C:\Users\Harc\Desktop\Backend\GodSaeng\src\main\resources\static\img\challengeimg
+        additionalPath: D:\Dev\Workspace\Backend\GodSaeng\src\main\resources\static\img\postimg
 
 
 frontend:
