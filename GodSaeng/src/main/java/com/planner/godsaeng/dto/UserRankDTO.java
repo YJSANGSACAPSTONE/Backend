@@ -15,5 +15,6 @@ public class UserRankDTO {
 	
 	private String unickname;
 	private int ulevel;
+	private String uphoto;
 
 }

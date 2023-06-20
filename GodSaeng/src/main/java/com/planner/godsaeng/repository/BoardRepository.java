@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 
-public interface BoardRepository extends JpaRepository<Board, String> {
+public interface BoardRepository extends JpaRepository<Board, Integer> {
 	
 	// bid에 따른 해당 post들을 가져오는 쿼리
     @Query("SELECT p FROM Post p WHERE p.board.bid = :bid")
