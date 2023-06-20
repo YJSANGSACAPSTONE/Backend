@@ -44,7 +44,7 @@ public class SecurityConfig {
 		return new HttpCookieOAuth2AuthorizationRequestRepository();
 	}
 	
-//    private final AccessDecisionManager accessDecisionManager;
+//	private final AccessDecisionManager accessDecisionManager;
     
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -53,8 +53,8 @@ public class SecurityConfig {
 	            .cors()
 	            .and()
 	            .authorizeHttpRequests()
-	            .antMatchers("/**").permitAll()
-	            .antMatchers("/user/updateuser").hasRole("ADMIN")
+	            .antMatchers("/").permitAll()
+	            .antMatchers("/user/updateuser").hasRole("USER")
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
 //	                    "/plan/**","/board/**","/comments/**",
