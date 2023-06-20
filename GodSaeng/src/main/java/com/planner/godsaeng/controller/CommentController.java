@@ -37,6 +37,7 @@ public class CommentController {
 
     @PostMapping("/{poid}") // 결과데이터 : 생성된 댓글 번호 , 새로운 댓글등록
     public ResponseEntity<Long> addComment(@RequestBody CommentDTO postCommentDTO){
+
         Long commid = commentService.register(postCommentDTO);
         return new ResponseEntity<>(commid, HttpStatus.OK);
     }
