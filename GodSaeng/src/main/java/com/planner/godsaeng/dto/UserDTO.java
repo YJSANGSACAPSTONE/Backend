@@ -15,9 +15,9 @@ import lombok.ToString;
 @NoArgsConstructor
 public class UserDTO {
    private String u_id;
+   private String role;
    private String u_nickname;
    private String u_zepid;
-   private String u_img;
    private int u_deposit;
    private int u_level;
    private String u_content;

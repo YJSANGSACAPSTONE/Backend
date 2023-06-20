@@ -1,19 +1,9 @@
 package com.planner.godsaeng.domain.challenge.repository;
 
-import com.planner.godsaeng.entity.Challenge;
-import com.planner.godsaeng.entity.ChallengeParticipate;
-import com.planner.godsaeng.entity.QChallenge;
-import com.planner.godsaeng.entity.QChallengeParticipate;
-import com.planner.godsaeng.entity.QChallengeVerify;
-
-import java.util.List;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
 
 @Repository

@@ -70,6 +70,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		User user = attributes.toEntity(provider, attributes.getOauth2UserInfo());
 		return userRepository.save(user);
 	}
+	
 
 }
 
