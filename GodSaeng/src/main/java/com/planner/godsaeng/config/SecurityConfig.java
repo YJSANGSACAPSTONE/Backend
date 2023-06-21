@@ -53,7 +53,7 @@ public class SecurityConfig {
 	            .cors()
 	            .and()
 	            .authorizeHttpRequests()
-	            .antMatchers("/user/updateuser").hasAuthority("USER")
+//	            .antMatchers("/user/updateuser").hasAuthority("USER")
 //	            .antMatchers("/kakaopay/**").hasAuthority("USER")
 	            .antMatchers("/**").permitAll()
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
