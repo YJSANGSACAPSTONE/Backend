@@ -127,13 +127,13 @@ public class UserService {
 	   
    }
    
-   public int VerifyZepid(ZepIdVerifyDTO m,String uid) {
-	   String currentVerifykey = userRepository.findUzepidByUid(uid);
+   public int VerifyZepid(ZepIdVerifyDTO m) {
+	   String currentVerifykey = userRepository.findUzepidByUid(m.getVerifykey());
 	   System.out.println(m.getVerifykey() + "들어왔나?");
 	   System.out.println(currentVerifykey);
 	   if(m.getVerifykey().equals(currentVerifykey)) {
 		      try {
-		    	 userRepository.updateZepid(uid, m.getZepid());
+		    	 userRepository.updateZepid(m.getVerifykey(), m.getZepid());
 		    	 System.out.println("인증 성공");
 		         return 1;
 		        

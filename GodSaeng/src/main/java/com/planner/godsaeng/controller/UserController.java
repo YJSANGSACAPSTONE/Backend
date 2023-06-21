@@ -124,7 +124,7 @@ public class UserController {
 
 	@PostMapping("/zepidverify")
 	public ResponseEntity<String>ZepidVerify(@RequestBody ZepIdVerifyDTO m){
-		int isVerifySuccessed = service.VerifyZepid(m, "sanghee_ok@naver.com");
+		int isVerifySuccessed = service.VerifyZepid(m);
 		if(isVerifySuccessed == 1) {
 			return ResponseEntity.ok("인증 성공");
 		}else if(isVerifySuccessed == 2){

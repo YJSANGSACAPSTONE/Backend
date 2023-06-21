@@ -33,12 +33,12 @@ public interface UserRepository extends JpaRepository<User, String> {
 	
 	Optional<User> findByUid(String uid);
 	
-	@Query(value= "SELECT uzepid FROM Godsaeng_user Where uid= :uid", nativeQuery = true)
-	String findUzepidByUid(@Param("uid") String uid);
+	@Query(value= "SELECT uzepid FROM Godsaeng_user Where uzepid= :uzepid", nativeQuery = true)
+	String findUzepidByUid(@Param("uzepid") String uzepid);
 
 	@Modifying
-	@Query(value = "UPDATE Godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uid = :uid", nativeQuery = true)
-	void updateZepid(@Param("uid") String uid, @Param("newZepid") String newZepid);
+	@Query(value = "UPDATE Godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uzepid = :uzepid", nativeQuery = true)
+	void updateZepid(@Param("uzepid") String uzepid, @Param("newZepid") String newZepid);
 	
 	@Query("SELECT u FROM User u WHERE u.uid = :uid")
 	Optional<User> findUserByUid(@Param("uid") String uid);
