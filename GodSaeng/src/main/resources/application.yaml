@@ -64,10 +64,10 @@ com:
 
 frontend:
   base:
-    url: https://frontend-inky-pi.vercel.app
+    url: https://godsaeng.vercel.app
 
 server:
-  frontEnd: https://frontend-inky-pi.vercel.app
+  frontEnd: https://godsaeng.vercel.app
   backEnd: http://13.125.99.177:8070
   port: 8070
 
