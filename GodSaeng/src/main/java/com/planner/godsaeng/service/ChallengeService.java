@@ -35,13 +35,13 @@ public class ChallengeService {
 	//여기서부터 CRUD-C 챌린지 CREATE
 	@Transactional
 	public boolean InsertChallenge(ChallengeDTO dto, MultipartFile thumbnail) throws IOException {
-		String path = ResourceUtils.getFile("src/main/resources/static/img/challengeimg").getAbsolutePath();
+		String path = "/home/godsaeng/challengeimg";
 		if (!thumbnail.isEmpty()) {
-			String fileName = thumbnail.getOriginalFilename();
-			File dest = new File(path + File.separator + fileName);
-			thumbnail.transferTo(dest);
-			dto.setThumbnailData(thumbnail);
-			dto.setC_thumbnails("/img/challengeimg/" + fileName);
+		    String fileName = thumbnail.getOriginalFilename();
+		    File dest = new File(path + File.separator + fileName);
+		    thumbnail.transferTo(dest);
+		    dto.setThumbnailData(thumbnail);
+		    dto.setC_thumbnails("/img/challengeimg/" + fileName);
 		}
 		Challenge entity = dtoToEntity(dto);
 		challengeRepository.save(entity);

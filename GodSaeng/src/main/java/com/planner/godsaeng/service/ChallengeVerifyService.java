@@ -57,7 +57,7 @@ public class ChallengeVerifyService {
 				.challengeParticipate(challengeparticipate.get())
 				.cvphoto(null)
 				.cvsuccessornot(m.getCvsuccessornot())
-				.cvtime(m.getCvtime())
+				.cvtime(LocalDateTime.now())
 				.cvzepid(m.getCvzepid())
 				.build();
 		try {
@@ -69,7 +69,7 @@ public class ChallengeVerifyService {
 	}
 	
 	public Boolean InsertNormalChallengeVerifyData(ChallengeVerifyDTO m, MultipartFile verifyphoto) throws IOException{
-		String path = ResourceUtils.getFile("src/main/resources/static/img/challengeverifyimg").getAbsolutePath();
+		String path = "/home/godsaeng/challengeverifyimg";
 		if (!verifyphoto.isEmpty()) {
 			String fileName = verifyphoto.getOriginalFilename();
 			File dest = new File(path + File.separator + fileName);

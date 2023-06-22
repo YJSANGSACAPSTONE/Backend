@@ -110,11 +110,11 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		}
 	
 	 protected String getCustomDefaultTargetUrl() {
-	       return "http://localhost:3000/signUp";
+	       return "https://frontend-inky-pi.vercel.app/signUp";
 	   }
 	 
 	 protected String getCustomDefaultTargetUrl2() {
-	       return "http://localhost:3000/planner";
+	       return "https://frontend-inky-pi.vercel.app/planner";
 	   }
 		
 }

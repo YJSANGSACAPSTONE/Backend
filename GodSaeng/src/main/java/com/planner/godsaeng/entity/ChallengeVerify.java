@@ -49,7 +49,7 @@ public class ChallengeVerify {
 	@Column(length=200, nullable=true)
 	private String cvphoto;
 
-	@Column(length=50, nullable=false)
+	@Column(length=50, nullable=true)
 	private LocalDateTime cvtime;
 	
 	@Column(length=50, nullable=true)

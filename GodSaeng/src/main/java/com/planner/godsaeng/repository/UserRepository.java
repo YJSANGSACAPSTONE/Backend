@@ -19,25 +19,25 @@ import com.planner.godsaeng.entity.User;
 @Transactional
 public interface UserRepository extends JpaRepository<User, String> {
 
-	@Query(value = "SELECT uid FROM Godsaeng_user WHERE uzepid = :uzepid", nativeQuery = true)
+	@Query(value = "SELECT uid FROM godsaeng_user WHERE uzepid = :uzepid", nativeQuery = true)
 	String findUidByUzepid(@Param("uzepid") String uzepid);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE Godsaeng_user SET udeposit = udeposit - :participatefee WHERE uid = :uid", nativeQuery = true)
+	@Query(value = "UPDATE godsaeng_user SET udeposit = udeposit - :participatefee WHERE uid = :uid", nativeQuery = true)
 	void updateDeposit(@Param("uid") String uid, @Param("participatefee") Integer participatefee);
 	
 	@Modifying
-	@Query(value = "UPDATE Godsaeng_user SET udeposit = udeposit + :newDeposit WHERE uid = :uid", nativeQuery = true)
+	@Query(value = "UPDATE godsaeng_user SET udeposit = udeposit + :newDeposit WHERE uid = :uid", nativeQuery = true)
 	void addDeposit(@Param("uid") String uid, @Param("newDeposit") Integer newDeposit);
 	
 	Optional<User> findByUid(String uid);
 	
-	@Query(value= "SELECT uzepid FROM Godsaeng_user Where uzepid= :uzepid", nativeQuery = true)
+	@Query(value= "SELECT uzepid FROM godsaeng_user Where uzepid= :uzepid", nativeQuery = true)
 	String findUzepidByUid(@Param("uzepid") String uzepid);
 
 	@Modifying
-	@Query(value = "UPDATE Godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uzepid = :uzepid", nativeQuery = true)
+	@Query(value = "UPDATE godsaeng_user u SET u.uzepid = :newZepid, u.uverifiedornot = 1 WHERE u.uzepid = :uzepid", nativeQuery = true)
 	void updateZepid(@Param("uzepid") String uzepid, @Param("newZepid") String newZepid);
 	
 	@Query("SELECT u FROM User u WHERE u.uid = :uid")
@@ -45,7 +45,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 //	@Query(value = "SELECT uid FROM godsaeng_user", nativeQuery = true)
 //    Optional<User> findByUid(String uid);
 	
-	@Query(value = "SELECT * FROM Godsaeng_user ORDER BY ulevel DESC LIMIT 10", nativeQuery = true)
+	@Query(value = "SELECT * FROM godsaeng_user ORDER BY ulevel DESC LIMIT 10", nativeQuery = true)
 	List<User> findTop10UsersByScoreDesc();
 	
 	Optional<User> findByProviderAndUid(Provider provider, String uid);
