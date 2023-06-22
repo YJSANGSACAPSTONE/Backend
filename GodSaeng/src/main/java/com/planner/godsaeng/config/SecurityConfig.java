@@ -54,7 +54,7 @@ public class SecurityConfig {
 	            .and()
 	            .authorizeHttpRequests()
 //	            .antMatchers("/user/updateuser").hasAuthority("USER")
-//	            .antMatchers("/kakaopay/**").hasAuthority("USER")
+	            .antMatchers("/kakaopay/**").hasAuthority("TEMP")
 	            .antMatchers("/**").permitAll()
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
@@ -70,7 +70,6 @@ public class SecurityConfig {
 //	            .antMatchers("/library/**").hasRole("LIBRARYMANAGER")
 //	            .antMatchers("/admin/**").hasRole("ADMIN")
 	            .anyRequest().authenticated()
-
 				.and()
 //				.accessDecisionManager(affirmativeBased())
 				.oauth2Login()
@@ -99,7 +98,9 @@ public class SecurityConfig {
 	@Bean
 	public RoleHierarchyImpl roleHierarchy() {
 		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-//		roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_LIBMANAGER > ROLE_CHALLENGEMANAGER > ROLE_USER > ROLE_TEMP");
+//		roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_LIBMANAGER\n" + "ROLE_LIBMANAGER > ROLE_CHALLENGEMANAGER\n" + "ROLE_CHALLENGEMANAGER > ROLE_USER\n" + "ROLE_USER > ROLE_TEMP");
+//		roleHierarchy.setHierarchy("ADMIN > LIBMANAGER\n" + "LIBMANAGER > CHALLENGEMANAGER\n" + "CHALLENGEMANAGER > USER\n" + "USER > TEMP");
+		
         return roleHierarchy;
 	}
 	
@@ -128,5 +129,6 @@ public class SecurityConfig {
 //        permitAllFilter.setAuthenticationManager(authenticationManagerBean());
 //        return permitAllFilter;
 //    }
+	
 
 }
