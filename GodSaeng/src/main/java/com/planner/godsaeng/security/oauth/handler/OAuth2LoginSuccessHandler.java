@@ -1,7 +1,6 @@
 package com.planner.godsaeng.security.oauth.handler;
 
-import static com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.*;
-
+import static com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -17,11 +16,12 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.planner.godsaeng.entity.Role;
+import com.planner.godsaeng.entity.User;
+import com.planner.godsaeng.repository.UserRepository;
 import com.planner.godsaeng.security.jwt.JwtTokenProvider;
 import com.planner.godsaeng.security.oauth.CustomOAuth2User;
 import com.planner.godsaeng.security.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.planner.godsaeng.util.CookieUtils;
-
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	
+	private final UserRepository userRepository;
 	private final JwtTokenProvider tokenProvider;
 	private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 	
@@ -84,8 +85,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 	}
 	
 	private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-
-		String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), oAuth2User.getRole().name(), oAuth2User.getProfileimage());
+		Optional<User> optionalUser = userRepository.findById(oAuth2User.getUid());
+		User user = optionalUser.orElse(null);
+		
+		String accessToken = tokenProvider.createAccessToken(oAuth2User.getUid(), user.getRole().name(), oAuth2User.getProfileimage());
 		String refreshToken = tokenProvider.createRefreshToken();
 
 		setAccessTokenInCookie(response, accessToken);

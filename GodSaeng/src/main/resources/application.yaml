@@ -73,7 +73,7 @@ server:
   port: 8070
 
 jwt:
-  secret-key: ssh34kss05kyh19jhj77ntg99lmh02yj
+  secret-key: ${JWT_SECRET_KEY}
   expire-seconds:
     access-token: 3600
     refresh-token: 30240000

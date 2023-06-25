@@ -33,7 +33,7 @@ public class UserService {
 	  int randomnumber = r.nextInt(100000);
       user = User.builder()
     		.uid(u.getU_id())
-    		.role(Role.USER)
+    		.role(Role.ADMIN)
             .unickname(u.getU_nickname())
             .uzepid(u.getU_id() + randomnumber)
             .udeposit(u.getU_deposit())

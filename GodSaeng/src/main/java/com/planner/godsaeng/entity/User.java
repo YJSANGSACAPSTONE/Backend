@@ -55,6 +55,7 @@ public class User {
    private int uverifiedornot;
    
    @Enumerated(EnumType.STRING)
+   @Column(nullable = false)
    private Role role;
    
    @Column(length=100, nullable=true)

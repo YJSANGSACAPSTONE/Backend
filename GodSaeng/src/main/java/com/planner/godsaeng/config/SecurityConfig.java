@@ -53,8 +53,8 @@ public class SecurityConfig {
 	            .cors()
 	            .and()
 	            .authorizeHttpRequests()
-//	            .antMatchers("/user/updateuser").hasAuthority("USER")
-	            .antMatchers("/kakaopay/**").hasAuthority("TEMP")
+	            .antMatchers("/user/updateuser").hasAuthority("ADMIN")
+//	            .antMatchers("/kakaopay/**").hasAuthority("TEMP")
 	            .antMatchers("/**").permitAll()
 //	            .antMatchers("/","/challenge/zepverify").permitAll()
 //	            .antMatchers(
@@ -91,6 +91,7 @@ public class SecurityConfig {
 				.and()
 				.addFilterBefore(jwtAuthenticationFilter, OAuth2AuthorizationRequestRedirectFilter.class)
 				.addFilterBefore(exceptionHandlerFilter, JwtAuthenticationFilter.class)
+//				.accessDecisionManager(affirmativeBased())
 				.build();
 
 	}
@@ -109,7 +110,7 @@ public class SecurityConfig {
         RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
         return roleHierarchyVoter;
     }
-
+	
 	private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
 	        List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
 	        accessDecisionVoters.add(roleVoter()); // 계층 voter

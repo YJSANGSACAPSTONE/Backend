@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class RoleHierarchyServiceImpl implements RoleHierarchyService{
+public class RoleHierarchyServiceImpl {
 
 private final RoleHierarchyRepository roleHierarchyRepository;
 	

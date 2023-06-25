@@ -1,6 +1,6 @@
-package com.planner.godsaeng.hierarchy.service;
-
-public interface RoleHierarchyService {
-	  String findAllHierarchy();
-
-}
+//package com.planner.godsaeng.hierarchy.service;
+//
+//public interface RoleHierarchyService {
+//	  String findAllHierarchy();
+//
+//}

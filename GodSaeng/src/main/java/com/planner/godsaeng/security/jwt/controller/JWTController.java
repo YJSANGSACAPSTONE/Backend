@@ -13,12 +13,12 @@ import com.planner.godsaeng.security.jwt.dto.TokenReIssueResponseDto;
 import com.planner.godsaeng.security.jwt.service.JWTTokenService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/token")
 public class JWTController {
-	
 	private final JWTTokenService jwtTokenService;
 	
 	@PostMapping(value = "", headers = "Authorization-refresh")
@@ -38,6 +38,5 @@ public class JWTController {
 				.build();
 		
 	}
-	
 
 }
