@@ -57,8 +57,8 @@ public class Post extends BaseEntity {
 		this.pocontent = pocontent;
 	}
 
-	public void setPostHitCount(int pohitcount) {
-        this.pohitcount = pohitcount;
+	public void addHitCount() {
+        this.pohitcount++;
     }
 	
 }

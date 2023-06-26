@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.annotations.Until;
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
@@ -38,13 +34,13 @@ public interface PostService {
 	// 게시물 수정
 	void modify(PostDTO postDTO);
 	
-	// 조회수 처리
-	void viewCountValidation(PostDTO postDTO, HttpServletRequest request, HttpServletResponse response);
-	
 	// 게시물 좋아요
 	boolean likePost(Long poid, String uid);
 	
 	boolean isPostLikedByUser(Long poid, String uid);
+	
+	// 조회수 처리
+	void viewCountValidation(PostDTO postDTO);
 	
 	// 인기글
 	List<Post> getPopularPosts(int limit);

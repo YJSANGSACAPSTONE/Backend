@@ -31,7 +31,7 @@ public class UploadController {
 
 	@Value("${com.planner.godsaeng.upload.additionalPath}") // application.yaml의 변수
     private String uploadPath;
-//
+
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UploadResultDTO>> uploadFile(MultipartFile[] uploadFiles){
     	 for (MultipartFile file : uploadFiles) {

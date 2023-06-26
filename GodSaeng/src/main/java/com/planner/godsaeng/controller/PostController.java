@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,6 +32,7 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/post/")
 @Log4j2
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
 	
 	private final PostService postService;
@@ -67,27 +69,36 @@ public class PostController {
 	    return ResponseEntity.ok(poid);
 	}
 
-	@GetMapping({"/read", "/modify"})
-	public ResponseEntity<PostDTO> read(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long poid,
-	                                    HttpServletRequest request, HttpServletResponse response) {
-	    log.info("POID: " + poid);
+	@GetMapping("/read")
+    public ResponseEntity<PostDTO> read(@RequestParam("poid") Long poid) {
+        log.info("POID: " + poid);
 
-	    // 게시물 조회
-	    PostDTO postDTO = postService.getPost(poid);
+        // 게시물 조회
+        PostDTO postDTO = postService.getPost(poid);
 
-	    // 조회수 처리
-	    postService.viewCountValidation(postDTO, request, response);
+        log.info(postDTO);
 
-	    log.info(postDTO);
-
-	    return ResponseEntity.ok().body(postDTO);
-	}
+        return ResponseEntity.ok().body(postDTO);
+    }
 	
 	@DeleteMapping("/remove/{poid}")
 	public ResponseEntity<String> remove(@PathVariable long poid) {
 		log.info("poid: " + poid);
 		postService.removeWithAll(poid);
 		return ResponseEntity.ok().body("Post with ID " + poid + " has been removed.");
+	}
+	
+	@GetMapping("/modify")
+	public ResponseEntity<PostDTO> modifyRead(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Long poid,
+										HttpServletRequest request, HttpServletResponse response) {
+	    log.info("POID: " + poid);
+
+	    // 게시물 조회
+	    PostDTO postDTO = postService.getPost(poid);
+
+	    log.info(postDTO);
+
+	    return ResponseEntity.ok().body(postDTO);
 	}
 	
 	@PutMapping("/modify/{poid}")
@@ -114,8 +125,7 @@ public class PostController {
     public ResponseEntity<List<Post>> getPopularPosts(@RequestParam int limit) {
         List<Post> popularPosts = postService.getPopularPosts(limit);
         return ResponseEntity.ok(popularPosts);
-    }
-    
+    }  
 
 	@PostMapping("/like/{poid}")
 	public ResponseEntity<Boolean> likePost(@PathVariable Long poid, @RequestBody Map<String, String> requestBody) {
@@ -124,5 +134,4 @@ public class PostController {
 	    return ResponseEntity.ok().body(liked);
 	}
     
-
 }

@@ -1,9 +1,9 @@
 package com.planner.godsaeng.service;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -113,89 +113,68 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PostDTO getPost(Long poid) {
 	    List<Object[]> result = postRepository.getPostWithAll(poid);
-	    
-	    Post post = (Post) result.get(0)[0];    // Post 엔티티는 가장 앞에 존재 - 모든 Row가 동일한 값이다
 
-	    // 조회수 업데이트
-	    post.setPostHitCount(post.getPohitcount() + 1);
-
-	    List<PostImage> postImageList = new ArrayList<>();    // 게시글의 이미지개수만큼 PostImage 객체 필요
-
+	    Post post = (Post) result.get(0)[0];
+	    List<PostImage> postImageList = new ArrayList<>();
 	    result.forEach(arr -> {
 	        PostImage postImage = (PostImage) arr[1];
 	        postImageList.add(postImage);
 	    });
 
 	    User user = (User) result.get(0)[2];
-
-	    Long commentCnt = (Long) result.get(0)[3]; // 댓글 개수 - 모든 Row가 동일한 값
-	    
-	    Long likeCnt = (Long) result.get(0)[4]; // 좋아요 개수 - 모든 Row가 동일한 값
+	    Long commentCnt = (Long) result.get(0)[3];
+	    Long likeCnt = (Long) result.get(0)[4];
 
 	    PostDTO postDTO = entityToDto(post, postImageList, commentCnt, likeCnt);
 
-	    // viewCountValidation 로직
-	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-	    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-	    viewCountValidation(postDTO, request, response);
-	    
-	    // DB에 조회수 업데이트 반영
-	    postRepository.save(post);
-	    
+	    viewCountValidation(postDTO);
+
 	    return postDTO;
 	}
-	
-	public void viewCountValidation(PostDTO postDTO, HttpServletRequest request, HttpServletResponse response) {
-	    // PostDTO에서 필요한 정보 가져오기
-	    Long poid = postDTO.getPo_id();
-	    int postHitCount = postDTO.getPo_hitcount();
+
+	public void viewCountValidation(PostDTO postDTO) {
+	    Long po_id = postDTO.getPo_id();
+	    Post post = postRepository.getOne(postDTO.getPo_id());
+	    
+	    HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+	    HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 
 	    Cookie[] cookies = request.getCookies();
 	    Cookie cookie = null;
 	    boolean isCookie = false;
-	    
+
 	    // request에 쿠키들이 있을 때
 	    for (int i = 0; cookies != null && i < cookies.length; i++) {
-	        // postView 쿠키가 있을 때
+	    	// postView 쿠키가 있을 때
 	        if (cookies[i].getName().equals("postView")) {
-	            // cookie 변수에 저장
+	        	// cookie 변수에 저장
 	            cookie = cookies[i];
 	            // 만약 cookie 값에 현재 게시글 번호가 없을 때
-	            if (!containsPoid(cookie.getValue(), poid)) {
-	                // 해당 게시글 조회수를 증가시키고, 쿠키 값에 해당 게시글 번호를 추가
-	                postHitCount++;
-	                cookie.setValue(cookie.getValue() + "[" + poid + "]");
+	            if (!cookie.getValue().contains("[" + po_id + "]")) {
+	            	// 해당 게시글 조회수를 증가시키고, 쿠키 값에 해당 게시글 번호를 추가
+	            	post.addHitCount();
+	                cookie.setValue(cookie.getValue() + "[" + po_id + "]");
 	            }
 	            isCookie = true;
 	            break;
 	        }
 	    }
+
 	    // 만약 postView라는 쿠키가 없으면 처음 접속한 것이므로 새로 생성
 	    if (!isCookie) {
-	        postHitCount++;
-	        cookie = new Cookie("postView", "[" + poid + "]");
+		    post.addHitCount();
+	        cookie = new Cookie("postView", "[" + po_id + "]");
 	    }
 
 	    // 쿠키 유지시간을 오늘 하루 자정까지로 설정
-	    LocalDateTime todayEnd = LocalDate.now().atTime(LocalTime.MAX);
-	    Duration duration = Duration.between(LocalDateTime.now(), todayEnd);
-	    long secondsUntilTodayEnd = duration.getSeconds();
-	    cookie.setMaxAge((int) secondsUntilTodayEnd);
+	    long todayEndSecond = LocalDate.now().atTime(LocalTime.MAX).toEpochSecond(ZoneOffset.UTC);
+	    long currentSecond = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
 	    cookie.setPath("/"); // 모든 경로에서 접근 가능
+	    cookie.setMaxAge((int) (todayEndSecond - currentSecond));
 	    response.addCookie(cookie);
 
-	    // 조회수 업데이트
-	    postDTO.setPo_hitcount(postHitCount);
-	}
-	
-	private boolean containsPoid(String cookieValue, Long poid) {
-	    String[] values = cookieValue.split("\\[|\\]");
-	    for (String value : values) {
-	        if (value.equals(poid.toString())) {
-	            return true;
-	        }
-	    }
-	    return false;
+	    // 조회수 저장
+	    postRepository.save(post);   
 	}
 	
 	@Transactional
