@@ -59,10 +59,10 @@ public class ChallengeController {
 	
 	//챌린지추가
 	@PostMapping("/addchallenge")
-	public ResponseEntity<Boolean> AddChallenge(@AuthenticationPrincipal JwtAuthentication user, @RequestParam("thumbnail") MultipartFile thumbnail,
-	                                             @ModelAttribute ChallengeDTO d) throws IOException {
+	public ResponseEntity<Boolean> AddChallenge(@AuthenticationPrincipal JwtAuthentication user,
+	                                             @RequestBody ChallengeDTO d)  {
 		
-	    boolean isAddSuccessed = service.InsertChallenge(d,thumbnail);
+	    boolean isAddSuccessed = service.InsertChallenge(d);
 
 	    if (isAddSuccessed) {
 	        return ResponseEntity.ok(true);
@@ -145,7 +145,7 @@ public class ChallengeController {
 	
 	//인증 확인 submit버튼을 눌렀을시 데이터 삽입 메서드 
 	@PostMapping("/adminverify")
-	public ResponseEntity<Boolean>VerifyChallenge(@AuthenticationPrincipal JwtAuthentication user, @ModelAttribute ChallengeParticipateDTO m){
+	public ResponseEntity<Boolean>VerifyChallenge(@AuthenticationPrincipal JwtAuthentication user, @RequestBody ChallengeParticipateDTO m){
 		boolean isVerifySuccessed = true;
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
@@ -154,9 +154,9 @@ public class ChallengeController {
 		}
 	}
 	@PostMapping("/verify")
-	public ResponseEntity<Boolean>VerifyNormalChallenge(@ModelAttribute ChallengeVerifyDTO v, @AuthenticationPrincipal JwtAuthentication user, @RequestParam("verifyPhoto") MultipartFile verifyPhoto)throws IOException{
+	public ResponseEntity<Boolean>VerifyNormalChallenge(@RequestBody ChallengeVerifyDTO v, @AuthenticationPrincipal JwtAuthentication user){
 		System.out.println(v.getCid());
-		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v, verifyPhoto);
+		boolean isVerifySuccessed = verifyservice.InsertNormalChallengeVerifyData(v);
 		if(isVerifySuccessed) {
 			return ResponseEntity.ok(true);
 		}else {

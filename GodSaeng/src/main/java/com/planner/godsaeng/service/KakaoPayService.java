@@ -44,9 +44,9 @@ public class KakaoPayService {
         parameters.add("total_amount", amount);
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:8070/kakaopay/approve"); // 성공 시 redirect url
-        parameters.add("fail_url", "http://localhost:8070/kakaopay/fail"); // 실패 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8070/kakaopay/cancel"); // 취소 시 redirect url
+        parameters.add("approval_url", "https://godsaengplanner.com/kakaopay/approve"); // 성공 시 redirect url
+        parameters.add("fail_url", "https://godsaengplanner.com/kakaopay/fail"); // 실패 시 redirect url
+        parameters.add("cancel_url", "https://godsaengplanner.com/kakaopay/cancel"); // 취소 시 redirect url
         
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());

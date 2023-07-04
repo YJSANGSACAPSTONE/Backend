@@ -50,9 +50,6 @@ public class Challenge {
 	@Column(nullable = false)
 	private Integer ccategory;
 	
-	@Column(length = 50, nullable = false)
-	private String cintroduction;
-	
 	@Column(nullable = true)
 	private Integer cfee;
 	

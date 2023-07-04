@@ -140,7 +140,7 @@ public class UserController {
 
 	//관리자 모드
 	@PostMapping("/userlist")
-	public ResponseEntity<List<UserListDTO>> getUserList(){
+	public ResponseEntity<List<UserListDTO>> getUserList(@AuthenticationPrincipal JwtAuthentication user){
 		List<UserListDTO> userDTOList = service.getUserList();
 		return ResponseEntity.ok(userDTOList);
 	}

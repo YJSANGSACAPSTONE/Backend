@@ -79,13 +79,13 @@ public class AdminController {
 	
 	
 	@GetMapping("/statistic/monthly")
-	public ResponseEntity<Map<String, Long>> getMonthlyData() {
-        Map<String, Long> monthlyData = verifyService.countVerifyByMonthRange();
+	public ResponseEntity<Map<Integer, Long>> getMonthlyData(@AuthenticationPrincipal JwtAuthentication user) {
+        Map<Integer, Long> monthlyData = verifyService.countVerifyByMonthRange();
         return ResponseEntity.ok(monthlyData);
     }
 	
 	@GetMapping("/statistic/daily")
-	public ResponseEntity<Map<LocalDate,Long>>getDailyData(){
+	public ResponseEntity<Map<LocalDate,Long>>getDailyData(@AuthenticationPrincipal JwtAuthentication user){
 		Map<LocalDate, Long> dailyData = verifyService.countVerifyByRecentDays();
 		return ResponseEntity.ok(dailyData);
 	}
@@ -113,7 +113,7 @@ public class AdminController {
 	    Map<String, Object> lists = new HashMap<>();
 	    lists.put("verifyList", challengeVerifyList);
 
-	    Map<String, Long> monthlylist = verifyService.countVerifyByMonthRange();
+	    Map<Integer, Long> monthlylist = verifyService.countVerifyByMonthRange();
 	    lists.put("monthlyList", monthlylist);
 	    lists.put("boardList", boardList);
 

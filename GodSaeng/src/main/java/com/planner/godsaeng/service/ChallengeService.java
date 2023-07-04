@@ -34,18 +34,9 @@ public class ChallengeService {
 	Challenge challenge = null;
 	//여기서부터 CRUD-C 챌린지 CREATE
 	@Transactional
-	public boolean InsertChallenge(ChallengeDTO dto, MultipartFile thumbnail) throws IOException {
-		String path = "/home/godsaeng/challengeimg";
-		if (!thumbnail.isEmpty()) {
-		    String fileName = thumbnail.getOriginalFilename();
-		    File dest = new File(path + File.separator + fileName);
-		    thumbnail.transferTo(dest);
-		    dto.setThumbnailData(thumbnail);
-		    dto.setC_thumbnails("/img/challengeimg/" + fileName);
-		}
+	public boolean InsertChallenge(ChallengeDTO dto) {
 		Challenge entity = dtoToEntity(dto);
 		challengeRepository.save(entity);
-
 		return true;
 	}
 	public List<ChallengeDTO>ReadAllChallenge(){
@@ -97,7 +88,6 @@ public class ChallengeService {
 		List<ChallengeDTO> myList = new ArrayList<>();
 		for (Challenge e : myListEntity) {
 			ChallengeDTO dto = entityToDto(e);
-			dto.setThumbnailData(null); // MultipartFile 객체를 null로 설정
 			dto.setC_thumbnails(e.getCthumbnails()); // 이미지 경로만 설정
 			myList.add(dto);
 
@@ -141,7 +131,6 @@ public class ChallengeService {
 			ChallengeDTO dto = entityToDto(e);
 			ChallengeList.add(dto);
 			String thumbnailPath = e.getCthumbnails();
-				dto.setThumbnailData(null);
 				ChallengeList.add(dto);
 				// 예외 처리 로직		
 		}
@@ -163,7 +152,6 @@ public class ChallengeService {
 				.c_numberofparticipants(e.getCnumberofparticipants())
 				.c_category(e.getCcategory())
 				.c_thumbnails(e.getCthumbnails())
-				.c_introduction(e.getCintroduction())
 				.c_fee(e.getCfee())
 				.c_numberofphoto(e.getCnumberofphoto())
 				.c_typeofverify(e.getCtypeofverify())
@@ -182,7 +170,6 @@ public class ChallengeService {
 				.cnumberofparticipants(d.getC_numberofparticipants())
 				.ccategory(d.getC_category())
 				.cthumbnails(d.getC_thumbnails())
-				.cintroduction(d.getC_introduction())
 				.cfee(d.getC_fee())
 				.cnumberofphoto(d.getC_numberofphoto())
 				.ctypeofverify(d.getC_typeofverify())

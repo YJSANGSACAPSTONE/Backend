@@ -13,6 +13,7 @@ import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
 import com.planner.godsaeng.dto.PostImageDTO;
+import com.planner.godsaeng.dto.PostRequestDTO;
 import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.PostImage;
@@ -22,6 +23,8 @@ public interface PostService {
 	
 	// 게시글 등록
 	Long register(PostDTO postDTO);
+	
+	Boolean registera(PostRequestDTO dto, String uid);
 	
 	// 목록처리
 	PageResultDTO<PostDTO, Object[]> getList(PageRequestDTO pageRequestDTO);

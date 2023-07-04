@@ -30,7 +30,6 @@ import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/plan")
-@CrossOrigin(origins = "http://localhost:3000") // React app URL
 @Log4j2
 public class PlanController {
    
@@ -43,7 +42,7 @@ public class PlanController {
    private static final Logger logger = LogManager.getLogger(PlanController.class);
    
    @PostMapping("/addplan")
-   public ResponseEntity<Boolean> addPlan(@RequestBody PlanDTO d) {
+   public ResponseEntity<Boolean> addPlan(@AuthenticationPrincipal JwtAuthentication user, @RequestBody PlanDTO d) {
       boolean isAddSuccessed = service.InsertPlan(d);
       if(isAddSuccessed) {
          return ResponseEntity.ok(true);
@@ -68,7 +67,7 @@ public class PlanController {
    
    //업데이트 시 실시간으로 업데이트된 데이터를 출력할 수 있도록 하는 메서드
    @PostMapping("/updateplan")
-   public ResponseEntity<PlanDTO> updatePlan(@RequestBody PlanDTO d) {
+   public ResponseEntity<PlanDTO> updatePlan(@AuthenticationPrincipal JwtAuthentication user, @RequestBody PlanDTO d) {
       System.out.println("userId = "+d.getU_id());
       
       boolean isSuccess = service.UpdatePlan(d);
@@ -84,7 +83,7 @@ public class PlanController {
    }
    //일정 삭제 메서드
    @GetMapping("/deleteplan/{p_id}")
-   public ResponseEntity<Boolean> deletePlan(@PathVariable("p_id") Long p_id) {
+   public ResponseEntity<Boolean> deletePlan(@AuthenticationPrincipal JwtAuthentication user, @PathVariable("p_id") Long p_id) {
        boolean isDeleted = service.DeletePlan(p_id);
        if (isDeleted) {
            return ResponseEntity.ok(true);

@@ -4,7 +4,9 @@ spring:
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
-
+  servlet:
+    multipart:
+      max-file-size: 5MB
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,15 +22,7 @@ spring:
     username: root
     password: rkdtlstjd
 
-  servlet:
-    multipart:
-
-      location: /home/ubuntu/godsaeng/postimg
-
-      enabled: true
-      max-request-size: 30MB
-      max-file-size: 10MB
-      
+  
   security:
     oauth2:
       client:
@@ -41,7 +35,7 @@ spring:
           kakao:
             client-id: 87c054c34eca4ca3541ab083e086cd12
             client-secret: vh89sp3zQwctgfvWcWM7ZTxPGhvhNnSh
-            redirect-uri: http://13.125.99.177:8070/login/oauth2/code/kakao
+            redirect-uri: https://godsaengplanner.com/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -55,6 +49,21 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: AKIARXDLYFBVDCYF6KPB
+      secret-key: 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
+    s3:
+      bucket: godsaengbucket
+
+
+
 com:
   planner:
     godsaeng:
@@ -64,11 +73,11 @@ com:
 
 frontend:
   base:
-    url: https://godsaeng.vercel.app
+    url: https://web.godsaengplanner.com
 
 server:
-  frontEnd: https://godsaeng.vercel.app
-  backEnd: http://13.125.99.177:8070
+  frontEnd: https://web.godsaengplanner.com
+  backEnd: https://godsaengplanner.com
   port: 8070
 
 jwt:

@@ -36,8 +36,10 @@ public class CookieUtils {
 	public static String addCookie(String name, String value, int maxAge) {
 		ResponseCookie cookie = ResponseCookie.from(name, value)
 			.sameSite("None")
-			.secure(true)
 			.maxAge(maxAge)
+			.secure(true)
+			.path("/")
+			.domain(".godsaengplanner.com")
 			.build();
 		return cookie.toString();
 	}

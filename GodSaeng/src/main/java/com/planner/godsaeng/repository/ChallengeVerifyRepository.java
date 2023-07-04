@@ -37,6 +37,14 @@ public interface ChallengeVerifyRepository extends JpaRepository<ChallengeVerify
 			+ " AND cv.cid = cp.cid"
 			+ " GROUP BY cid;", nativeQuery = true)
 	List<Object[]> getChallengeStatistics();
+	
+	
+	
+	@Query(value = "SELECT uid, COUNT(*)AS cvCount, cvtime FROM godsaeng_challengeverify WHERE cid = :cid AND cvsuccessornot = 1 AND DATE(cvtime) = CURDATE() GROUP BY uid ORDER BY cvtime asc", nativeQuery = true)
+	List<Object[]>getChallengeRankData(@Param("cid")Long cid);
+	
+	@Query(value = "SELECT u.unickname , COUNT(*)AS cvCount, cv.uid FROM godsaeng_challengeverify cv JOIN godsaeng_user u ON cv.uid = u.uid WHERE cv.cid = :cid GROUP BY u.unickname, cv.uid ORDER BY cvCount desc", nativeQuery = true)
+	List<Object[]>getCodingChallengeRankData(@Param("cid")Long cid);
 
 	
 	    

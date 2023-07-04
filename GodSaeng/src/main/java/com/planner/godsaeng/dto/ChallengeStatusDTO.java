@@ -26,7 +26,7 @@ public class ChallengeStatusDTO {
     private Date cstartdate;
     private Date cenddate;
     private Integer ctypeofverify;
-    private BigInteger datediff;
+    private Integer datediff;
     private BigInteger totalcount;
     private BigInteger cvsuccesscount;
     

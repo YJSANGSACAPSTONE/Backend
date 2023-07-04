@@ -29,14 +29,12 @@ public class ChallengeDTO {
 	private Date c_enddate;
 	private Integer c_numberofparticipants;
 	private Integer c_category;
-	private String c_introduction;
 	private Integer c_fee;
 	private Integer c_numberofphoto;
 	private Integer c_typeofverify;
 	private Integer c_typeoffrequency;
 	private Integer c_frequency;
 	private Integer c_score;
-	private MultipartFile thumbnailData;
     private String c_thumbnails;
 	
 	public void toEntity(ChallengeDTO d) {
@@ -48,7 +46,6 @@ public class ChallengeDTO {
 				.cenddate(d.getC_enddate())
 				.cnumberofparticipants(d.getC_numberofparticipants())
 				.ccategory(d.getC_category())
-				.cintroduction(d.getC_introduction())
 				.cfee(d.getC_fee())
 				.cnumberofphoto(d.getC_numberofphoto())
 				.ctypeofverify(d.getC_typeofverify())

@@ -19,12 +19,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.planner.godsaeng.dto.PageRequestDTO;
 import com.planner.godsaeng.dto.PageResultDTO;
 import com.planner.godsaeng.dto.PostDTO;
+import com.planner.godsaeng.dto.PostRequestDTO;
+import com.planner.godsaeng.entity.Board;
 import com.planner.godsaeng.entity.Post;
 import com.planner.godsaeng.entity.User;
 import com.planner.godsaeng.entity.PostImage;
 import com.planner.godsaeng.entity.PostLike;
 import com.planner.godsaeng.repository.PostRepository;
 import com.planner.godsaeng.repository.UserRepository;
+import com.planner.godsaeng.repository.BoardRepository;
 import com.planner.godsaeng.repository.CommentRepository;
 import com.planner.godsaeng.repository.PostImageRepository;
 import com.planner.godsaeng.repository.PostLikeRepository;
@@ -46,6 +49,7 @@ public class PostServiceImpl implements PostService {
 	private final CommentRepository commentRepository;
 	private final PostLikeRepository postLikeRepository;
 	private final UserRepository userRepository;
+	private final BoardRepository boardRepository;
 	
 	@Transactional
 	@Override
@@ -64,6 +68,36 @@ public class PostServiceImpl implements PostService {
 		}
 
 		return post.getPoid();
+	}
+	
+	@Override
+	@Transactional
+	public Boolean registera(PostRequestDTO dto, String uid) {
+		Optional<User> user = userRepository.findById(uid);
+		Optional<Board> board = boardRepository.findById(dto.getB_id());
+		Post post;
+		if(user.isPresent()) {
+			if(board.isPresent()) {
+				post = Post.builder()
+						.user(user.get())
+						.board(board.get())
+						.poid(dto.getPo_id())
+						.potitle(dto.getPo_title())
+						.pocontent(dto.getPo_content())
+						.posecret(dto.isPo_secret())
+						.build();
+				postRepository.save(post);
+//				if(dto.getImageDTOList()!=null) {
+//					
+//				}
+				
+			}else {
+				return false;
+			}
+		}else {
+		return false;
+		}
+		return false;
 	}
 	
 	@Override

@@ -1,26 +1,21 @@
 package com.planner.godsaeng.service;
 
-import java.io.File;
-import java.io.IOException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.planner.godsaeng.dto.ChallengeVerifyDTO;
 import com.planner.godsaeng.dto.ZepRequestDTO;
-import com.planner.godsaeng.entity.Challenge;
 import com.planner.godsaeng.entity.ChallengeParticipate;
 import com.planner.godsaeng.entity.ChallengeParticipateId;
 import com.planner.godsaeng.entity.ChallengeVerify;
@@ -68,18 +63,12 @@ public class ChallengeVerifyService {
 		}
 	}
 	
-	public Boolean InsertNormalChallengeVerifyData(ChallengeVerifyDTO m, MultipartFile verifyphoto) throws IOException{
-		String path = "/home/godsaeng/challengeverifyimg";
-		if (!verifyphoto.isEmpty()) {
-			String fileName = verifyphoto.getOriginalFilename();
-			File dest = new File(path + File.separator + fileName);
-			verifyphoto.transferTo(dest);
-			m.setCvsuccessornot(0);
-			m.setCvtime(LocalDateTime.now());
-			m.setVerifyPhoto(verifyphoto);
-			m.setCvphoto("/img/challengeverifyimg/" + fileName);
-			
-		}
+	public Boolean InsertNormalChallengeVerifyData(ChallengeVerifyDTO m){
+		
+		m.setCvsuccessornot(0);
+		m.setCvtime(LocalDateTime.now());
+		m.setCvphoto(m.getCvphoto());
+	
 		ChallengeVerify entity = dtoToEntity(m);
 		ChallengeParticipateId id = new ChallengeParticipateId(m.getUid(),m.getCid());
 		Optional<ChallengeParticipate> cp = challengeparticipateRepository.findById(id);
@@ -89,11 +78,11 @@ public class ChallengeVerifyService {
 		
 	}
 	
-	public Map<String, Long> countVerifyByMonthRange() {
+	public Map<Integer, Long> countVerifyByMonthRange() {
 	    LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1, 1); // January 1st of the current year
 	    LocalDate endDate = LocalDate.now().plusMonths(1).withDayOfMonth(1); // First day of the next month
 
-	    Map<String, Long> result = new HashMap<>();
+	    Map<Integer, Long> result = new HashMap<>();
 
 	    while (startDate.isBefore(endDate)) {
 	        YearMonth yearMonth = YearMonth.from(startDate);
@@ -104,7 +93,7 @@ public class ChallengeVerifyService {
 	        Long count = challengeVerifyRepository.countVerifyByDateRange(
 	            startDate.atStartOfDay(), currentMonthEnd);
 
-	        result.put(startDate.getMonth().toString(), count);
+	        result.put(startDate.getMonthValue(), count);
 
 	        startDate = startDate.plusMonths(1);
 	    }
@@ -127,6 +116,36 @@ public class ChallengeVerifyService {
 	    }
 
 	    return result;
+	}
+	
+	public List<Map<String, Object>>getChallengeRank(Long a){
+		List<Map<String, Object>> keyValueResult = new ArrayList<>();
+		List<Object[]>data = challengeVerifyRepository.getChallengeRankData(a);
+		System.out.println("cid" + a);
+		for (Object[] row : data) {
+		    Map<String, Object> rowMap = new HashMap<>();
+		    rowMap.put("uid", row[0]);
+		    rowMap.put("cvCount", row[1]);
+		    rowMap.put("cvtime", row[2]);
+		    keyValueResult.add(rowMap);
+		}
+		
+		return keyValueResult;
+				
+	}
+	
+	public List<Map<String, Object>>getCodingChallengeRank(Long a){
+		List<Map<String,Object>> keyValuesResult = new ArrayList<>();
+		List<Object[]>datas = challengeVerifyRepository.getCodingChallengeRankData(a);
+		System.out.println("cid" + a);
+		for (Object[] row : datas) {
+		    Map<String, Object> rowMap = new HashMap<>();
+		    rowMap.put("unickname", row[0]);
+		    rowMap.put("cvCount", row[1]);
+		    rowMap.put("cvtime", row[2]);
+		    keyValuesResult.add(rowMap);
+		}
+		return keyValuesResult;
 	}
 	
 	

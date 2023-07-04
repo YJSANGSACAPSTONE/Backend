@@ -70,26 +70,52 @@ public interface ChallengeRepository extends JpaRepository<Challenge,Long > {
 //	        "GROUP BY godsaeng_challengeparticipate.cpid", nativeQuery = true)
 //	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 //	
-	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, ctypeofverify, " +
-	        "cenddate - cstartdate + 1 AS datediff, " +
-	        "CASE " +
-	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +
-	        "    WHEN ctypeoffrequency = 1 THEN (cenddate - cstartdate + 1) * cfrequency " +
-	        "END AS totalcount, " +
-	        "godsaeng_challengeparticipate.uid AS uid, " +
-	        "COUNT(godsaeng_challengeverify.cvsuccessornot=1) AS cvsuccesscount " +
-	        "FROM godsaeng_challenge " +
-	        "JOIN godsaeng_challengeparticipate " +
-	        "    ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
-	        "LEFT JOIN godsaeng_challengeverify " +
-	        "    ON godsaeng_challengeparticipate.cid = godsaeng_challengeverify.cid " +
-	        "    AND godsaeng_challengeparticipate.uid = godsaeng_challengeverify.uid " +
-	        "    AND godsaeng_challengeverify.cvsuccessornot = 1 " +
-	        "WHERE godsaeng_challengeparticipate.uid = ?1 " +
-	        "    AND godsaeng_challengeparticipate.cpfinalsuccess = 0 " +
-	        "GROUP BY godsaeng_challengeparticipate.cid, godsaeng_challengeparticipate.uid", nativeQuery = true)
-	List<Object[]> myChallengeProgress(@Param("uid") String uid);
+//	@Query(value = "SELECT godsaeng_challenge.cid, cname, cthumbnails, cstartdate, cenddate, ctypeofverify, " +
+//	        "cenddate - cstartdate + 1 AS datediff, " +
+//	        "CASE " +
+//	        "    WHEN ctypeoffrequency = 2 THEN CEILING((cenddate - cstartdate + 1) / cfrequency) " +
+//	        "    WHEN ctypeoffrequency = 1 THEN (cenddate - cstartdate + 1) * cfrequency " +
+//	        "END AS totalcount, " +
+//	        "godsaeng_challengeparticipate.uid AS uid, " +
+//	        "COUNT(godsaeng_challengeverify.cvsuccessornot=1) AS cvsuccesscount " +
+//	        "FROM godsaeng_challenge " +
+//	        "JOIN godsaeng_challengeparticipate " +
+//	        "    ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
+//	        "LEFT JOIN godsaeng_challengeverify " +
+//	        "    ON godsaeng_challengeparticipate.cid = godsaeng_challengeverify.cid " +
+//	        "    AND godsaeng_challengeparticipate.uid = godsaeng_challengeverify.uid " +
+//	        "    AND godsaeng_challengeverify.cvsuccessornot = 1 " +
+//	        "WHERE godsaeng_challengeparticipate.uid = ?1 " +
+//	        "    AND godsaeng_challengeparticipate.cpfinalsuccess = 0 " +
+//	        "GROUP BY godsaeng_challengeparticipate.cid, godsaeng_challengeparticipate.uid", nativeQuery = true)
+//	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 	
+	@Query(value = "SELECT " +
+            "godsaeng_challenge.cid, " +
+            "cname, " +
+            "cthumbnails, " +
+            "cstartdate, " +
+            "cenddate, " +
+            "ctypeofverify, " +
+            "DATEDIFF(cenddate, cstartdate) + 1 AS datediff, " +
+            "CASE " +
+            "    WHEN ctypeoffrequency = 2 THEN CEILING((DATEDIFF(cenddate, cstartdate) + 1) / cfrequency) " +
+            "    WHEN ctypeoffrequency = 1 THEN (DATEDIFF(cenddate, cstartdate) + 1) * cfrequency " +
+            "END AS totalcount, " +
+            "godsaeng_challengeparticipate.uid AS uid, " +
+            "COUNT(CASE WHEN godsaeng_challengeverify.cvsuccessornot = 1 THEN 1 ELSE NULL END) AS cvsuccesscount " +
+            "FROM " +
+            "godsaeng_challenge " +
+            "JOIN godsaeng_challengeparticipate ON godsaeng_challenge.cid = godsaeng_challengeparticipate.cid " +
+            "LEFT JOIN godsaeng_challengeverify ON godsaeng_challengeparticipate.cid = godsaeng_challengeverify.cid " +
+            "    AND godsaeng_challengeparticipate.uid = godsaeng_challengeverify.uid " +
+            "WHERE " +
+            "godsaeng_challengeparticipate.uid = :uid " +
+            "    AND godsaeng_challengeparticipate.cpfinalsuccess = 0 " +
+            "GROUP BY " +
+            "godsaeng_challengeparticipate.cid, " +
+            "godsaeng_challengeparticipate.uid", nativeQuery = true)
+	List<Object[]> myChallengeProgress(@Param("uid") String uid);
 
 
 	
