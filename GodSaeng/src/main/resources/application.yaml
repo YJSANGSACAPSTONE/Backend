@@ -19,8 +19,8 @@ spring:
     dbcp2:
       driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://godsaengdb.cpvbdgo8npm2.ap-northeast-2.rds.amazonaws.com:3306/godsaeng
-    username: root
-    password: rkdtlstjd
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   
   security:
@@ -33,8 +33,8 @@ spring:
             scope:
               - profile
           kakao:
-            client-id: 87c054c34eca4ca3541ab083e086cd12
-            client-secret: vh89sp3zQwctgfvWcWM7ZTxPGhvhNnSh
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
             redirect-uri: https://godsaengplanner.com/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
@@ -57,10 +57,10 @@ cloud:
     region:
       static: ap-northeast-2
     credentials:
-      access-key: AKIARXDLYFBVDCYF6KPB
-      secret-key: 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
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
     s3:
-      bucket: godsaengbucket
+      bucket: ${AWS_GODSAENGBUCKET}
 
 
 
@@ -81,7 +81,7 @@ server:
   port: 8070
 
 jwt:
-  secret-key: ssh34kss05kyh19jhj77ntg99lmh02yj
+  secret-key: ${JWT_SECRET_KEY}
   expire-seconds:
     access-token: 3600
     refresh-token: 30240000
